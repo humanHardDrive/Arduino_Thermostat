@@ -14,9 +14,16 @@ class RemoteSensor
 	void forget();
 	void pair();
 	
-	virtual int write(const void* buffer, uint8_t len);
+	protected:
+	virtual uint32_t clockms() = 0;
+	virtual void print(const char* str) = 0;
 	
-	private:
+	virtual int write(const void* buffer, uint16_t len) = 0;
+	virtual int available() = 0;
+	virtual int read(const void* buffer, uint16_t len) = 0;
+	
+	virtual void save(uint16_t addr, const void* buffer, uint16_t len) = 0;
+	virtual void load(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	
 	public:
 	private:
