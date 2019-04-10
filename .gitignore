@@ -5,5 +5,4 @@
 *.buildinfo
 RemoteSensor/__vm/.RemoteSensor.vsarduino.h
 RemoteSensor/.vs/RemoteSensor/v14/.atsuo
-*.h
 BaseStation/.vs/BaseStation/v14/.atsuo
