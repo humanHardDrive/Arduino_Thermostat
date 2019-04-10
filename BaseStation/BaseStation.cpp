@@ -23,6 +23,11 @@ void BaseStation::stopDiscovery()
 	m_bInDiscovery = false;
 }
 
+uint8_t BaseStation::getDiscoveryCount()
+{
+	return m_nRemoteDiscovered;
+}
+
 void BaseStation::background()
 {
 	if(m_bInDiscovery)

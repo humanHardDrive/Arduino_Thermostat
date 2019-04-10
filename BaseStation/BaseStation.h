@@ -13,13 +13,14 @@ class BaseStation
 	
 	void startDiscovery(uint32_t timeout);
 	void stopDiscovery();
-	
-	virtual int write(const void* buf, uint8_t len);
+	uint8_t getDiscoveryCount();
 	
 	void background();
 	
+	virtual int write(const void* buf, uint16_t len) = 0;
+	
 	protected:
-	virtual uint32_t clockms();
+	virtual uint32_t clockms() = 0;
 	
 	private:
 	void discovery();
