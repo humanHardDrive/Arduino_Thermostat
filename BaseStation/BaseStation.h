@@ -18,6 +18,8 @@ class BaseStation
 	void background();
 	
 	protected:
+	void sendMsg(uint8_t dst, uint8_t cmd, uint8_t len, uint8_t* payload);
+	
 	virtual uint32_t clockms() = 0;
 	virtual void print(const char* str) = 0;
 	

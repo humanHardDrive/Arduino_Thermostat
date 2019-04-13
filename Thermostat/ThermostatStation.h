@@ -9,8 +9,10 @@
 class ThermoStation : public BaseStation
 {
   public:
-  ThermoStation();
+  ThermoStation(uint8_t fanPin, uint8_t heatPin, uint8_t coolPin);
   ~ThermoStation();
+
+  void background();
 
   protected:
   uint32_t clockms();
