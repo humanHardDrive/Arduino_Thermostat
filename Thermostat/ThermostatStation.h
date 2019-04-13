@@ -2,6 +2,7 @@
 #define __THERMOSTATION_H__
 
 #include "BaseStation.h"
+#include "MB85RS.h"
 
 #include <Arduino.h>
 
