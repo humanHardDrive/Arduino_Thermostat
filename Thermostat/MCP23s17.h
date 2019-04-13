@@ -7,7 +7,10 @@ class MCP23s17
 {
   public:  
   MCP23s17(byte csPin, byte address);
+  MCP23s17(byte csPin, byte rstPin, byte address);
   ~MCP23s17();
+
+  void reset();
 
   void writeReg(byte reg, byte val);
   byte readReg(byte reg);
@@ -40,7 +43,7 @@ class MCP23s17
   };
 
   private:
-  byte m_CSPin, m_devAddress;
+  byte m_CSPin, m_RstPin, m_devAddress;
   byte m_Bank;
 
   const byte REG_ADDRESS[2][TOTAL_REGISTERS] = 

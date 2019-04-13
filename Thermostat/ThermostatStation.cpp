@@ -1,16 +1,7 @@
 #include "ThermostatStation.h"
 
-ThermoStation::ThermoStation(uint8_t fanPin, uint8_t heatPin, uint8_t coolPin)
+ThermoStation::ThermoStation()
 {
-  //Set all of the control pins to outputs
-  pinMode(fanPin, OUTPUT);
-  pinMode(heatPin, OUTPUT);
-  pinMode(coolPin, OUTPUT);
-
-  //Turn off all of the outputs
-  digitalWrite(fanPin, LOW);
-  digitalWrite(heatPin, LOW);
-  digitalWrite(coolPin, LOW);
 }
 
 ThermoStation::~ThermoStation()
