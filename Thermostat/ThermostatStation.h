@@ -12,7 +12,28 @@ class ThermoStation : public BaseStation
   ThermoStation();
   ~ThermoStation();
 
+  void setHeatMode(byte mode);
+  void setFanMode(byte mode);
+
+  void setTargetTemp(byte temp);
+
   void background();
+
+  public:
+  enum HEAT_MODE
+  {
+    OFF = 0,
+    HEAT,
+    COOL,
+    ALL_HEAT_MODES
+  };
+
+  enum FAN_MODE
+  {
+    AUTO = 0,
+    ON,
+    ALL_FAN_MODES
+  };
 
   protected:
   uint32_t clockms();
@@ -24,6 +45,9 @@ class ThermoStation : public BaseStation
   
   void save(uint16_t addr, const void* buf, uint16_t len);
   void load(uint16_t addr, const void* buf, uint16_t len);
+
+  private:
+  byte m_HeatMode, m_FanMode;
 };
 
 #endif

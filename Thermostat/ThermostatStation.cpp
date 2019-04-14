@@ -1,11 +1,25 @@
 #include "ThermostatStation.h"
 
-ThermoStation::ThermoStation()
+ThermoStation::ThermoStation() :
+  m_HeatMode(0),
+  m_FanMode(0)
 {
 }
 
 ThermoStation::~ThermoStation()
 {
+}
+
+void ThermoStation::setHeatMode(byte mode)
+{
+  if(mode < ALL_HEAT_MODES)
+    m_HeatMode = mode;
+}
+
+void ThermoStation::setFanMode(byte mode)
+{
+  if(mode < ALL_FAN_MODES)
+    m_FanMode = mode;
 }
 
 void ThermoStation::background()
