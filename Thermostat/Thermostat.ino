@@ -1,6 +1,9 @@
 #include "ThermostatStation.h"
 #include "MCP23s17.h"
 #include <LiquidCrystal.h>
+#include <DS3231.h>
+
+#include <Wire.h>
 #include <SPI.h>
 
 #define SERIAL_DEBUG
@@ -37,6 +40,7 @@ enum BUTTON_INDEX
 //Variables
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, 0);
+RTClib          rtc;
 ThermoStation   thermostat;
 
 uint32_t lastIOExpUpdateTime = 0;
@@ -49,6 +53,7 @@ void setup()
 #endif
 
   SPI.begin();
+  Wire.begin();
 
   IOExpander.reset();
   IOExpander.writeReg(MCP23s17::IODIRA, 0xFF);
@@ -93,10 +98,37 @@ void HandleButtonPress()
   oldButtonState = currentButtonState;
 }
 
+bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false;
+
 void loop()
 {
   UpdateIOExpander();
   HandleButtonPress();
 
-  thermostat.background();
+  thermostat.background(rtc.now());
+
+  if (thermostat.isHeatOn() && !bOldHeatState)
+  {
+#ifdef SERIAL_DEBUG
+    Serial.println(F("HEAT ON"));
+#endif
+  }
+
+  if (thermostat.isCoolOn() && !bOldCoolState)
+  {
+#ifdef SERIAL_DEBUG
+    Serial.println(F("COOL ON"));
+#endif
+  }
+
+  if (thermostat.isFanOn() && !bOldFanState)
+  {
+#ifdef SERIAL_DEBUG
+    Serial.println(F("FAN ON"));
+#endif
+  }
+
+  bOldHeatState = thermostat.isHeatOn();
+  bOldCoolState = thermostat.isCoolOn();
+  bOldFanState = thermostat.isFanOn();
 }

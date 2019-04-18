@@ -2,7 +2,9 @@
 
 ThermoStation::ThermoStation() :
   m_HeatMode(0),
-  m_FanMode(0)
+  m_FanMode(0),
+  m_HeatOn(false),
+  m_CoolOn(false)
 {
 }
 
@@ -22,9 +24,48 @@ void ThermoStation::setFanMode(byte mode)
     m_FanMode = mode;
 }
 
-void ThermoStation::background()
+void ThermoStation::setTargetTemp(byte temp)
+{
+  m_TargetTemp = temp;
+}
+
+byte ThermoStation::getTargetTemp()
+{
+  return m_TargetTemp;
+}
+
+bool ThermoStation::isFanOn()
+{
+  return (m_FanMode == ON || m_HeatOn || m_CoolOn);
+}
+
+bool ThermoStation::isHeatOn()
+{
+  return m_HeatOn;
+}
+
+bool ThermoStation::isCoolOn()
+{
+  return m_CoolOn;
+}
+
+void ThermoStation::background(DateTime t)
 {
   BaseStation::background();
+
+  byte day = SATURDAY;
+  byte isWeekend = 0;
+
+  if(day == SATURDAY || day == SUNDAY)
+    isWeekend = 1;
+
+  for(byte i = 0; i < NUM_TIME_DIV; i++)
+  {
+    TEMP_RULE rule = m_TempRules[isWeekend][m_HeatMode][i];
+    
+    if(t.hour() > rule.h || t.minute() > rule.m)
+      m_TargetTemp = rule.temp;
+  }
 }
 
 int ThermoStation::write(const void* buf, uint16_t len)
