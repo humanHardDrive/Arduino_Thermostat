@@ -65,6 +65,8 @@ class ThermoStation : public BaseStation
   void save(uint16_t addr, const void* buf, uint16_t len);
   void load(uint16_t addr, const void* buf, uint16_t len);
 
+  uint8_t dayofweek(DateTime date);
+
   private:
   struct TEMP_RULE
   {
