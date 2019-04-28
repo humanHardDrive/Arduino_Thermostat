@@ -1,18 +1,20 @@
 #ifndef __THERMOSTATION_H__
 #define __THERMOSTATION_H__
 
+#include <Arduino.h>
+
 #include "BaseStation.h"
 #include "MB85RS.h"
 #include <DS3231.h>
-
-#include <Arduino.h>
+#include "nRF24L01.h"
+#include "RF24.h"
 
 #define NUM_TIME_DIV    4
 
 class ThermoStation : public BaseStation
 {
   public:
-  ThermoStation();
+  ThermoStation(RF24* pRadio);
   ~ThermoStation();
 
   void setHeatMode(byte mode);
@@ -20,6 +22,9 @@ class ThermoStation : public BaseStation
 
   void setTargetTemp(byte temp);
   byte getTargetTemp();
+
+  void startDiscovery(uint32_t timeout);
+  void stopDiscovery();
 
   void background(DateTime now);
 
@@ -78,6 +83,8 @@ class ThermoStation : public BaseStation
   TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
 
   bool m_HeatOn, m_CoolOn;
+
+  RF24* m_pRadio;
 };
 
 #endif

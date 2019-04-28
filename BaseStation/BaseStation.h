@@ -18,8 +18,6 @@ class BaseStation
 	void background();
 	
 	protected:
-	void sendMsg(uint8_t dst, uint8_t cmd, uint8_t len, uint8_t* payload);
-	
 	virtual uint32_t clockms() = 0;
 	virtual void print(const char* str) = 0;
 	
@@ -30,10 +28,9 @@ class BaseStation
 	virtual void save(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	virtual void load(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	
-	private:
 	void discovery();
 	
-	private:
+	protected:
 	bool m_bInDiscovery;
 	uint32_t m_nDiscoveryTimeout;
 	uint32_t m_nDiscoveryStartTime;

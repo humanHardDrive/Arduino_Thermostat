@@ -1,7 +1,5 @@
 #include "BaseStation.h"
 
-#include <string.h>
-
 BaseStation::BaseStation()
 {
 	m_bInDiscovery = false;
@@ -38,22 +36,6 @@ void BaseStation::background()
 		if((m_nDiscoveryStartTime + m_nDiscoveryTimeout) > clockms())
 			m_bInDiscovery = false;
 	}
-}
-
-void BaseStation::sendMsg(uint8_t dst, uint8_t cmd, uint8_t len, uint8_t* payload)
-{
-	uint8_t tempBuffer[128];
-	
-	tempBuffer[MSG_DST] = dst;
-	tempBuffer[MSG_SRC] = 0;
-	tempBuffer[MSG_ID] = 0;
-	tempBuffer[MSG_ID + 1] = 0;
-	tempBuffer[MSG_TYPE] = cmd;
-	tempBuffer[MSG_LEN] = len;
-	tempBuffer[MSG_LEN + 1] = 0;
-	
-	memcpy((tempBuffer + MSG_PAYLOAD), payload, len);
-	write(tempBuffer, (MSG_HEADER_SIZE + len));
 }
 
 void BaseStation::discovery()

@@ -2,6 +2,8 @@
 #include "MCP23s17.h"
 #include <LiquidCrystal.h>
 #include <DS3231.h>
+#include "nRF24L01.h"
+#include "RF24.h"
 
 #include <Wire.h>
 #include <SPI.h>
@@ -12,8 +14,8 @@
 #define IO_EXP_RST_PIN  A0
 
 #define IO_EXP_CS_PIN   8
-#define MEM_CS_PIN      9
-#define RF_CS_PIN       10
+#define RF24_CE_PIN     9
+#define RF24_CS_PIN     10
 
 #define SPI_MOSI_PIN    11
 #define SPI_MISO_PIN    12
@@ -38,10 +40,11 @@ enum BUTTON_INDEX
 };
 
 //Variables
+RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, 0);
 RTClib          rtc;
-ThermoStation   thermostat;
+ThermoStation   thermostat(&radio);
 
 uint32_t lastIOExpUpdateTime = 0;
 byte tempButtonState = 0xFF, oldButtonState = 0xFF, currentButtonState = 0xFF;

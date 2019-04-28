@@ -1,11 +1,17 @@
 #include "ThermostatStation.h"
 
-ThermoStation::ThermoStation() :
+ThermoStation::ThermoStation(RF24* pRadio) :
   m_HeatMode(0),
   m_FanMode(0),
   m_HeatOn(false),
-  m_CoolOn(false)
+  m_CoolOn(false),
+  m_pRadio(pRadio)
 {
+  pRadio->begin();
+  pRadio->setAutoAck(1);
+  pRadio->setRetries(0, 15);
+  pRadio->enableDynamicPayloads();
+  pRadio->startListening();
 }
 
 ThermoStation::~ThermoStation()
@@ -47,6 +53,11 @@ bool ThermoStation::isHeatOn()
 bool ThermoStation::isCoolOn()
 {
   return m_CoolOn;
+}
+
+void ThermoStation::startDiscovery(uint32_t timeout)
+{
+  BaseStation::startDiscovery(timeout);
 }
 
 void ThermoStation::background(DateTime t)
