@@ -57,7 +57,22 @@ bool ThermoStation::isCoolOn()
 
 void ThermoStation::startDiscovery(uint32_t timeout)
 {
+  m_pRadio->openWritingPipe(discoveryPipe);
+  m_pRadio->closeReadingPipe(1);
+  m_pRadio->openReadingPipe(1, discoveryPipe);
+  m_pRadio->stopListening();
+
   BaseStation::startDiscovery(timeout);
+}
+
+void ThermoStation::stopDiscovery()
+{
+  m_pRadio->openWritingPipe(m_SavedData.txPipe);
+  m_pRadio->closeReadingPipe(1);
+  m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
+  m_pRadio->startListening();
+
+  BaseStation::stopDiscovery();
 }
 
 void ThermoStation::background(DateTime t)
@@ -87,13 +102,29 @@ uint8_t ThermoStation::dayofweek(DateTime date)
   y = date.year();
   m = date.month();
   d = date.day();
-  
+
   y -= m < 3;
   return ( y + y / 4 - y / 100 + y / 400 + t[m - 1] + d) % 7;
 }
 
 int ThermoStation::write(const void* buf, uint16_t len)
 {
+  m_pRadio->stopListening();
+
+  while (len > 0)
+  {
+    uint8_t size = 0;
+    if (len > MAX_PAYLOAD_SIZE)
+      size = MAX_PAYLOAD_SIZE;
+    else
+      size = len;
+
+    m_pRadio->write(buf, size);
+    len -= size;
+  }
+
+  m_pRadio->startListening();
+
   return 0;
 }
 

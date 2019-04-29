@@ -3,11 +3,32 @@
 
 #include <RemoteSensor.h>
 
+#include "nRF24L01.h"
+#include "RF24.h"
+
+#include <SPI.h>
+
 class TempSensor : public RemoteSensor
 {
   public:
-  TempSensor();
-  ~TempSensor();
+    TempSensor(RF24* pRadio);
+    ~TempSensor();
+
+  protected:
+    uint32_t clockms();
+    void print(const char* str);
+
+    int write(const void* buffer, uint16_t len);
+    int available();
+    int read(const void* buffer, uint16_t len);
+
+    void save(uint16_t addr, const void* buffer, uint16_t len);
+    void load(uint16_t addr, const void* buffer, uint16_t len);
+
+  private:
+    const uint8_t discoveryPipe[6] = {"DISCO"};
+
+    RF24* m_pRadio;
 };
 
 #endif

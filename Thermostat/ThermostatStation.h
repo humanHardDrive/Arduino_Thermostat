@@ -14,77 +14,87 @@
 class ThermoStation : public BaseStation
 {
   public:
-  ThermoStation(RF24* pRadio);
-  ~ThermoStation();
+    ThermoStation(RF24* pRadio);
+    ~ThermoStation();
 
-  void setHeatMode(byte mode);
-  void setFanMode(byte mode);
+    void setHeatMode(byte mode);
+    void setFanMode(byte mode);
 
-  void setTargetTemp(byte temp);
-  byte getTargetTemp();
+    void setTargetTemp(byte temp);
+    byte getTargetTemp();
 
-  void startDiscovery(uint32_t timeout);
-  void stopDiscovery();
+    void startDiscovery(uint32_t timeout);
+    void stopDiscovery();
 
-  void background(DateTime now);
+    void background(DateTime now);
 
-  bool isFanOn();
-  bool isHeatOn();
-  bool isCoolOn();
+    bool isFanOn();
+    bool isHeatOn();
+    bool isCoolOn();
 
   public:
-  enum HEAT_MODE
-  {
-    OFF = 0,
-    HEAT,
-    COOL,
-    ALL_HEAT_MODES
-  };
+    enum HEAT_MODE
+    {
+      OFF = 0,
+      HEAT,
+      COOL,
+      ALL_HEAT_MODES
+    };
 
-  enum FAN_MODE
-  {
-    AUTO = 0,
-    ON,
-    ALL_FAN_MODES
-  };
+    enum FAN_MODE
+    {
+      AUTO = 0,
+      ON,
+      ALL_FAN_MODES
+    };
 
-  enum DAY_OF_WEEK
-  {
-    SUNDAY = 0,
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY
-  };
+    enum DAY_OF_WEEK
+    {
+      SUNDAY = 0,
+      MONDAY,
+      TUESDAY,
+      WEDNESDAY,
+      THURSDAY,
+      FRIDAY,
+      SATURDAY
+    };
 
   protected:
-  uint32_t clockms();
-  void print(const char* str);
-  
-  int write(const void* buf, uint16_t len);
-  int available();
-  int read(const void* buf, uint16_t len);
-  
-  void save(uint16_t addr, const void* buf, uint16_t len);
-  void load(uint16_t addr, const void* buf, uint16_t len);
+    uint32_t clockms();
+    void print(const char* str);
 
-  uint8_t dayofweek(DateTime date);
+    int write(const void* buf, uint16_t len);
+    int available();
+    int read(const void* buf, uint16_t len);
+
+    void save(uint16_t addr, const void* buf, uint16_t len);
+    void load(uint16_t addr, const void* buf, uint16_t len);
+
+    uint8_t dayofweek(DateTime date);
 
   private:
-  struct TEMP_RULE
-  {
-    byte h, m;
-    byte temp;
-  };
-  
-  byte m_HeatMode, m_FanMode, m_TargetTemp;
-  TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
+    static const uint8_t discoveryPipe[6] = {"DISCO"};
 
-  bool m_HeatOn, m_CoolOn;
+    static const uint8_t MAX_PAYLOAD_SIZE = 32;
 
-  RF24* m_pRadio;
+    struct TEMP_RULE
+    {
+      byte h, m;
+      byte temp;
+    };
+
+    struct SAVE_DATA
+    {
+      uint64_t txPipe, rxPipe;
+    };
+
+    byte m_HeatMode, m_FanMode, m_TargetTemp;
+    TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
+
+    bool m_HeatOn, m_CoolOn;
+    SAVE_DATA m_SavedData;
+
+    RF24* m_pRadio;
 };
 
 #endif
