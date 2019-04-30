@@ -6,10 +6,12 @@
 #define SYSTEM_MSG_BASE		0x00
 #define	REMOTE_INIT_MSG		SYSTEM_MSG_BASE + 1
 #define REMOTE_DESC_MSG		SYSTEM_MSG_BASE + 2
+#define PASSTHROUGH_MSG		SYSTEM_MSG_BASE + 3
 
 #define	USER_MSG_BASE		0x80
 
 //Message layout
+#define HEADER_SIZE	0x06
 #define MSG_DST		0x00
 #define MSG_SRC		0x01
 #define MSG_ID		0x02

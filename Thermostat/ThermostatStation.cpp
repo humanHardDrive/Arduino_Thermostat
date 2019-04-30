@@ -84,6 +84,7 @@ void ThermoStation::startDiscovery(uint32_t timeout)
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, discoveryPipe[1]);
   m_pRadio->stopListening();
+  m_pRadio->setAutoAck(0);
 
   BaseStation::startDiscovery(timeout);
 }
@@ -97,6 +98,7 @@ void ThermoStation::stopDiscovery()
   m_pRadio->openWritingPipe(m_SavedData.txPipe);
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
+  m_pRadio->setAutoAck(1);
   m_pRadio->startListening();
 }
 
@@ -144,6 +146,8 @@ int ThermoStation::write(const void* buf, uint16_t len)
     else
       size = len;
 
+    printArr(buf, size);
+
     m_pRadio->write(buf, size);
     len -= size;
   }
@@ -185,5 +189,16 @@ void ThermoStation::print(const char* str)
 void ThermoStation::print(int32_t num)
 {
   Serial.println(num);
+}
+
+void ThermoStation::printArr(void* buf, uint8_t len)
+{
+  for(uint8_t i = 0; i < len; i++)
+  {
+    byte b = ((byte*)buf)[i];
+    Serial.print(b, HEX);
+    Serial.print(' ');
+  }
+  Serial.println();
 }
 

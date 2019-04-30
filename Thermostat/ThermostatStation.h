@@ -69,6 +69,7 @@ class ThermoStation : public BaseStation
     uint32_t clockms();
     void print(const char* str);
     void print(int32_t num);
+    void printArr(void* buf, uint8_t len);
 
     int write(const void* buf, uint16_t len);
     int available();

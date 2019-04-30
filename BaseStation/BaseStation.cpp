@@ -1,12 +1,33 @@
 #include "BaseStation.h"
 
+#include <string.h>
+
 BaseStation::BaseStation()
 {
 	m_bInDiscovery = false;
+	m_nMsgID = 0;
 }
 
 BaseStation::~BaseStation()
 {
+}
+
+void BaseStation::buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen)
+{
+	*(outBuf + MSG_DST) = dst;
+	*(outBuf + MSG_SRC) = src;
+	memcpy(outBuf + MSG_ID, &m_nMsgID, 2);
+	memcpy(outBuf + MSG_LEN, &len, 2);
+	*(outBuf + MSG_ID) = msgType;
+	memcpy(outBuf + MSG_PAYLOAD, payload, len);
+	
+	*outLen = len + HEADER_SIZE;
+	m_nMsgID++;
+}
+
+void BaseStation::buildPacket(uint8_t msgType, uint8_t src, uint8_t* dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen)
+{
+
 }
 
 void BaseStation::startDiscovery(uint32_t timeout)
