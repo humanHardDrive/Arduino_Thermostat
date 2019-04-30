@@ -3,9 +3,12 @@
 
 #include <Arduino.h>
 
+#define SERIAL_DEBUG
+
 #include "BaseStation.h"
 #include "MB85RS.h"
 #include <DS3231.h>
+#include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
 
@@ -14,8 +17,11 @@
 class ThermoStation : public BaseStation
 {
   public:
-    ThermoStation(RF24* pRadio);
+    ThermoStation();
     ~ThermoStation();
+
+    void addRadio(RF24* pRadio);
+    void begin();
 
     void setHeatMode(byte mode);
     void setFanMode(byte mode);
@@ -73,7 +79,7 @@ class ThermoStation : public BaseStation
     uint8_t dayofweek(DateTime date);
 
   private:
-    static const uint8_t discoveryPipe[6] = {"DISCO"};
+    const uint8_t discoveryPipe[2][6] = {"DISCO", "DISCI"};
 
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
 

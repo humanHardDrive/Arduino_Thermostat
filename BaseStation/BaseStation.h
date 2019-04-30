@@ -12,7 +12,7 @@ class BaseStation
 	~BaseStation();
 	
 	void startDiscovery(uint32_t timeout);
-	void stopDiscovery();
+	virtual void stopDiscovery() = 0;
 	uint8_t getDiscoveryCount();
 	
 	void background();

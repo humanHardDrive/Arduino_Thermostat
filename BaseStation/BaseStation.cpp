@@ -18,11 +18,6 @@ void BaseStation::startDiscovery(uint32_t timeout)
 	m_bInDiscovery = true;
 }
 
-void BaseStation::stopDiscovery()
-{
-	m_bInDiscovery = false;
-}
-
 uint8_t BaseStation::getDiscoveryCount()
 {
 	return m_nRemoteDiscovered;
@@ -34,7 +29,10 @@ void BaseStation::background()
 	{
 		discovery();
 		if((m_nDiscoveryStartTime + m_nDiscoveryTimeout) > clockms())
+		{
 			m_bInDiscovery = false;
+			stopDiscovery();
+		}
 	}
 }
 

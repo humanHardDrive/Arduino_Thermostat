@@ -4,11 +4,13 @@
 #include <DS3231.h>
 #include "nRF24L01.h"
 #include "RF24.h"
+#include "printf.h"
 
 #include <Wire.h>
 #include <SPI.h>
 
-#define SERIAL_DEBUG
+#define APP_NAME    F("ARDUINO THERMOSTAT")
+#define VERSION     F("v0.0")
 
 //Arduino Pins
 #define IO_EXP_RST_PIN  A0
@@ -40,11 +42,14 @@ enum BUTTON_INDEX
 };
 
 //Variables
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
 RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, 0);
 RTClib          rtc;
-ThermoStation   thermostat(&radio);
+ThermoStation   thermostat;
+#pragma GCC pop_options
 
 uint32_t lastIOExpUpdateTime = 0;
 byte tempButtonState = 0xFF, oldButtonState = 0xFF, currentButtonState = 0xFF;
@@ -53,34 +58,38 @@ void setup()
 {
 #ifdef SERIAL_DEBUG
   Serial.begin(115200);
+  printf_begin();
+  Serial.println(APP_NAME);
+  Serial.println(VERSION);
 #endif
 
   SPI.begin();
   Wire.begin();
 
+  //Init the IO expander
   IOExpander.reset();
   IOExpander.writeReg(MCP23s17::IODIRA, 0xFF);
   IOExpander.writeReg(MCP23s17::GPPUA, 0xFF);
   IOExpander.writeReg(MCP23s17::IODIRB, 0x00);
-}
 
-void UpdateIOExpander()
-{
-  if (millis() - lastIOExpUpdateTime > 5)
+  //Check the radio
+  if (!radio.isChipConnected())
   {
 #ifdef SERIAL_DEBUG
-    Serial.println(F("UPDATING IO EXPANDER"));
+    Serial.println(F("Failed to connect to radio..."));
 #endif
-
-    byte buttonState = IOExpander.readReg(MCP23s17::GPIOA);
-    if (buttonState != currentButtonState)
-    {
-      if (buttonState != tempButtonState)
-        tempButtonState = buttonState;
-      else
-        currentButtonState = buttonState;
-    }
+    while (1);
   }
+
+  //Start the thermostat object
+  thermostat.addRadio(&radio);
+  thermostat.begin();
+
+#ifdef SERIAL_DEBUG
+  radio.printDetails();
+
+  Serial.println();
+#endif
 }
 
 void HandleButtonPress()
@@ -105,7 +114,6 @@ bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false;
 
 void loop()
 {
-  UpdateIOExpander();
   HandleButtonPress();
 
   thermostat.background(rtc.now());
@@ -116,11 +124,23 @@ void loop()
     Serial.println(F("HEAT ON"));
 #endif
   }
+  else if (!thermostat.isHeatOn() && bOldHeatState)
+  {
+#ifdef SERIAL_DEBUG
+    Serial.println(F("HEAT OFF"));
+#endif
+  }
 
   if (thermostat.isCoolOn() && !bOldCoolState)
   {
 #ifdef SERIAL_DEBUG
     Serial.println(F("COOL ON"));
+#endif
+  }
+  else if (!thermostat.isCoolOn() && bOldCoolState)
+  {
+#ifdef SERIAL_DEBUG
+    Serial.println(F("COOL OFF"));
 #endif
   }
 
@@ -130,8 +150,38 @@ void loop()
     Serial.println(F("FAN ON"));
 #endif
   }
+  else if (!thermostat.isFanOn() && bOldFanState)
+  {
+#ifdef SERIAL_DEBUG
+    Serial.println(F("FAN OFF"));
+#endif
+  }
 
   bOldHeatState = thermostat.isHeatOn();
   bOldCoolState = thermostat.isCoolOn();
   bOldFanState = thermostat.isFanOn();
+
+#ifdef SERIAL_DEBUG
+  if (Serial.available())
+  {
+    char c = Serial.read();
+    switch(c)
+    {
+      case 'd':
+      case 'D':
+      thermostat.startDiscovery(100);
+      break;
+
+      case 's':
+      case 'S':
+      thermostat.stopDiscovery();
+      break;
+
+      case 'x':
+      case 'X':
+      radio.printDetails();
+      break;
+    }
+  }
+#endif
 }

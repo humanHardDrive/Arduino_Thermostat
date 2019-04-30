@@ -8,6 +8,10 @@ RemoteSensor::~RemoteSensor()
 {
 }
 
+void RemoteSensor::background()
+{
+}
+
 void RemoteSensor::forget()
 {
 }

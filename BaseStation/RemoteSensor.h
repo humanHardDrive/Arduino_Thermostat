@@ -11,6 +11,8 @@ class RemoteSensor
 	RemoteSensor();
 	~RemoteSensor();
 	
+	void background();
+	
 	void forget();
 	void pair();
 	

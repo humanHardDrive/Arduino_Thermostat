@@ -1,21 +1,40 @@
 #include "ThermostatStation.h"
 
-ThermoStation::ThermoStation(RF24* pRadio) :
+ThermoStation::ThermoStation() :
   m_HeatMode(0),
   m_FanMode(0),
   m_HeatOn(false),
   m_CoolOn(false),
-  m_pRadio(pRadio)
+  m_pRadio(NULL)
 {
-  pRadio->begin();
-  pRadio->setAutoAck(1);
-  pRadio->setRetries(0, 15);
-  pRadio->enableDynamicPayloads();
-  pRadio->startListening();
+  m_SavedData.txPipe = 0xAAAAAAAAAA;
+  m_SavedData.rxPipe = 0xAAAAAAAAAB;
 }
 
 ThermoStation::~ThermoStation()
 {
+}
+
+void ThermoStation::addRadio(RF24* pRadio)
+{
+  m_pRadio = pRadio;
+}
+
+void ThermoStation::begin()
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+  
+  m_pRadio->begin();
+  m_pRadio->setAutoAck(1);
+  m_pRadio->setRetries(0, 15);
+  m_pRadio->enableDynamicPayloads();
+
+  m_pRadio->openWritingPipe(m_SavedData.txPipe);
+  m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
+  
+  m_pRadio->startListening();
 }
 
 void ThermoStation::setHeatMode(byte mode)
@@ -57,9 +76,13 @@ bool ThermoStation::isCoolOn()
 
 void ThermoStation::startDiscovery(uint32_t timeout)
 {
-  m_pRadio->openWritingPipe(discoveryPipe);
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+  
+  m_pRadio->openWritingPipe(discoveryPipe[0]);
   m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, discoveryPipe);
+  m_pRadio->openReadingPipe(1, discoveryPipe[1]);
   m_pRadio->stopListening();
 
   BaseStation::startDiscovery(timeout);
@@ -67,12 +90,14 @@ void ThermoStation::startDiscovery(uint32_t timeout)
 
 void ThermoStation::stopDiscovery()
 {
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+  
   m_pRadio->openWritingPipe(m_SavedData.txPipe);
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
   m_pRadio->startListening();
-
-  BaseStation::stopDiscovery();
 }
 
 void ThermoStation::background(DateTime t)
