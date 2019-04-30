@@ -20,6 +20,7 @@ class BaseStation
 	protected:
 	virtual uint32_t clockms() = 0;
 	virtual void print(const char* str) = 0;
+	virtual void print(int32_t num) = 0;
 	
 	virtual int write(const void* buf, uint16_t len) = 0;
 	virtual int available() = 0;

@@ -11,9 +11,14 @@ BaseStation::~BaseStation()
 
 void BaseStation::startDiscovery(uint32_t timeout)
 {
+	print(__PRETTY_FUNCTION__);
+	
 	m_nDiscoveryTimeout = timeout;
 	m_nDiscoveryStartTime = clockms();
 	m_nRemoteDiscovered = 0;
+	
+	print(m_nDiscoveryTimeout);
+	print(m_nDiscoveryStartTime);
 	
 	m_bInDiscovery = true;
 }
@@ -28,7 +33,7 @@ void BaseStation::background()
 	if(m_bInDiscovery)
 	{
 		discovery();
-		if((m_nDiscoveryStartTime + m_nDiscoveryTimeout) > clockms())
+		if((m_nDiscoveryStartTime + m_nDiscoveryTimeout) < clockms())
 		{
 			m_bInDiscovery = false;
 			stopDiscovery();

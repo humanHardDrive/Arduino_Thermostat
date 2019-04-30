@@ -169,7 +169,7 @@ void loop()
     {
       case 'd':
       case 'D':
-      thermostat.startDiscovery(100);
+      thermostat.startDiscovery(5000);
       break;
 
       case 's':

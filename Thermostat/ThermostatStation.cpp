@@ -179,5 +179,11 @@ uint32_t ThermoStation::clockms()
 
 void ThermoStation::print(const char* str)
 {
-  Serial.print(str);
+  Serial.println(str);
 }
+
+void ThermoStation::print(int32_t num)
+{
+  Serial.println(num);
+}
+
