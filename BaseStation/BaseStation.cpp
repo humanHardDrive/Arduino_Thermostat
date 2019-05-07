@@ -18,8 +18,10 @@ void BaseStation::buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_t
 	*(outBuf + MSG_SRC) = src;
 	memcpy(outBuf + MSG_ID, &m_nMsgID, 2);
 	memcpy(outBuf + MSG_LEN, &len, 2);
-	*(outBuf + MSG_ID) = msgType;
-	memcpy(outBuf + MSG_PAYLOAD, payload, len);
+	*(outBuf + MSG_TYPE) = msgType;
+	
+	if(payload)
+		memcpy(outBuf + MSG_PAYLOAD, payload, len);
 	
 	*outLen = len + HEADER_SIZE;
 	m_nMsgID++;
@@ -37,6 +39,7 @@ void BaseStation::startDiscovery(uint32_t timeout)
 	m_nDiscoveryTimeout = timeout;
 	m_nDiscoveryStartTime = clockms();
 	m_nRemoteDiscovered = 0;
+	m_nLastDiscoveryPollTime = 0;
 	
 	print(m_nDiscoveryTimeout);
 	print(m_nDiscoveryStartTime);
@@ -64,4 +67,12 @@ void BaseStation::background()
 
 void BaseStation::discovery()
 {
+	if((m_nLastDiscoveryPollTime + 100) < clockms())
+	{
+		uint8_t DiscoverMsg[16];
+		uint16_t MsgSize;
+		
+		buildPacket((uint8_t)(REMOTE_DISC_MSG), (uint8_t)0, (uint8_t)0, NULL, (uint16_t)0, DiscoverMsg, &MsgSize);
+		write(DiscoverMsg, MsgSize);
+	}
 }

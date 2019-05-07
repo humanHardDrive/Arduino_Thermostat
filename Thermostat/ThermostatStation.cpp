@@ -25,15 +25,13 @@ void ThermoStation::begin()
 #ifdef SERIAL_DEBUG
   Serial.println(__PRETTY_FUNCTION__);
 #endif
-  
+
   m_pRadio->begin();
-  m_pRadio->setAutoAck(1);
-  m_pRadio->setRetries(0, 15);
   m_pRadio->enableDynamicPayloads();
 
   m_pRadio->openWritingPipe(m_SavedData.txPipe);
   m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
-  
+
   m_pRadio->startListening();
 }
 
@@ -79,12 +77,11 @@ void ThermoStation::startDiscovery(uint32_t timeout)
 #ifdef SERIAL_DEBUG
   Serial.println(__PRETTY_FUNCTION__);
 #endif
-  
-  m_pRadio->openWritingPipe(discoveryPipe[0]);
+
+  m_pRadio->openWritingPipe(0x1122334455);
   m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, discoveryPipe[1]);
+  m_pRadio->openReadingPipe(1, 0x1122334455);
   m_pRadio->stopListening();
-  m_pRadio->setAutoAck(0);
 
   BaseStation::startDiscovery(timeout);
 }
@@ -94,7 +91,7 @@ void ThermoStation::stopDiscovery()
 #ifdef SERIAL_DEBUG
   Serial.println(__PRETTY_FUNCTION__);
 #endif
-  
+
   m_pRadio->openWritingPipe(m_SavedData.txPipe);
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
@@ -136,9 +133,11 @@ uint8_t ThermoStation::dayofweek(DateTime date)
 
 int ThermoStation::write(const void* buf, uint16_t len)
 {
+  uint16_t i = 0;
+
   m_pRadio->stopListening();
 
-  while (len > 0)
+  while (i < len)
   {
     uint8_t size = 0;
     if (len > MAX_PAYLOAD_SIZE)
@@ -146,20 +145,25 @@ int ThermoStation::write(const void* buf, uint16_t len)
     else
       size = len;
 
-    printArr(buf, size);
-
-    m_pRadio->write(buf, size);
-    len -= size;
+    m_pRadio->write(buf + i, size);
+    i += size;
   }
 
   m_pRadio->startListening();
+
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+  Serial.print(F("SENT: "));
+  printArr(buf, (uint8_t)len);
+  Serial.println();
+#endif
 
   return 0;
 }
 
 int ThermoStation::available()
 {
-  return 0;
+  return m_pRadio->available();
 }
 
 int ThermoStation::read(const void* buf, uint16_t len)
@@ -193,9 +197,14 @@ void ThermoStation::print(int32_t num)
 
 void ThermoStation::printArr(void* buf, uint8_t len)
 {
-  for(uint8_t i = 0; i < len; i++)
+  for (uint8_t i = 0; i < len; i++)
   {
     byte b = ((byte*)buf)[i];
+
+    Serial.print("0x");
+    if (b <= 0x0F)
+      Serial.print('0');
+
     Serial.print(b, HEX);
     Serial.print(' ');
   }

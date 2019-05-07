@@ -37,8 +37,7 @@ class BaseStation
 	
 	protected:
 	bool m_bInDiscovery;
-	uint32_t m_nDiscoveryTimeout;
-	uint32_t m_nDiscoveryStartTime;
+	uint32_t m_nDiscoveryTimeout, m_nDiscoveryStartTime, m_nLastDiscoveryPollTime;
 	uint8_t m_nRemoteDiscovered;
 	
 	uint16_t m_nMsgID;

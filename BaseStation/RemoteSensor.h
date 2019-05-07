@@ -27,6 +27,9 @@ class RemoteSensor
 	virtual void save(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	virtual void load(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	
+	protected:
+	bool m_bInDiscovery;
+	
 	public:
 	private:
 };
