@@ -35,7 +35,7 @@ class TempSensor : public RemoteSensor
     void load(uint16_t addr, const void* buffer, uint16_t len);
 
   private:
-    const uint8_t discoveryPipe[6] = {"DISCO"};
+    const uint64_t DISCOVERY_PIPE = 0x444953434F;
 
     RF24* m_pRadio;
 };

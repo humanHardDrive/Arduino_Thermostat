@@ -81,7 +81,7 @@ class ThermoStation : public BaseStation
     uint8_t dayofweek(DateTime date);
 
   private:
-    const uint8_t discoveryPipe[6] = {"DISCO"};
+    const uint64_t DISCOVERY_PIPE = 0x444953434F;
 
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
 

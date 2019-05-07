@@ -78,9 +78,9 @@ void ThermoStation::startDiscovery(uint32_t timeout)
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
-  m_pRadio->openWritingPipe(0x1122334455);
+  m_pRadio->openWritingPipe(DISCOVERY_PIPE);
   m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, 0x1122334455);
+  m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
   m_pRadio->stopListening();
 
   BaseStation::startDiscovery(timeout);
