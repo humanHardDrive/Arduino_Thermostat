@@ -14,9 +14,11 @@ class RemoteSensor
 	void background();
 	
 	void forget();
-	void pair();
+	void pair(uint16_t timeout);
 	
 	protected:
+	void buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen);
+	
 	virtual uint32_t clockms() = 0;
 	virtual void print(const char* str) = 0;
 	
@@ -27,11 +29,32 @@ class RemoteSensor
 	virtual void save(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	virtual void load(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	
+	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
+	
 	protected:
+		struct SAVED_DATA
+	{
+		uint8_t networkID[8];
+		uint8_t devID;
+	};
+	
+	SAVED_DATA m_SavedData;
+	
 	bool m_bInDiscovery;
+	uint16_t m_nMsgID;
 	
 	public:
+	
 	private:
+	void handleMessage(const void* buffer, uint16_t len);
+	
+	void discoveryHandler(const void* buffer, uint16_t len);
+	void discoveryAckHandler(const void* buffer, uint16_t len);
+	
+	private:
+	uint32_t m_nPairStartTime, m_nDiscoveryMsgTime;
+	uint16_t m_nDiscoveryTimeout;
+	uint8_t m_nDiscoveryRspDelay;
 };
 
 #endif

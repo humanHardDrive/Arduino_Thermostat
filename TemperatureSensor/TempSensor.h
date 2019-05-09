@@ -36,6 +36,7 @@ class TempSensor : public RemoteSensor
 
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;
+    static const uint8_t MAX_PAYLOAD_SIZE = 32;
 
     RF24* m_pRadio;
 };

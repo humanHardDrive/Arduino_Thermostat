@@ -35,12 +35,20 @@ class BaseStation
 	
 	void discovery();
 	
+	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
+	
 	protected:
 	bool m_bInDiscovery;
 	uint32_t m_nDiscoveryTimeout, m_nDiscoveryStartTime, m_nLastDiscoveryPollTime;
 	uint8_t m_nRemoteDiscovered;
 	
 	uint16_t m_nMsgID;
+	uint8_t m_nNextDevID;
+	
+	private:
+	void handleMessage(const void* buffer, uint16_t len);
+	
+	void discoveryHandler(const void* buffer, uint16_t len);
 };
 
 #endif

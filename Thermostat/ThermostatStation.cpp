@@ -168,6 +168,21 @@ int ThermoStation::available()
 
 int ThermoStation::read(const void* buf, uint16_t len)
 {
+  if (available())
+  {
+    uint16_t size = m_pRadio->getDynamicPayloadSize();
+    m_pRadio->read(buf, size);
+
+#ifdef SERIAL_DEBUG
+    Serial.println(__PRETTY_FUNCTION__);
+    Serial.print("RECV: ");
+    printArr(buf, (uint8_t)size);
+    Serial.println();
+#endif
+
+    return size;
+  }
+
   return 0;
 }
 

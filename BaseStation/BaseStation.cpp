@@ -75,4 +75,49 @@ void BaseStation::discovery()
 		buildPacket((uint8_t)(REMOTE_DISC_MSG), (uint8_t)0, (uint8_t)0, NULL, (uint16_t)0, DiscoverMsg, &MsgSize);
 		write(DiscoverMsg, MsgSize);
 	}
+	
+	if(available())
+	{
+		uint8_t rspBuffer[16];
+		uint16_t rspLen;
+		
+		rspLen = read(rspBuffer, 16);
+		handleMessage(rspBuffer, rspLen);
+	}
+}
+
+void BaseStation::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
+{
+	switch(cmd)
+	{
+		case REMOTE_INIT_MSG:
+		break;
+		
+		case REMOTE_DESC_MSG:
+		break;
+		
+		case PASSTHROUGH_MSG:
+		break;
+		
+		case REMOTE_DISC_MSG:
+		break;
+		
+		case REMOTE_DISC_ACK:
+		print("ACK");
+		break;
+	}
+}
+
+void BaseStation::handleMessage(const void* buffer, uint16_t len)
+{
+	uint8_t dst = *((uint8_t*)(buffer + MSG_DST));
+	
+	if(!dst)
+	{
+		uint8_t cmd = *((uint8_t*)(buffer + MSG_TYPE));
+		uint16_t size;
+		memcpy(buffer + MSG_LEN, &size, 2);
+		
+		handleCommand(cmd, buffer + MSG_PAYLOAD, size);
+	}
 }

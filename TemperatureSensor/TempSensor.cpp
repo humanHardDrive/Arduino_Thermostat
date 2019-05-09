@@ -44,11 +44,38 @@ uint32_t TempSensor::clockms()
 
 void TempSensor::print(const char* str)
 {
+#ifdef SERIAL_DEBUG
   Serial.println(str);
+#endif
 }
 
 int TempSensor::write(const void* buffer, uint16_t len)
 {
+  uint16_t i = 0;
+
+  m_pRadio->stopListening();
+
+  while (i < len)
+  {
+    uint8_t size = 0;
+    if (len > MAX_PAYLOAD_SIZE)
+      size = MAX_PAYLOAD_SIZE;
+    else
+      size = len;
+
+    m_pRadio->write(buffer + i, size);
+    i += size;
+  }
+
+  m_pRadio->startListening();
+
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+  Serial.print(F("SENT: "));
+  printArr(buffer, (uint8_t)len);
+  Serial.println();
+#endif
+
   return 0;
 }
 
