@@ -21,6 +21,7 @@ class RemoteSensor
 	
 	virtual uint32_t clockms() = 0;
 	virtual void print(const char* str) = 0;
+	virtual void print(int32_t num) = 0;
 	
 	virtual int write(const void* buffer, uint16_t len) = 0;
 	virtual int available() = 0;
@@ -28,6 +29,9 @@ class RemoteSensor
 	
 	virtual void save(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	virtual void load(uint16_t addr, const void* buffer, uint16_t len) = 0;
+	
+	virtual void seedRnd(uint16_t seed) = 0;
+	virtual uint16_t rnd() = 0;
 	
 	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
 	
@@ -46,6 +50,8 @@ class RemoteSensor
 	public:
 	
 	private:
+	void discoveryBackground();
+	
 	void handleMessage(const void* buffer, uint16_t len);
 	
 	void discoveryHandler(const void* buffer, uint16_t len);

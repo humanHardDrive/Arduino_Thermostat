@@ -37,7 +37,7 @@ void setup()
     while (1);
   }
 
-  //Start the sensorr object
+  //Start the sensor object
   temperatureSensor.addRadio(&radio);
   temperatureSensor.begin();
 
@@ -59,7 +59,8 @@ void loop()
       {
         case 'p':
         case 'P':
-        temperatureSensor.pair();
+        temperatureSensor.forget();
+        temperatureSensor.pair(300);
         break;
 
         case 'x':

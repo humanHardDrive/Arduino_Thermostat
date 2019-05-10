@@ -17,16 +17,27 @@ void RemoteSensor::background()
 	uint8_t buffer[128];
 	uint16_t size;
 	
+	if(m_bInDiscovery)
+		discoveryBackground();
+	
 	if(available())
 	{
 		size = read(buffer, sizeof(buffer));
 		handleMessage(buffer, size);
 	}
+}
+
+void RemoteSensor::discoveryBackground()
+{
+	uint8_t rspBuf[16];
+	uint16_t rspLen;
 	
-	if(m_bInDiscovery)
+	if(m_nDiscoveryMsgTime && (m_nDiscoveryMsgTime + m_nDiscoveryRspDelay) < clockms())
 	{
-		if((clockms() - m_nPairStartTime) > m_nDiscoveryTimeout)
-			m_bInDiscovery = false;
+		print("Disc rsp");
+		buildPacket((uint8_t)(REMOTE_DISC_ACK), (uint8_t)0, (uint8_t)0, NULL, (uint16_t)0, rspBuf, &rspLen);
+		write(rspBuf, rspLen);
+		m_nDiscoveryMsgTime = 0;
 	}
 }
 
@@ -44,7 +55,7 @@ void RemoteSensor::pair(uint16_t timeout)
 	
 	m_bInDiscovery = true;
 	m_nPairStartTime = clockms();
-	m_nDiscoveryRspDelay = 5;
+	m_nDiscoveryMsgTime = 0;
 	m_nDiscoveryTimeout = timeout;
 }
 
@@ -81,6 +92,7 @@ void RemoteSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 		break;
 		
 		case REMOTE_DISC_ACK:
+		discoveryAckHandler(buffer, len);
 		break;
 	}
 }
@@ -100,17 +112,24 @@ void RemoteSensor::handleMessage(const void* buffer, uint16_t len)
 }
 
 void RemoteSensor::discoveryHandler(const void* buffer, uint16_t len)
-{
-	uint8_t rspBuf[16];
-	uint16_t rspLen;
-	
-	
+{	
 	print(__PRETTY_FUNCTION__);
 	
-	buildPacket((uint8_t)(REMOTE_DISC_ACK), (uint8_t)0, (uint8_t)0, NULL, (uint16_t)0, rspBuf, &rspLen);
-	write(rspBuf, rspLen);
+	m_nDiscoveryMsgTime = clockms();
+	m_nDiscoveryRspDelay = 5*(rnd()%51); //New random number
+	m_SavedData.devID = *((uint8_t*)buffer);
+	
+	print(m_nDiscoveryMsgTime);
+	print(m_nDiscoveryRspDelay);
 }
 
 void RemoteSensor::discoveryAckHandler(const void* buffer, uint16_t len)
 {
+	print(__PRETTY_FUNCTION__);
+	
+	m_nDiscoveryMsgTime = clockms();
+	m_nDiscoveryRspDelay = 5*(rnd()%51); //New random number
+	
+	print(m_nDiscoveryMsgTime);
+	print(m_nDiscoveryRspDelay);
 }

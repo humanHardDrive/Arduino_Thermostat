@@ -20,11 +20,12 @@ class TempSensor : public RemoteSensor
     void addRadio(RF24* pRadio);
     void begin();
 
-    void pair();
+    void pair(uint16_t timeout);
 
   protected:
     uint32_t clockms();
     void print(const char* str);
+    void print(int32_t num);
     void printArr(void* buf, uint8_t len);
 
     int write(const void* buffer, uint16_t len);
@@ -33,6 +34,9 @@ class TempSensor : public RemoteSensor
 
     void save(uint16_t addr, const void* buffer, uint16_t len);
     void load(uint16_t addr, const void* buffer, uint16_t len);
+
+    virtual void seedRnd(uint16_t seed);
+    virtual uint16_t rnd();
 
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;

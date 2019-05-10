@@ -6,6 +6,7 @@ BaseStation::BaseStation()
 {
 	m_bInDiscovery = false;
 	m_nMsgID = 0;
+	m_nNextDevID = 1;
 }
 
 BaseStation::~BaseStation()
@@ -55,26 +56,7 @@ uint8_t BaseStation::getDiscoveryCount()
 void BaseStation::background()
 {
 	if(m_bInDiscovery)
-	{
 		discovery();
-		if((m_nDiscoveryStartTime + m_nDiscoveryTimeout) < clockms())
-		{
-			m_bInDiscovery = false;
-			stopDiscovery();
-		}
-	}
-}
-
-void BaseStation::discovery()
-{
-	if((m_nLastDiscoveryPollTime + 100) < clockms())
-	{
-		uint8_t DiscoverMsg[16];
-		uint16_t MsgSize;
-		
-		buildPacket((uint8_t)(REMOTE_DISC_MSG), (uint8_t)0, (uint8_t)0, NULL, (uint16_t)0, DiscoverMsg, &MsgSize);
-		write(DiscoverMsg, MsgSize);
-	}
 	
 	if(available())
 	{
@@ -83,6 +65,25 @@ void BaseStation::discovery()
 		
 		rspLen = read(rspBuffer, 16);
 		handleMessage(rspBuffer, rspLen);
+	}
+}
+
+void BaseStation::discovery()
+{
+	if((m_nLastDiscoveryPollTime + 300) < clockms())
+	{
+		uint8_t DiscoverMsg[16];
+		uint16_t MsgSize;
+		
+		buildPacket((uint8_t)(REMOTE_DISC_MSG), (uint8_t)0, (uint8_t)0, (uint8_t*)&m_nNextDevID, (uint16_t)1, DiscoverMsg, &MsgSize);
+		write(DiscoverMsg, MsgSize);
+		m_nLastDiscoveryPollTime = clockms();
+	}
+	
+	if((m_nDiscoveryStartTime + m_nDiscoveryTimeout) < clockms())
+	{
+		m_bInDiscovery = false;
+		stopDiscovery();
 	}
 }
 

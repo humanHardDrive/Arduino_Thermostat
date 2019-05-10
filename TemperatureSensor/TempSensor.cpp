@@ -2,7 +2,7 @@
 
 TempSensor::TempSensor()
 {
-
+  seedRnd(analogRead(0));
 }
 
 TempSensor::~TempSensor()
@@ -26,7 +26,7 @@ void TempSensor::begin()
   m_pRadio->startListening();
 }
 
-void TempSensor::pair()
+void TempSensor::pair(uint16_t timeout)
 {
   m_pRadio->stopListening();
   m_pRadio->openWritingPipe(DISCOVERY_PIPE);
@@ -34,19 +34,22 @@ void TempSensor::pair()
   m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
   m_pRadio->startListening();
 
-  RemoteSensor::pair();
+  RemoteSensor::pair(timeout);
+}
+
+uint16_t TempSensor::rnd()
+{
+  return (uint16_t)random(0, 0xFFFF);
+}
+
+void TempSensor::seedRnd(uint16_t seed)
+{
+  randomSeed(seed);
 }
 
 uint32_t TempSensor::clockms()
 {
   return millis();
-}
-
-void TempSensor::print(const char* str)
-{
-#ifdef SERIAL_DEBUG
-  Serial.println(str);
-#endif
 }
 
 int TempSensor::write(const void* buffer, uint16_t len)
@@ -112,6 +115,20 @@ void TempSensor::save(uint16_t addr, const void* buffer, uint16_t len)
 void TempSensor::load(uint16_t addr, const void* buffer, uint16_t len)
 {
 
+}
+
+void TempSensor::print(const char* str)
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(str);
+#endif
+}
+
+void TempSensor::print(int32_t num)
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(num);
+#endif
 }
 
 void TempSensor::printArr(void* buf, uint8_t len)
