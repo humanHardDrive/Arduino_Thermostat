@@ -104,7 +104,7 @@ void BaseStation::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 		break;
 		
 		case REMOTE_DISC_ACK:
-		print("ACK");
+		discoveryAckHandler(buffer, len);
 		break;
 	}
 }
@@ -121,4 +121,9 @@ void BaseStation::handleMessage(const void* buffer, uint16_t len)
 		
 		handleCommand(cmd, buffer + MSG_PAYLOAD, size);
 	}
+}
+
+void BaseStation::discoveryAckHandler(const void* buffer, uint16_t len)
+{
+	print(__PRETTY_FUNCTION__);
 }

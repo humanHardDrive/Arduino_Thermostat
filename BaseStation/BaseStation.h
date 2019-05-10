@@ -49,6 +49,7 @@ class BaseStation
 	void handleMessage(const void* buffer, uint16_t len);
 	
 	void discoveryHandler(const void* buffer, uint16_t len);
+	void discoveryAckHandler(const void* buffer, uint16_t len);
 };
 
 #endif

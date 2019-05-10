@@ -36,10 +36,12 @@ class RemoteSensor
 	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
 	
 	protected:
-		struct SAVED_DATA
+	struct SAVED_DATA
 	{
 		uint8_t networkID[8];
-		uint8_t devID;
+		char name[16];
+		uint32_t UID;
+		uint16_t checksum;
 	};
 	
 	SAVED_DATA m_SavedData;

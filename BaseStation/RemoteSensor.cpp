@@ -5,7 +5,7 @@
 RemoteSensor::RemoteSensor()
 {
 	memset(m_SavedData.networkID, 0, 8);
-	m_SavedData.devID = 0;
+	m_SavedData.UID = 0x11223344; //Temporary
 }
 
 RemoteSensor::~RemoteSensor()
@@ -35,7 +35,7 @@ void RemoteSensor::discoveryBackground()
 	if(m_nDiscoveryMsgTime && (m_nDiscoveryMsgTime + m_nDiscoveryRspDelay) < clockms())
 	{
 		print("Disc rsp");
-		buildPacket((uint8_t)(REMOTE_DISC_ACK), (uint8_t)0, (uint8_t)0, NULL, (uint16_t)0, rspBuf, &rspLen);
+		buildPacket((uint8_t)(REMOTE_DISC_ACK), (uint8_t)0, (uint8_t)0, (uint8_t*)&m_SavedData.devID, (uint16_t)1, rspBuf, &rspLen);
 		write(rspBuf, rspLen);
 		m_nDiscoveryMsgTime = 0;
 	}
@@ -59,10 +59,10 @@ void RemoteSensor::pair(uint16_t timeout)
 	m_nDiscoveryTimeout = timeout;
 }
 
-void RemoteSensor::buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen)
+void RemoteSensor::buildPacket(uint8_t msgType, uint32_t src, uint32_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen)
 {
-	*(outBuf + MSG_DST) = dst;
-	*(outBuf + MSG_SRC) = src;
+	memcpy(outBuf + MSG_DST, &dst, 4);
+	memcpy(outBuf + MSG_SRC, &src, 4);
 	memcpy(outBuf + MSG_ID, &m_nMsgID, 2);
 	memcpy(outBuf + MSG_LEN, &len, 2);
 	*(outBuf + MSG_TYPE) = msgType;
@@ -76,32 +76,40 @@ void RemoteSensor::buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_
 
 void RemoteSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 {
-	switch(cmd)
+	if(m_bInDiscovery)
 	{
-		case REMOTE_INIT_MSG:
-		break;
-		
-		case REMOTE_DESC_MSG:
-		break;
-		
-		case PASSTHROUGH_MSG:
-		break;
-		
-		case REMOTE_DISC_MSG:
-		discoveryHandler(buffer, len);
-		break;
-		
-		case REMOTE_DISC_ACK:
-		discoveryAckHandler(buffer, len);
-		break;
+		switch(cmd)
+		{
+			case REMOTE_DISC_MSG:
+			discoveryHandler(buffer, len);
+			break;
+			
+			case REMOTE_DISC_ACK:
+			discoveryAckHandler(buffer, len);
+			break;
+		}
+	}
+	else
+	{
+		switch(cmd)
+		{
+			case REMOTE_INIT_MSG:
+			break;
+			
+			case REMOTE_DESC_MSG:
+			break;
+			
+			case PASSTHROUGH_MSG:
+			break;
+		}
 	}
 }
 
 void RemoteSensor::handleMessage(const void* buffer, uint16_t len)
 {
-	uint8_t dst = *((uint8_t*)(buffer + MSG_DST));
+	uint32_t dst = *((uint32_t*)(buffer + MSG_DST));
 	
-	if(dst == m_SavedData.devID)
+	if(dst == m_SavedData.UID || m_bInDiscovery)
 	{
 		uint8_t cmd = *((uint8_t*)(buffer + MSG_TYPE));
 		uint16_t size;
@@ -117,10 +125,6 @@ void RemoteSensor::discoveryHandler(const void* buffer, uint16_t len)
 	
 	m_nDiscoveryMsgTime = clockms();
 	m_nDiscoveryRspDelay = 5*(rnd()%51); //New random number
-	m_SavedData.devID = *((uint8_t*)buffer);
-	
-	print(m_nDiscoveryMsgTime);
-	print(m_nDiscoveryRspDelay);
 }
 
 void RemoteSensor::discoveryAckHandler(const void* buffer, uint16_t len)
@@ -129,7 +133,4 @@ void RemoteSensor::discoveryAckHandler(const void* buffer, uint16_t len)
 	
 	m_nDiscoveryMsgTime = clockms();
 	m_nDiscoveryRspDelay = 5*(rnd()%51); //New random number
-	
-	print(m_nDiscoveryMsgTime);
-	print(m_nDiscoveryRspDelay);
 }
