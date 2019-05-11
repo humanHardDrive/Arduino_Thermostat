@@ -32,7 +32,11 @@ class ThermoStation : public BaseStation
     void startDiscovery(uint32_t timeout);
     void stopDiscovery();
 
+    void getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name);
+
     void background(DateTime now);
+
+    bool pair(uint32_t UID, uint32_t timeout);
 
     bool isFanOn();
     bool isHeatOn();
@@ -91,16 +95,10 @@ class ThermoStation : public BaseStation
       byte temp;
     };
 
-    struct SAVE_DATA
-    {
-      uint64_t txPipe, rxPipe;
-    };
-
     byte m_HeatMode, m_FanMode, m_TargetTemp;
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
 
     bool m_HeatOn, m_CoolOn;
-    SAVE_DATA m_SavedData;
 
     RF24* m_pRadio;
 };

@@ -36,8 +36,8 @@ class RemoteSensor
 	protected:
 	struct SAVED_DATA
 	{
-		uint8_t networkID[8];
-		char name[16];
+		uint8_t networkID[NETWORK_LEGNTH];
+		char name[REMOTE_NAME_LENGTH];
 		uint32_t UID;
 		uint16_t checksum;
 	};

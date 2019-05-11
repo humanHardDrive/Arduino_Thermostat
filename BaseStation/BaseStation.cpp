@@ -47,6 +47,26 @@ void BaseStation::background()
 	}
 }
 
+bool BaseStation::pair(uint32_t UID, uint32_t timeout)
+{
+	uint8_t buffer[16];
+	uint16_t nMsgLen;
+	uint32_t nTimeStarted;
+	INIT_MSG msg;
+	
+	msg.UID = UID;
+	memcpy(msg.networkID, m_SavedData.networkID, NETWORK_LEGNTH);
+	
+	buildPacket((uint8_t)(REMOTE_INIT_MSG), &m_nMsgID, (uint32_t)0, UID, 
+				(uint8_t*)&msg, sizeof(INIT_MSG), buffer, &nMsgLen);
+	write(buffer, nMsgLen);
+	
+	nTimeStarted = clockms();
+	while((clockms() - nTimeStarted) < timeout);
+	
+	return false;
+}
+
 void BaseStation::discovery()
 {
 	if((m_nLastDiscoveryPollTime + 300) < clockms())
@@ -125,7 +145,7 @@ uint8_t BaseStation::addDiscoveredDevice(uint32_t UID, char* name)
 	
 	print(__PRETTY_FUNCTION__);
 	
-	for(uint8_t i = 0; i < 16; i++)
+	for(uint8_t i = 0; i < MAX_DISCOVERY; i++)
 	{
 		if(m_DiscoveredDevice[i].UID == UID)
 		{
@@ -144,7 +164,7 @@ uint8_t BaseStation::addDiscoveredDevice(uint32_t UID, char* name)
 	}
 	
 	m_DiscoveredDevice[emptyIndex].UID = UID;
-	memcpy(m_DiscoveredDevice[emptyIndex].name, name, 16);
+	memcpy(m_DiscoveredDevice[emptyIndex].name, name, REMOTE_NAME_LENGTH);
 	m_nRemoteDiscovered++;
 	
 	print("ADDED DEVICE");

@@ -4,7 +4,10 @@
 #include <DS3231.h>
 #include "nRF24L01.h"
 #include "RF24.h"
+
+#ifdef SERIAL_DEBUG
 #include "printf.h"
+#endif
 
 #include <Wire.h>
 #include <SPI.h>
@@ -42,14 +45,11 @@ enum BUTTON_INDEX
 };
 
 //Variables
-#pragma GCC push_options
-#pragma GCC optimize ("O0")
 RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, 0);
 RTClib          rtc;
 ThermoStation   thermostat;
-#pragma GCC pop_options
 
 uint32_t lastIOExpUpdateTime = 0;
 byte tempButtonState = 0xFF, oldButtonState = 0xFF, currentButtonState = 0xFF;
@@ -162,6 +162,8 @@ void loop()
   bOldFanState = thermostat.isFanOn();
 
 #ifdef SERIAL_DEBUG
+  uint32_t UID;
+
   if (Serial.available())
   {
     char c = Serial.read();
@@ -180,6 +182,11 @@ void loop()
       case 'x':
       case 'X':
       radio.printDetails();
+      break;
+
+      case '0':
+      thermostat.getDiscoveredDevice(0, &UID, NULL);
+      thermostat.pair(UID, 1000);
       break;
     }
   }

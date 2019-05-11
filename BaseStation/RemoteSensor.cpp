@@ -40,7 +40,8 @@ void RemoteSensor::discoveryBackground()
 	if(m_nDiscoveryMsgTime && (m_nDiscoveryMsgTime + m_nDiscoveryRspDelay) < clockms())
 	{
 		print("Disc rsp");
-		buildPacket((uint8_t)(REMOTE_DISC_ACK), &m_nMsgID, m_SavedData.UID, (uint8_t)0, (uint8_t*)&m_SavedData.name, (uint16_t)16, rspBuf, &rspLen);
+		buildPacket((uint8_t)(REMOTE_DISC_ACK), &m_nMsgID, m_SavedData.UID, (uint8_t)0,
+					(uint8_t*)&m_SavedData.name, (uint16_t)REMOTE_NAME_LENGTH, rspBuf, &rspLen);
 		write(rspBuf, rspLen);
 		m_nDiscoveryMsgTime = 0;
 	}

@@ -5,6 +5,8 @@
 
 #include "msgs.h"
 
+#define MAX_DISCOVERY   	16
+
 class BaseStation
 {
 	public:
@@ -16,6 +18,8 @@ class BaseStation
 	uint8_t getDiscoveryCount();
 	
 	void background();
+	
+	bool pair(uint32_t UID, uint32_t timeout);
 	
 	protected:
 	virtual uint32_t clockms() = 0;
@@ -38,7 +42,15 @@ class BaseStation
 	struct DISC_DEVICE
 	{
 		uint32_t UID;
-		char name[16];
+		char name[REMOTE_NAME_LENGTH];
+	};
+	
+	struct SAVED_DATA
+	{
+		uint8_t networkID[NETWORK_LEGNTH];
+		char name[REMOTE_NAME_LENGTH];
+		uint32_t UID;
+		uint16_t checksum;
 	};
 	
 	bool m_bInDiscovery;
@@ -47,7 +59,8 @@ class BaseStation
 	
 	uint16_t m_nMsgID;
 	
-	DISC_DEVICE m_DiscoveredDevice[16];
+	DISC_DEVICE m_DiscoveredDevice[MAX_DISCOVERY];
+	SAVED_DATA m_SavedData;
 	
 	private:
 	void handleMessage(const void* buffer, uint16_t len);

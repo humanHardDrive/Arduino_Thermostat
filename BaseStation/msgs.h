@@ -3,12 +3,21 @@
 
 #include <stdint.h>
 
+#define REMOTE_NAME_LENGTH	16
+#define NETWORK_LEGNTH		8
+
 #define SYSTEM_MSG_BASE		0x00
 #define	REMOTE_INIT_MSG		SYSTEM_MSG_BASE + 1
 #define REMOTE_DESC_MSG		SYSTEM_MSG_BASE + 2
 #define PASSTHROUGH_MSG		SYSTEM_MSG_BASE + 3
 #define REMOTE_DISC_MSG		SYSTEM_MSG_BASE + 4
 #define REMOTE_DISC_ACK		SYSTEM_MSG_BASE + 5
+
+typedef struct INIT_MSG
+{
+	uint32_t UID;
+	uint8_t networkID[NETWORK_LEGNTH];
+};
 
 #define	USER_MSG_BASE		0x80
 

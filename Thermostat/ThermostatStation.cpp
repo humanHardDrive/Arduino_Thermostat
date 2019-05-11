@@ -7,8 +7,6 @@ ThermoStation::ThermoStation() :
   m_CoolOn(false),
   m_pRadio(NULL)
 {
-  m_SavedData.txPipe = 0xAAAAAAAAAA;
-  m_SavedData.rxPipe = 0xAAAAAAAAAB;
 }
 
 ThermoStation::~ThermoStation()
@@ -29,8 +27,8 @@ void ThermoStation::begin()
   m_pRadio->begin();
   m_pRadio->enableDynamicPayloads();
 
-  m_pRadio->openWritingPipe(m_SavedData.txPipe);
-  m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
+  m_pRadio->openWritingPipe(0xaaaaaaaaaa);
+  m_pRadio->openReadingPipe(1, 0xaaaaaaaaab);
 
   m_pRadio->startListening();
 }
@@ -92,17 +90,18 @@ void ThermoStation::stopDiscovery()
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
-  m_pRadio->openWritingPipe(m_SavedData.txPipe);
+  m_pRadio->openWritingPipe(0xaaaaaaaaaa);
   m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
-  m_pRadio->setAutoAck(1);
+  m_pRadio->openReadingPipe(1, 0xaaaaaaaaab);
   m_pRadio->startListening();
 
 #ifdef SERIAL_DEBUG
-  for(uint8_t i = 0; i < 16; i++)
+  for (uint8_t i = 0; i < MAX_DISCOVERY; i++)
   {
-    if(m_DiscoveredDevice[i].UID)
+    if (m_DiscoveredDevice[i].UID)
     {
+      Serial.print(i);
+      Serial.print(" ");
       Serial.print(F("Discovered 0x"));
       Serial.print(m_DiscoveredDevice[i].UID, HEX);
       Serial.print(" ");
@@ -110,6 +109,41 @@ void ThermoStation::stopDiscovery()
     }
   }
 #endif
+}
+
+void ThermoStation::getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name)
+{
+  if (index < MAX_DISCOVERY)
+  {
+    if (UID)
+      *UID = m_DiscoveredDevice[index].UID;
+
+    if (name)
+      name = m_DiscoveredDevice[index].name;
+  }
+}
+
+bool ThermoStation::pair(uint32_t UID, uint32_t timeout)
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+  
+  bool bRetVal = false;
+
+  m_pRadio->openWritingPipe(DISCOVERY_PIPE);
+  m_pRadio->closeReadingPipe(1);
+  m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
+  m_pRadio->stopListening();
+  
+  bRetVal = BaseStation::pair(UID, timeout);
+
+  m_pRadio->openWritingPipe(0xaaaaaaaaaa);
+  m_pRadio->closeReadingPipe(1);
+  m_pRadio->openReadingPipe(1, 0xaaaaaaaaab);
+  m_pRadio->startListening();
+
+  return bRetVal;
 }
 
 void ThermoStation::background(DateTime t)
