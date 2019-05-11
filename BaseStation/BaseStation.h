@@ -30,9 +30,6 @@ class BaseStation
 	virtual void save(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	virtual void load(uint16_t addr, const void* buffer, uint16_t len) = 0;
 	
-	void buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen);
-	void buildPacket(uint8_t msgType, uint8_t src, uint8_t* dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen);
-	
 	void discovery();
 	
 	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
@@ -43,7 +40,6 @@ class BaseStation
 	uint8_t m_nRemoteDiscovered;
 	
 	uint16_t m_nMsgID;
-	uint8_t m_nNextDevID;
 	
 	private:
 	void handleMessage(const void* buffer, uint16_t len);

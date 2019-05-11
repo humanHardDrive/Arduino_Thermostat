@@ -17,8 +17,6 @@ class RemoteSensor
 	void pair(uint16_t timeout);
 	
 	protected:
-	void buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen);
-	
 	virtual uint32_t clockms() = 0;
 	virtual void print(const char* str) = 0;
 	virtual void print(int32_t num) = 0;

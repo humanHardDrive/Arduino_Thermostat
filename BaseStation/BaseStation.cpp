@@ -1,4 +1,5 @@
 #include "BaseStation.h"
+#include "CommBase.h"
 
 #include <string.h>
 
@@ -6,31 +7,10 @@ BaseStation::BaseStation()
 {
 	m_bInDiscovery = false;
 	m_nMsgID = 0;
-	m_nNextDevID = 1;
 }
 
 BaseStation::~BaseStation()
 {
-}
-
-void BaseStation::buildPacket(uint8_t msgType, uint8_t src, uint8_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen)
-{
-	*(outBuf + MSG_DST) = dst;
-	*(outBuf + MSG_SRC) = src;
-	memcpy(outBuf + MSG_ID, &m_nMsgID, 2);
-	memcpy(outBuf + MSG_LEN, &len, 2);
-	*(outBuf + MSG_TYPE) = msgType;
-	
-	if(payload)
-		memcpy(outBuf + MSG_PAYLOAD, payload, len);
-	
-	*outLen = len + HEADER_SIZE;
-	m_nMsgID++;
-}
-
-void BaseStation::buildPacket(uint8_t msgType, uint8_t src, uint8_t* dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen)
-{
-
 }
 
 void BaseStation::startDiscovery(uint32_t timeout)
@@ -75,7 +55,8 @@ void BaseStation::discovery()
 		uint8_t DiscoverMsg[16];
 		uint16_t MsgSize;
 		
-		buildPacket((uint8_t)(REMOTE_DISC_MSG), (uint8_t)0, (uint8_t)0, (uint8_t*)&m_nNextDevID, (uint16_t)1, DiscoverMsg, &MsgSize);
+		buildPacket((uint8_t)(REMOTE_DISC_MSG), &m_nMsgID, (uint32_t)0, (uint32_t)0, NULL, (uint16_t)0, DiscoverMsg, &MsgSize);
+		
 		write(DiscoverMsg, MsgSize);
 		m_nLastDiscoveryPollTime = clockms();
 	}
@@ -89,23 +70,31 @@ void BaseStation::discovery()
 
 void BaseStation::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 {
-	switch(cmd)
+	if(m_bInDiscovery)
 	{
-		case REMOTE_INIT_MSG:
-		break;
-		
-		case REMOTE_DESC_MSG:
-		break;
-		
-		case PASSTHROUGH_MSG:
-		break;
-		
-		case REMOTE_DISC_MSG:
-		break;
-		
-		case REMOTE_DISC_ACK:
-		discoveryAckHandler(buffer, len);
-		break;
+		switch(cmd)
+		{		
+			case REMOTE_DISC_MSG:
+			break;
+			
+			case REMOTE_DISC_ACK:
+			discoveryAckHandler(buffer, len);
+			break;
+		}		
+	}
+	else
+	{
+		switch(cmd)
+		{
+			case REMOTE_INIT_MSG:
+			break;
+			
+			case REMOTE_DESC_MSG:
+			break;
+			
+			case PASSTHROUGH_MSG:
+			break;
+		}		
 	}
 }
 

@@ -1,11 +1,16 @@
 #include "RemoteSensor.h"
+#include "CommBase.h"
 
 #include <string.h>
 
 RemoteSensor::RemoteSensor()
 {
 	memset(m_SavedData.networkID, 0, 8);
+	memset(m_SavedData.name, 0, 16);
 	m_SavedData.UID = 0x11223344; //Temporary
+	strcpy(m_SavedData.name, "SENSOR");
+	
+	m_nMsgID = 0;
 }
 
 RemoteSensor::~RemoteSensor()
@@ -35,7 +40,7 @@ void RemoteSensor::discoveryBackground()
 	if(m_nDiscoveryMsgTime && (m_nDiscoveryMsgTime + m_nDiscoveryRspDelay) < clockms())
 	{
 		print("Disc rsp");
-		buildPacket((uint8_t)(REMOTE_DISC_ACK), (uint8_t)0, (uint8_t)0, (uint8_t*)&m_SavedData.devID, (uint16_t)1, rspBuf, &rspLen);
+		buildPacket((uint8_t)(REMOTE_DISC_ACK), &m_nMsgID, m_SavedData.UID, (uint8_t)0, (uint8_t*)&m_SavedData.name, (uint16_t)16, rspBuf, &rspLen);
 		write(rspBuf, rspLen);
 		m_nDiscoveryMsgTime = 0;
 	}
@@ -46,7 +51,6 @@ void RemoteSensor::forget()
 	print(__PRETTY_FUNCTION__);
 	
 	memset(m_SavedData.networkID, 0, 8);
-	m_SavedData.devID = 0;
 }
 
 void RemoteSensor::pair(uint16_t timeout)
@@ -57,21 +61,6 @@ void RemoteSensor::pair(uint16_t timeout)
 	m_nPairStartTime = clockms();
 	m_nDiscoveryMsgTime = 0;
 	m_nDiscoveryTimeout = timeout;
-}
-
-void RemoteSensor::buildPacket(uint8_t msgType, uint32_t src, uint32_t dst, uint8_t* payload, uint16_t len, uint8_t* outBuf, uint16_t* outLen)
-{
-	memcpy(outBuf + MSG_DST, &dst, 4);
-	memcpy(outBuf + MSG_SRC, &src, 4);
-	memcpy(outBuf + MSG_ID, &m_nMsgID, 2);
-	memcpy(outBuf + MSG_LEN, &len, 2);
-	*(outBuf + MSG_TYPE) = msgType;
-	
-	if(payload)
-		memcpy(outBuf + MSG_PAYLOAD, payload, len);
-	
-	*outLen = len + HEADER_SIZE;
-	m_nMsgID++;
 }
 
 void RemoteSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
