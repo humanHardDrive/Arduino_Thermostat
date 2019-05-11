@@ -27,8 +27,8 @@ void ThermoStation::begin()
   m_pRadio->begin();
   m_pRadio->enableDynamicPayloads();
 
-  m_pRadio->openWritingPipe(0xaaaaaaaaaa);
-  m_pRadio->openReadingPipe(1, 0xaaaaaaaaab);
+  m_pRadio->openWritingPipe(m_SavedData.networkID);
+  m_pRadio->openReadingPipe(1, m_SavedData.networkID);
 
   m_pRadio->startListening();
 }
@@ -272,4 +272,3 @@ void ThermoStation::printArr(void* buf, uint8_t len)
   }
   Serial.println();
 }
-
