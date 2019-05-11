@@ -22,8 +22,7 @@ void BaseStation::startDiscovery(uint32_t timeout)
 	m_nRemoteDiscovered = 0;
 	m_nLastDiscoveryPollTime = 0;
 	
-	print(m_nDiscoveryTimeout);
-	print(m_nDiscoveryStartTime);
+	memset(m_DiscoveredDevice, 0, sizeof(m_DiscoveredDevice));
 	
 	m_bInDiscovery = true;
 }
@@ -68,7 +67,7 @@ void BaseStation::discovery()
 	}
 }
 
-void BaseStation::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
+void BaseStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)
 {
 	if(m_bInDiscovery)
 	{
@@ -78,7 +77,7 @@ void BaseStation::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 			break;
 			
 			case REMOTE_DISC_ACK:
-			discoveryAckHandler(buffer, len);
+			discoveryAckHandler(src, buffer, len);
 			break;
 		}		
 	}
@@ -100,7 +99,8 @@ void BaseStation::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 
 void BaseStation::handleMessage(const void* buffer, uint16_t len)
 {
-	uint8_t dst = *((uint8_t*)(buffer + MSG_DST));
+	uint32_t dst = *((uint32_t*)(buffer + MSG_DST));
+	uint32_t src = *((uint32_t*)(buffer + MSG_SRC));
 	
 	if(!dst)
 	{
@@ -108,11 +108,46 @@ void BaseStation::handleMessage(const void* buffer, uint16_t len)
 		uint16_t size;
 		memcpy(buffer + MSG_LEN, &size, 2);
 		
-		handleCommand(cmd, buffer + MSG_PAYLOAD, size);
+		handleCommand(cmd, src, buffer + MSG_PAYLOAD, size);
 	}
 }
 
-void BaseStation::discoveryAckHandler(const void* buffer, uint16_t len)
+void BaseStation::discoveryAckHandler(uint32_t src, const void* buffer, uint16_t len)
 {
 	print(__PRETTY_FUNCTION__);
+	
+	addDiscoveredDevice(src, (char*)(buffer));
+}
+
+uint8_t BaseStation::addDiscoveredDevice(uint32_t UID, char* name)
+{
+	uint8_t emptyIndex = 0xFF;
+	
+	print(__PRETTY_FUNCTION__);
+	
+	for(uint8_t i = 0; i < 16; i++)
+	{
+		if(m_DiscoveredDevice[i].UID == UID)
+		{
+			print("ALREADY PRESENT");
+			return 1;
+		}
+		
+		if(emptyIndex == 0xFF && !m_DiscoveredDevice[i].UID)
+			emptyIndex = i;
+	}
+	
+	if(emptyIndex == 0xFF)
+	{
+		print("NO ROOM");
+		return 2;
+	}
+	
+	m_DiscoveredDevice[emptyIndex].UID = UID;
+	memcpy(m_DiscoveredDevice[emptyIndex].name, name, 16);
+	m_nRemoteDiscovered++;
+	
+	print("ADDED DEVICE");
+	
+	return 0;
 }

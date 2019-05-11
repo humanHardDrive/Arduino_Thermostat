@@ -97,6 +97,19 @@ void ThermoStation::stopDiscovery()
   m_pRadio->openReadingPipe(1, m_SavedData.rxPipe);
   m_pRadio->setAutoAck(1);
   m_pRadio->startListening();
+
+#ifdef SERIAL_DEBUG
+  for(uint8_t i = 0; i < 16; i++)
+  {
+    if(m_DiscoveredDevice[i].UID)
+    {
+      Serial.print(F("Discovered 0x"));
+      Serial.print(m_DiscoveredDevice[i].UID, HEX);
+      Serial.print(" ");
+      Serial.println(m_DiscoveredDevice[i].name);
+    }
+  }
+#endif
 }
 
 void ThermoStation::background(DateTime t)

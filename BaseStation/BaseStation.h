@@ -32,20 +32,30 @@ class BaseStation
 	
 	void discovery();
 	
-	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
+	void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 	
 	protected:
+	struct DISC_DEVICE
+	{
+		uint32_t UID;
+		char name[16];
+	};
+	
 	bool m_bInDiscovery;
 	uint32_t m_nDiscoveryTimeout, m_nDiscoveryStartTime, m_nLastDiscoveryPollTime;
 	uint8_t m_nRemoteDiscovered;
 	
 	uint16_t m_nMsgID;
 	
+	DISC_DEVICE m_DiscoveredDevice[16];
+	
 	private:
 	void handleMessage(const void* buffer, uint16_t len);
 	
-	void discoveryHandler(const void* buffer, uint16_t len);
-	void discoveryAckHandler(const void* buffer, uint16_t len);
+	void discoveryHandler(uint32_t src, const void* buffer, uint16_t len);
+	void discoveryAckHandler(uint32_t src, const void* buffer, uint16_t len);
+	
+	uint8_t addDiscoveredDevice(uint32_t UID, char* name);
 };
 
 #endif
