@@ -56,6 +56,7 @@ class RemoteSensor
 	
 	void discoveryHandler(const void* buffer, uint16_t len);
 	void discoveryAckHandler(const void* buffer, uint16_t len);
+	void deviceInitHandler(const void* buffer, uint16_t len);
 	
 	private:
 	uint32_t m_nPairStartTime, m_nDiscoveryMsgTime;

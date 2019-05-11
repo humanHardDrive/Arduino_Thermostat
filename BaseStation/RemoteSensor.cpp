@@ -77,20 +77,27 @@ void RemoteSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 			case REMOTE_DISC_ACK:
 			discoveryAckHandler(buffer, len);
 			break;
+			
+			case REMOTE_INIT_MSG:
+			deviceInitHandler(buffer, len);
+			break;
 		}
 	}
 	else
 	{
 		switch(cmd)
-		{
-			case REMOTE_INIT_MSG:
-			break;
-			
+		{			
 			case REMOTE_DESC_MSG:
 			break;
 			
 			case PASSTHROUGH_MSG:
 			break;
+			
+			//Handle the message here in case the base station doesn't hear the response
+			//And it will try again
+			case REMOTE_INIT_MSG:
+			deviceInitHandler(buffer, len);
+			break;			
 		}
 	}
 }
@@ -123,4 +130,18 @@ void RemoteSensor::discoveryAckHandler(const void* buffer, uint16_t len)
 	
 	m_nDiscoveryMsgTime = clockms();
 	m_nDiscoveryRspDelay = 5*(rnd()%51); //New random number
+}
+
+void RemoteSensor::deviceInitHandler(const void* buffer, uint16_t len)
+{
+	print(__PRETTY_FUNCTION__);
+	
+	INIT_MSG msg;
+	memcpy(&msg, buffer, sizeof(INIT_MSG));
+	
+	if(msg.UID == m_SavedData.UID)
+	{
+		memcpy(m_SavedData.networkID, msg.networkID, NETWORK_LEGNTH);
+		m_bInDiscovery = false;
+	}
 }
