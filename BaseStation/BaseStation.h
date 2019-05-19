@@ -5,7 +5,9 @@
 
 #include "msgs.h"
 
+#ifndef MAX_DISCOVERY
 #define MAX_DISCOVERY   	16
+#endif
 
 class BaseStation
 {
