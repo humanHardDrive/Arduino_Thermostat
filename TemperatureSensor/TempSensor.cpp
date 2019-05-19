@@ -101,6 +101,10 @@ int TempSensor::write(const void* buffer, uint16_t len)
 
 int TempSensor::available()
 {
+  //Handle corrupt dynamic payloads
+  if(!m_pRadio->getDynamicPayloadSize())
+    return 0;
+  
   return m_pRadio->available();
 }
 

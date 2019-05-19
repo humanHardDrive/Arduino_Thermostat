@@ -29,6 +29,7 @@ void ThermoStation::begin()
 
   m_pRadio->openWritingPipe(m_SavedData.networkID);
   m_pRadio->openReadingPipe(1, m_SavedData.networkID);
+  m_pRadio->setCRCLength(RF24_CRC_16);
 
   m_pRadio->startListening();
 }
@@ -76,10 +77,10 @@ void ThermoStation::startDiscovery(uint32_t timeout)
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
+  m_pRadio->stopListening();
   m_pRadio->openWritingPipe(DISCOVERY_PIPE);
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
-  m_pRadio->stopListening();
 
   BaseStation::startDiscovery(timeout);
 }
@@ -90,6 +91,7 @@ void ThermoStation::stopDiscovery()
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
+  m_pRadio->stopListening();
   m_pRadio->openWritingPipe(0xaaaaaaaaaa);
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, 0xaaaaaaaaab);
@@ -210,12 +212,16 @@ int ThermoStation::write(const void* buf, uint16_t len)
 
 int ThermoStation::available()
 {
+  //Handle corrupt dynamic payloads
+  if(!m_pRadio->getDynamicPayloadSize())
+    return 0;
+  
   return m_pRadio->available();
 }
 
 int ThermoStation::read(const void* buf, uint16_t len)
 {
-  if (available())
+  if (ThermoStation::available())
   {
     uint16_t size = m_pRadio->getDynamicPayloadSize();
     m_pRadio->read(buf, size);
