@@ -53,6 +53,7 @@ class BaseStation
 		uint16_t checksum;
 	};
 	
+	//Vars for discovery
 	bool m_bInDiscovery;
 	uint32_t m_nDiscoveryTimeout, m_nDiscoveryStartTime, m_nLastDiscoveryPollTime;
 	uint8_t m_nRemoteDiscovered;
@@ -61,6 +62,11 @@ class BaseStation
 	
 	DISC_DEVICE m_DiscoveredDevice[MAX_DISCOVERY];
 	SAVED_DATA m_SavedData;
+	
+	//Vars to retry messages
+	uint32_t m_LastDeviceSentTo, m_LastMessageTime;
+    bool m_ExpectingResponse, m_RcvResponse;
+    uint8_t m_NumMissedMsgs, m_RetryPeriod;
 	
 	private:
 	void handleMessage(const void* buffer, uint16_t len);

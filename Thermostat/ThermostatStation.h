@@ -108,10 +108,6 @@ class ThermoStation : public BaseStation
     byte m_HeatMode, m_FanMode, m_TargetTemp, m_CurrentTemp;
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
 
-    uint32_t m_LastDeviceSentTo, m_LastMessageTime;
-    bool m_ExpectingResponse, m_RcvResponse;
-    uint8_t m_NumMissedMsgs, m_RetryPeriod;
-
     bool m_HeatOn, m_CoolOn;
 
     RF24* m_pRadio;
