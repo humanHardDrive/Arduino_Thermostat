@@ -1,5 +1,4 @@
 #include "RemoteSensor.h"
-#include "CommBase.h"
 
 #include <string.h>
 

@@ -139,9 +139,11 @@ void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
   switch (cmd)
   {
     case QUERY_TEMPERATURE:
+      handleTemperatureQueryMsg(buffer, len);
       break;
 
     case SET_POLLING_RATE:
+      handleSetPollingRateMsg(buffer, len);
       break;
 
     default:
@@ -158,7 +160,37 @@ void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 
 void TempSensor::sampleAndSend()
 {
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
 
+  uint8_t buf[16];
+  uint16_t len;
+  uint8_t curTemp = 0;
+
+  buildPacket((uint8_t)(QUERY_TEMPERATURE), &m_nMsgID, m_SavedData.UID, (uint8_t)0,
+              (uint8_t*)&curTemp, (uint16_t)1, buf, &len);
+  write(buf, len);
+}
+
+void TempSensor::handleTemperatureQueryMsg(const void* buffer, uint16_t len)
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+
+  //Update the last sample time to sample in 50ms
+  m_u32LastSampleTime = (millis() + m_u32SamplePeriod) - 50;
+}
+
+void TempSensor::handleSetPollingRateMsg(const void* buffer, uint16_t len)
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+
+  memcpy(&m_u32SamplePeriod, buffer, sizeof(m_u32SamplePeriod)); //Update the period
+  m_u32LastSampleTime = millis(); //Reset the sample timer
 }
 
 void TempSensor::print(const char* str)

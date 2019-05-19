@@ -50,11 +50,18 @@ class TempSensor : public RemoteSensor
   private:
     void sampleAndSend();
 
+    void handleTemperatureQueryMsg(const void* buffer, uint16_t len);
+    void handleSetPollingRateMsg(const void* buffer, uint16_t len);
+
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F; //DISCO
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
 
+#ifdef SERIAL_DEBUG
+    const uint32_t DEFAULT_SAMPLE_PERIOD = 5000;
+#else
     const uint32_t DEFAULT_SAMPLE_PERIOD = (5*1000*60); //Default sample every 5 minutes
+#endif
 
     uint32_t m_u32LastSampleTime, m_u32SamplePeriod;
 

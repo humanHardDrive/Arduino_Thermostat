@@ -69,7 +69,7 @@ bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 
 void BaseStation::discovery()
 {
-	if((m_nLastDiscoveryPollTime + 300) < clockms())
+	if((m_nLastDiscoveryPollTime + 500) < clockms())
 	{
 		uint8_t DiscoverMsg[16];
 		uint16_t MsgSize;

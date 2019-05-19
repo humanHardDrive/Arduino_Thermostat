@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#include "CommBase.h"
 #include "msgs.h"
 
 class RemoteSensor
