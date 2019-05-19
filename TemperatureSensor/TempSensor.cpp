@@ -3,6 +3,9 @@
 TempSensor::TempSensor()
 {
   seedRnd(analogRead(0));
+
+  m_u32LastSampleTime = millis();
+  m_u32SamplePeriod = DEFAULT_SAMPLE_PERIOD;
 }
 
 TempSensor::~TempSensor()
@@ -24,6 +27,20 @@ void TempSensor::begin()
   m_pRadio->begin();
   m_pRadio->enableDynamicPayloads();
   m_pRadio->startListening();
+}
+
+void TempSensor::background()
+{
+  if (!m_bInDiscovery &&
+      (millis() - m_u32LastSampleTime) > m_u32SamplePeriod)
+  {
+    sampleAndSend();
+    m_u32LastSampleTime = millis();
+  }
+  else if (m_bInDiscovery)
+    m_u32LastSampleTime = millis();
+
+  RemoteSensor::background();
 }
 
 void TempSensor::pair(uint16_t timeout)
@@ -113,6 +130,33 @@ void TempSensor::save(uint16_t addr, const void* buffer, uint16_t len)
 }
 
 void TempSensor::load(uint16_t addr, const void* buffer, uint16_t len)
+{
+
+}
+
+void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
+{
+  switch (cmd)
+  {
+    case QUERY_TEMPERATURE:
+      break;
+
+    case SET_POLLING_RATE:
+      break;
+
+    default:
+#ifdef SERIAL_DEBUG
+      Serial.println(__PRETTY_FUNCTION__);
+      Serial.print(F("UNKNOWN COMMAND"));
+#endif
+      break;
+  }
+
+  //Need to call this so that the discovery messages are handled by base class
+  RemoteSensor::handleCommand(cmd, buffer, len);
+}
+
+void TempSensor::sampleAndSend()
 {
 
 }

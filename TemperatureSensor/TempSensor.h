@@ -8,8 +8,13 @@
 
 #include "nRF24L01.h"
 #include "RF24.h"
+#include "msgs.h"
 
 #include <SPI.h>
+
+//Custom applicaiton messages
+#define QUERY_TEMPERATURE   (USER_MSG_BASE + 0x00)
+#define SET_POLLING_RATE    (USER_MSG_BASE + 0x01)
 
 class TempSensor : public RemoteSensor
 {
@@ -19,6 +24,8 @@ class TempSensor : public RemoteSensor
 
     void addRadio(RF24* pRadio);
     void begin();
+
+    void background();
 
     void pair(uint16_t timeout);
 
@@ -35,12 +42,21 @@ class TempSensor : public RemoteSensor
     void save(uint16_t addr, const void* buffer, uint16_t len);
     void load(uint16_t addr, const void* buffer, uint16_t len);
 
+    void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
+
     virtual void seedRnd(uint16_t seed);
     virtual uint16_t rnd();
 
   private:
-    const uint64_t DISCOVERY_PIPE = 0x444953434F;
+    void sampleAndSend();
+
+  private:
+    const uint64_t DISCOVERY_PIPE = 0x444953434F; //DISCO
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
+
+    const uint32_t DEFAULT_SAMPLE_PERIOD = (5*1000*60); //Default sample every 5 minutes
+
+    uint32_t m_u32LastSampleTime, m_u32SamplePeriod;
 
     RF24* m_pRadio;
 };

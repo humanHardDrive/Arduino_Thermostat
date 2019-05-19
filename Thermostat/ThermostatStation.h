@@ -11,8 +11,14 @@
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
+#include "msgs.h"
 
 #define NUM_TIME_DIV    4
+
+//Custom applicaiton messages
+//Custom applicaiton messages
+#define QUERY_TEMPERATURE   (USER_MSG_BASE + 0x00)
+#define SET_POLLING_RATE    (USER_MSG_BASE + 0x01)
 
 class ThermoStation : public BaseStation
 {
