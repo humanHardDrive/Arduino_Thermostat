@@ -242,6 +242,17 @@ void ThermoStation::load(uint16_t addr, const void* buf, uint16_t len)
 
 }
 
+void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)
+{
+  switch(cmd)
+  {
+    case QUERY_TEMPERATURE:
+    break;
+  }
+  
+  BaseStation::handleCommand(cmd, src, buffer, len);
+}
+
 uint32_t ThermoStation::clockms()
 {
   return millis();
@@ -272,3 +283,4 @@ void ThermoStation::printArr(void* buf, uint8_t len)
   }
   Serial.println();
 }
+

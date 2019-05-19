@@ -16,7 +16,6 @@
 #define NUM_TIME_DIV    4
 
 //Custom applicaiton messages
-//Custom applicaiton messages
 #define QUERY_TEMPERATURE   (USER_MSG_BASE + 0x00)
 #define SET_POLLING_RATE    (USER_MSG_BASE + 0x01)
 
@@ -88,12 +87,17 @@ class ThermoStation : public BaseStation
     void save(uint16_t addr, const void* buf, uint16_t len);
     void load(uint16_t addr, const void* buf, uint16_t len);
 
+    void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
+
+  private:
     uint8_t dayofweek(DateTime date);
+
+    void handleTempQuery(const void* buffer, uint16_t len);
 
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;
-
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
+    const uint8_t DEFAULT_RETRY_PERIOD = 50;
 
     struct TEMP_RULE
     {
@@ -101,8 +105,12 @@ class ThermoStation : public BaseStation
       byte temp;
     };
 
-    byte m_HeatMode, m_FanMode, m_TargetTemp;
+    byte m_HeatMode, m_FanMode, m_TargetTemp, m_CurrentTemp;
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
+
+    uint32_t m_LastDeviceSentTo, m_LastMessageTime;
+    bool m_ExpectingResponse, m_RcvResponse;
+    uint8_t m_NumMissedMsgs, m_RetryPeriod;
 
     bool m_HeatOn, m_CoolOn;
 
