@@ -167,27 +167,30 @@ void loop()
   if (Serial.available())
   {
     char c = Serial.read();
-    switch(c)
+    switch (c)
     {
       case 'd':
       case 'D':
-      thermostat.startDiscovery(5000);
-      break;
+        thermostat.startDiscovery(5000);
+        break;
 
       case 's':
       case 'S':
-      thermostat.stopDiscovery();
-      break;
+        thermostat.stopDiscovery();
+        break;
 
       case 'x':
       case 'X':
-      radio.printDetails();
-      break;
+        radio.printDetails();
+        break;
 
       case '0':
-      thermostat.getDiscoveredDevice(0, &UID, NULL);
-      thermostat.pair(UID, 1000);
-      break;
+        thermostat.getDiscoveredDevice(0, &UID, NULL);
+        if (thermostat.pair(UID, 1000))
+          Serial.println(F("SUCCESS"));
+        else
+          Serial.println(F("FAILED"));
+        break;
     }
   }
 #endif

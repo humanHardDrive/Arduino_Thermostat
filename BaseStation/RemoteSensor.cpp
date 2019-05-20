@@ -149,5 +149,7 @@ void RemoteSensor::deviceInitHandler(const void* buffer, uint16_t len)
 		buildPacket((uint8_t)(REMOTE_INIT_MSG), &m_nMsgID, m_SavedData.UID, (uint32_t)0, 
 					NULL, 0, rspBuffer, &rspLen);
 		write(rspBuffer, rspLen);
+		
+		updateNetwork();
 	}
 }

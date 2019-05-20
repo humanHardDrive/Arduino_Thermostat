@@ -32,6 +32,8 @@ class RemoteSensor
 	virtual void seedRnd(uint16_t seed) = 0;
 	virtual uint16_t rnd() = 0;
 	
+	virtual void updateNetwork() = 0;
+	
 	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
 	
 	protected:
@@ -39,7 +41,7 @@ class RemoteSensor
 	{
 		uint8_t networkID[NETWORK_LEGNTH];
 		char name[REMOTE_NAME_LENGTH];
-		uint32_t UID;
+		uint32_t UID, baseUID;
 		uint16_t checksum;
 	};
 	

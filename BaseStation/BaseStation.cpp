@@ -7,6 +7,8 @@ BaseStation::BaseStation()
 {
 	m_bInDiscovery = false;
 	m_nMsgID = 0;
+	
+	m_SavedData.UID = 0;
 }
 
 BaseStation::~BaseStation()
@@ -50,6 +52,7 @@ bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 	uint8_t buffer[32];
 	uint16_t nMsgLen;
 	uint32_t nTimeStarted, nRetryTime;
+	bool bFound = false;
 	INIT_MSG msg;
 	
 	msg.UID = UID;
@@ -58,7 +61,7 @@ bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 	
 	nTimeStarted = clockms();
 	nRetryTime = 0;
-	while((clockms() - nTimeStarted) < timeout)
+	while((clockms() - nTimeStarted) < timeout && !bFound)
 	{
 		if((clockms() - nRetryTime) > 15)
 		{
@@ -71,16 +74,14 @@ bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 		else
 		{
 			nMsgLen = read(buffer, 32);
-			if(nMsgLen && buffer[MSG_TYPE] == REMOTE_INIT_MSG && 
-			   memcmp(buffer + MSG_SRC, &msg.UID, sizeof(msg.UID)) == 0)
-			{
-				nTimeStarted = (clockms() - timeout);
-				print("YAY");
-			}
+			if(nMsgLen && buffer[MSG_TYPE] == REMOTE_INIT_MSG && //Check the message type
+			   memcmp(buffer + MSG_SRC, &msg.UID, sizeof(msg.UID)) == 0 && //The source
+			   memcmp(buffer + MSG_DST, &m_SavedData.UID, sizeof(m_SavedData.UID)) == 0) //And the destination
+				bFound = true;
 		}
 	}
 	
-	return false;
+	return bFound;
 }
 
 void BaseStation::discovery()
@@ -138,7 +139,7 @@ void BaseStation::handleMessage(const void* buffer, uint16_t len)
 	uint32_t dst = *((uint32_t*)(buffer + MSG_DST));
 	uint32_t src = *((uint32_t*)(buffer + MSG_SRC));
 	
-	if(!dst)
+	if(dst == m_SavedData.UID)
 	{
 		uint8_t cmd = *((uint8_t*)(buffer + MSG_TYPE));
 		uint16_t size;

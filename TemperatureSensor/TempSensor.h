@@ -42,6 +42,8 @@ class TempSensor : public RemoteSensor
     void save(uint16_t addr, const void* buffer, uint16_t len);
     void load(uint16_t addr, const void* buffer, uint16_t len);
 
+    void updateNetwork();
+
     void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
 
     virtual void seedRnd(uint16_t seed);

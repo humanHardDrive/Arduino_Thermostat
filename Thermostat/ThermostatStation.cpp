@@ -127,6 +127,7 @@ void ThermoStation::getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name
   }
 }
 
+//This call is blocking until the timeout
 bool ThermoStation::pair(uint32_t UID, uint32_t timeout)
 {
 #ifdef SERIAL_DEBUG
@@ -140,6 +141,7 @@ bool ThermoStation::pair(uint32_t UID, uint32_t timeout)
   m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
   m_pRadio->stopListening();
 
+  //This call is blocking until the timeout
   bRetVal = BaseStation::pair(UID, timeout);
 
   m_pRadio->openWritingPipe(m_SavedData.networkID);

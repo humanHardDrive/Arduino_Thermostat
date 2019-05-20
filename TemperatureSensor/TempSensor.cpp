@@ -138,6 +138,19 @@ void TempSensor::load(uint16_t addr, const void* buffer, uint16_t len)
 
 }
 
+void TempSensor::updateNetwork()
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+  
+  m_pRadio->stopListening();
+  m_pRadio->openWritingPipe(m_SavedData.networkID);
+  m_pRadio->closeReadingPipe(1);
+  m_pRadio->openReadingPipe(1, m_SavedData.networkID);
+  m_pRadio->startListening();  
+}
+
 void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
 {
   switch (cmd)
