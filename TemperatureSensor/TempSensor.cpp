@@ -96,15 +96,15 @@ int TempSensor::write(const void* buffer, uint16_t len)
   Serial.println();
 #endif
 
-  return 0;
+  return len;
 }
 
 int TempSensor::available()
 {
   //Handle corrupt dynamic payloads
-  if(!m_pRadio->getDynamicPayloadSize())
+  if (!m_pRadio->getDynamicPayloadSize())
     return 0;
-  
+
   return m_pRadio->available();
 }
 
@@ -171,7 +171,7 @@ void TempSensor::sampleAndSend()
   uint8_t buf[16];
   uint16_t len;
   uint8_t curTemp = 0;
-
+  
   buildPacket((uint8_t)(QUERY_TEMPERATURE), &m_nMsgID, m_SavedData.UID, (uint8_t)0,
               (uint8_t*)&curTemp, (uint16_t)1, buf, &len);
   write(buf, len);
@@ -213,6 +213,7 @@ void TempSensor::print(int32_t num)
 
 void TempSensor::printArr(void* buf, uint8_t len)
 {
+
   for (uint8_t i = 0; i < len; i++)
   {
     byte b = ((byte*)buf)[i];

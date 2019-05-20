@@ -34,13 +34,13 @@ uint8_t BaseStation::getDiscoveryCount()
 
 void BaseStation::background()
 {
-	uint8_t rspBuffer[16];
+	uint8_t rspBuffer[32];
 	uint16_t rspLen;
 	
 	if(m_bInDiscovery)
 		discovery();
 	
-	rspLen = read(rspBuffer, 16);
+	rspLen = read(rspBuffer, 32);
 	if(rspLen)
 		handleMessage(rspBuffer, rspLen);
 }
