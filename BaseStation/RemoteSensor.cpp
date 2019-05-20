@@ -133,6 +133,8 @@ void RemoteSensor::discoveryAckHandler(const void* buffer, uint16_t len)
 
 void RemoteSensor::deviceInitHandler(const void* buffer, uint16_t len)
 {
+	uint8_t rspBuffer[16];
+	uint16_t rspLen;	
 	print(__PRETTY_FUNCTION__);
 	
 	INIT_MSG msg;
@@ -141,6 +143,11 @@ void RemoteSensor::deviceInitHandler(const void* buffer, uint16_t len)
 	if(msg.UID == m_SavedData.UID)
 	{
 		memcpy(m_SavedData.networkID, msg.networkID, NETWORK_LEGNTH);
+		print((char*)m_SavedData.networkID);
 		m_bInDiscovery = false;
+		
+		buildPacket((uint8_t)(REMOTE_INIT_MSG), &m_nMsgID, m_SavedData.UID, (uint32_t)0, 
+					NULL, 0, rspBuffer, &rspLen);
+		write(rspBuffer, rspLen);
 	}
 }

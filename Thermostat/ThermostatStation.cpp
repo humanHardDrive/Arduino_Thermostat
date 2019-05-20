@@ -7,6 +7,8 @@ ThermoStation::ThermoStation() :
   m_CoolOn(false),
   m_pRadio(NULL)
 {
+  //Temporary
+  strcpy(m_SavedData.networkID, "ABCDE");
 }
 
 ThermoStation::~ThermoStation()
@@ -92,9 +94,9 @@ void ThermoStation::stopDiscovery()
 #endif
 
   m_pRadio->stopListening();
-  m_pRadio->openWritingPipe(0xaaaaaaaaaa);
+  m_pRadio->openWritingPipe(m_SavedData.networkID);
   m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, 0xaaaaaaaaab);
+  m_pRadio->openReadingPipe(1, m_SavedData.networkID);
   m_pRadio->startListening();
 
 #ifdef SERIAL_DEBUG
@@ -140,9 +142,9 @@ bool ThermoStation::pair(uint32_t UID, uint32_t timeout)
 
   bRetVal = BaseStation::pair(UID, timeout);
 
-  m_pRadio->openWritingPipe(0xaaaaaaaaaa);
+  m_pRadio->openWritingPipe(m_SavedData.networkID);
   m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, 0xaaaaaaaaab);
+  m_pRadio->openReadingPipe(1, m_SavedData.networkID);
   m_pRadio->startListening();
 
   return bRetVal;

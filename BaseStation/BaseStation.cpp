@@ -47,20 +47,38 @@ void BaseStation::background()
 
 bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 {
-	uint8_t buffer[16];
+	uint8_t buffer[32];
 	uint16_t nMsgLen;
-	uint32_t nTimeStarted;
+	uint32_t nTimeStarted, nRetryTime;
 	INIT_MSG msg;
 	
 	msg.UID = UID;
+	memset(msg.networkID, 0, NETWORK_LEGNTH);
 	memcpy(msg.networkID, m_SavedData.networkID, NETWORK_LEGNTH);
 	
-	buildPacket((uint8_t)(REMOTE_INIT_MSG), &m_nMsgID, (uint32_t)0, UID, 
-				(uint8_t*)&msg, sizeof(INIT_MSG), buffer, &nMsgLen);
-	write(buffer, nMsgLen);
-	
 	nTimeStarted = clockms();
-	while((clockms() - nTimeStarted) < timeout);
+	nRetryTime = 0;
+	while((clockms() - nTimeStarted) < timeout)
+	{
+		if((clockms() - nRetryTime) > 15)
+		{
+			buildPacket((uint8_t)(REMOTE_INIT_MSG), &m_nMsgID, (uint32_t)0, UID, 
+						(uint8_t*)&msg, sizeof(INIT_MSG), buffer, &nMsgLen);
+			write(buffer, nMsgLen);
+			
+			nRetryTime = clockms();
+		}
+		else
+		{
+			nMsgLen = read(buffer, 32);
+			if(nMsgLen && buffer[MSG_TYPE] == REMOTE_INIT_MSG && 
+			   memcmp(buffer + MSG_SRC, &msg.UID, sizeof(msg.UID)) == 0)
+			{
+				nTimeStarted = (clockms() - timeout);
+				print("YAY");
+			}
+		}
+	}
 	
 	return false;
 }
