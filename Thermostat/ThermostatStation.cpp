@@ -130,14 +130,14 @@ bool ThermoStation::pair(uint32_t UID, uint32_t timeout)
 #ifdef SERIAL_DEBUG
   Serial.println(__PRETTY_FUNCTION__);
 #endif
-  
+
   bool bRetVal = false;
 
   m_pRadio->openWritingPipe(DISCOVERY_PIPE);
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
   m_pRadio->stopListening();
-  
+
   bRetVal = BaseStation::pair(UID, timeout);
 
   m_pRadio->openWritingPipe(0xaaaaaaaaaa);
@@ -197,7 +197,7 @@ int ThermoStation::write(const void* buf, uint16_t len)
     m_pRadio->write(buf + i, size);
     i += size;
   }
-
+  
   m_pRadio->startListening();
 
 #ifdef SERIAL_DEBUG
@@ -213,26 +213,31 @@ int ThermoStation::write(const void* buf, uint16_t len)
 int ThermoStation::available()
 {
   //Handle corrupt dynamic payloads
-  if(!m_pRadio->getDynamicPayloadSize())
+  if (!m_pRadio->getDynamicPayloadSize())
     return 0;
-  
+
   return m_pRadio->available();
 }
 
 int ThermoStation::read(const void* buf, uint16_t len)
 {
-  if (ThermoStation::available())
+  if (m_pRadio->available())
   {
-    uint16_t size = m_pRadio->getDynamicPayloadSize();
-    m_pRadio->read(buf, size);
+    uint8_t size = m_pRadio->getDynamicPayloadSize();
+    if(size > len)
+      size = len;
+    
+    if (size)
+    {
+      m_pRadio->read(buf, size);
 
 #ifdef SERIAL_DEBUG
-    Serial.println(__PRETTY_FUNCTION__);
-    Serial.print("RECV: ");
-    printArr(buf, (uint8_t)size);
-    Serial.println();
+      Serial.println(__PRETTY_FUNCTION__);
+      Serial.print("RECV: ");
+      printArr(buf, (uint8_t)size);
+      Serial.println();
 #endif
-
+    }
     return size;
   }
 
@@ -250,12 +255,12 @@ void ThermoStation::load(uint16_t addr, const void* buf, uint16_t len)
 
 void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)
 {
-  switch(cmd)
+  switch (cmd)
   {
     case QUERY_TEMPERATURE:
-    break;
+      break;
   }
-  
+
   BaseStation::handleCommand(cmd, src, buffer, len);
 }
 

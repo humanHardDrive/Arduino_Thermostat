@@ -41,12 +41,6 @@ class BaseStation
 	void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 	
 	protected:
-	struct DISC_DEVICE
-	{
-		uint32_t UID;
-		char name[REMOTE_NAME_LENGTH];
-	};
-	
 	struct SAVED_DATA
 	{
 		uint8_t networkID[NETWORK_LEGNTH];
@@ -55,15 +49,22 @@ class BaseStation
 		uint16_t checksum;
 	};
 	
+	SAVED_DATA m_SavedData;
+	
+	struct DISC_DEVICE
+	{
+		uint32_t UID;
+		char name[REMOTE_NAME_LENGTH];
+	};
+	
+	DISC_DEVICE m_DiscoveredDevice[MAX_DISCOVERY];
+	
 	//Vars for discovery
 	bool m_bInDiscovery;
 	uint32_t m_nDiscoveryTimeout, m_nDiscoveryStartTime, m_nLastDiscoveryPollTime;
 	uint8_t m_nRemoteDiscovered;
 	
 	uint16_t m_nMsgID;
-	
-	DISC_DEVICE m_DiscoveredDevice[MAX_DISCOVERY];
-	SAVED_DATA m_SavedData;
 	
 	private:
 	void handleMessage(const void* buffer, uint16_t len);

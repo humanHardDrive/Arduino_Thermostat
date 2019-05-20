@@ -34,17 +34,15 @@ uint8_t BaseStation::getDiscoveryCount()
 
 void BaseStation::background()
 {
+	uint8_t rspBuffer[16];
+	uint16_t rspLen;
+	
 	if(m_bInDiscovery)
 		discovery();
 	
-	if(available())
-	{
-		uint8_t rspBuffer[16];
-		uint16_t rspLen;
-		
-		rspLen = read(rspBuffer, 16);
+	rspLen = read(rspBuffer, 16);
+	if(rspLen)
 		handleMessage(rspBuffer, rspLen);
-	}
 }
 
 bool BaseStation::pair(uint32_t UID, uint32_t timeout)
@@ -126,7 +124,7 @@ void BaseStation::handleMessage(const void* buffer, uint16_t len)
 	{
 		uint8_t cmd = *((uint8_t*)(buffer + MSG_TYPE));
 		uint16_t size;
-		memcpy(buffer + MSG_LEN, &size, 2);
+		memcpy((uint8_t*)buffer + MSG_LEN, &size, 2);
 		
 		handleCommand(cmd, src, buffer + MSG_PAYLOAD, size);
 	}

@@ -5,8 +5,6 @@
 
 #define SERIAL_DEBUG
 
-#define MAX_DISCOVERY   8
-
 #include "BaseStation.h"
 #include "MB85RS.h"
 #include <DS3231.h>
