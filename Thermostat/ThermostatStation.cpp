@@ -201,7 +201,7 @@ int ThermoStation::write(const void* buf, uint16_t len)
     m_pRadio->write(buf + i, size);
     i += size;
   }
-  
+
   m_pRadio->startListening();
 
 #ifdef SERIAL_DEBUG
@@ -228,9 +228,9 @@ int ThermoStation::read(const void* buf, uint16_t len)
   if (m_pRadio->available())
   {
     uint8_t size = m_pRadio->getDynamicPayloadSize();
-    if(size > len)
+    if (size > len)
       size = len;
-    
+
     if (size)
     {
       m_pRadio->read(buf, size);
@@ -262,10 +262,26 @@ void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer,
   switch (cmd)
   {
     case QUERY_TEMPERATURE:
+      handleTempQuery(src, buffer, len);
       break;
   }
 
   BaseStation::handleCommand(cmd, src, buffer, len);
+}
+
+void ThermoStation::handleTempQuery(uint32_t src, const void* buffer, uint16_t len)
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+
+  uint8_t curTemp = *((uint8_t*)buffer);
+
+#ifdef SERIAL_DEBUG
+  Serial.print(F("TEMP: "));
+  Serial.print((int)curTemp);
+  Serial.println();
+#endif
 }
 
 uint32_t ThermoStation::clockms()

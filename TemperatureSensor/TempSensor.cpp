@@ -183,7 +183,7 @@ void TempSensor::sampleAndSend()
 
   uint8_t buf[16];
   uint16_t len;
-  uint8_t curTemp = 0;
+  uint8_t curTemp = 72;
   
   buildPacket((uint8_t)(QUERY_TEMPERATURE), &m_nMsgID, m_SavedData.UID, (uint8_t)0,
               (uint8_t*)&curTemp, (uint16_t)1, buf, &len);

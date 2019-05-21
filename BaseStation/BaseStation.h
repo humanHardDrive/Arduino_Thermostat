@@ -38,7 +38,7 @@ class BaseStation
 	
 	void discovery();
 	
-	void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
+	virtual void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 	
 	protected:
 	struct SAVED_DATA

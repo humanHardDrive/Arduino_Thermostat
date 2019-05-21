@@ -34,7 +34,7 @@ class RemoteSensor
 	
 	virtual void updateNetwork() = 0;
 	
-	void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
+	virtual void handleCommand(uint8_t cmd, const void* buffer, uint16_t len);
 	
 	protected:
 	struct SAVED_DATA

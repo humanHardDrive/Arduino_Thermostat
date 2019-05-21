@@ -92,7 +92,7 @@ class ThermoStation : public BaseStation
   private:
     uint8_t dayofweek(DateTime date);
 
-    void handleTempQuery(const void* buffer, uint16_t len);
+    void handleTempQuery(uint32_t src, const void* buffer, uint16_t len);
 
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;
