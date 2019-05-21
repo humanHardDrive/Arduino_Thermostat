@@ -191,6 +191,10 @@ void loop()
         else
           Serial.println(F("FAILED"));
         break;
+
+      case 'q':
+      case 'Q':
+        break;
     }
   }
 #endif

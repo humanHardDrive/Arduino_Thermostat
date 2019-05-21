@@ -5,9 +5,8 @@
 
 #include "msgs.h"
 
-#ifndef MAX_DISCOVERY
 #define MAX_DISCOVERY   	16
-#endif
+#define MAX_PAIRED_COUNT	8
 
 class BaseStation
 {
@@ -22,6 +21,7 @@ class BaseStation
 	void background();
 	
 	bool pair(uint32_t UID, uint32_t timeout);
+	uint8_t getPairedCount();
 	
 	protected:
 	virtual uint32_t clockms() = 0;
@@ -41,21 +41,25 @@ class BaseStation
 	virtual void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 	
 	protected:
-	struct SAVED_DATA
-	{
-		uint8_t networkID[NETWORK_LEGNTH];
-		char name[REMOTE_NAME_LENGTH];
-		uint32_t UID;
-		uint16_t checksum;
-	};
-	
-	SAVED_DATA m_SavedData;
-	
 	struct DISC_DEVICE
 	{
 		uint32_t UID;
 		char name[REMOTE_NAME_LENGTH];
 	};
+	
+	struct SAVED_DATA
+	{
+		uint8_t networkID[NETWORK_LEGNTH];
+		char name[REMOTE_NAME_LENGTH];
+		uint32_t UID;
+		
+		DISC_DEVICE pairedDevice[MAX_PAIRED_COUNT];
+		uint8_t nNumPairedDevices;
+		
+		uint16_t checksum;
+	};
+	
+	SAVED_DATA m_SavedData;
 	
 	DISC_DEVICE m_DiscoveredDevice[MAX_DISCOVERY];
 	
@@ -73,6 +77,7 @@ class BaseStation
 	void discoveryAckHandler(uint32_t src, const void* buffer, uint16_t len);
 	
 	uint8_t addDiscoveredDevice(uint32_t UID, char* name);
+	void addPairedDevice(uint32_t UID, char* name);
 };
 
 #endif

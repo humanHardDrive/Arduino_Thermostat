@@ -162,13 +162,6 @@ void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
     case SET_POLLING_RATE:
       handleSetPollingRateMsg(buffer, len);
       break;
-
-    default:
-#ifdef SERIAL_DEBUG
-      Serial.println(__PRETTY_FUNCTION__);
-      Serial.print(F("UNKNOWN COMMAND"));
-#endif
-      break;
   }
 
   //Need to call this so that the discovery messages are handled by base class

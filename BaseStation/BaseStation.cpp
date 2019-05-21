@@ -77,11 +77,18 @@ bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 			if(nMsgLen && buffer[MSG_TYPE] == REMOTE_INIT_MSG && //Check the message type
 			   memcmp(buffer + MSG_SRC, &msg.UID, sizeof(msg.UID)) == 0 && //The source
 			   memcmp(buffer + MSG_DST, &m_SavedData.UID, sizeof(m_SavedData.UID)) == 0) //And the destination
+			{				
 				bFound = true;
+			}
 		}
 	}
 	
 	return bFound;
+}
+
+uint8_t BaseStation::getPairCount()
+{
+	return m_SavedData.nNumPairedDevices;
 }
 
 void BaseStation::discovery()
@@ -187,4 +194,33 @@ uint8_t BaseStation::addDiscoveredDevice(uint32_t UID, char* name)
 	print("ADDED DEVICE");
 	
 	return 0;
+}
+
+void BaseStation::addPairedDevice(uint32_t UID, char* name)
+{
+	uint8_t emptyIndex = MAX_PAIRED_COUNT;
+	
+	print(__PRETTY_FUNCTION__);
+	
+	for(uint8_t i = 0; i < MAX_PAIRED_COUNT && emptyIndex == MAX_PAIRED_COUNT; i++)
+	{
+		if(m_SavedData.pairedDevice[i].UID == UID)
+		{
+			print("ALREADY PAIRED");
+			return; //Device already paired
+		}
+		
+		if(!m_SavedData.pairedDevice[i].UID && emptyIndex == MAX_PAIRED_COUNT)
+			emptyIndex = i;
+	}
+	
+	if(emptyIndex == MAX_PAIRED_COUNT)
+	{
+		print("NO ROOM");
+		return; //No room left
+	}
+	
+	m_SavedData.pairedDevice[emptyIndex].UID = UID;
+	memcpy(m_SavedData.pairedDevice[emptyIndex].name, name, REMOTE_NAME_LENGTH);
+	m_SavedData.nNumPairedDevices++;
 }
