@@ -20,7 +20,9 @@ class BaseStation
 	
 	void background();
 	
-	bool pair(uint32_t UID, uint32_t timeout);
+	bool pair(uint32_t UID, char* sName, uint32_t timeout);
+	bool unpair(uint32_t UID);
+	bool isPaired(uint32_t UID);
 	uint8_t getPairedCount();
 	
 	protected:
@@ -77,7 +79,7 @@ class BaseStation
 	void discoveryAckHandler(uint32_t src, const void* buffer, uint16_t len);
 	
 	uint8_t addDiscoveredDevice(uint32_t UID, char* name);
-	void addPairedDevice(uint32_t UID, char* name);
+	void addPairedDevice(uint32_t UID, char* sName);
 };
 
 #endif

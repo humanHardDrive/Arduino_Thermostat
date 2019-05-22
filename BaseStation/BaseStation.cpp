@@ -18,7 +18,7 @@ BaseStation::~BaseStation()
 void BaseStation::startDiscovery(uint32_t timeout)
 {
 	print(__PRETTY_FUNCTION__);
-	
+
 	m_nDiscoveryTimeout = timeout;
 	m_nDiscoveryStartTime = clockms();
 	m_nRemoteDiscovered = 0;
@@ -47,7 +47,7 @@ void BaseStation::background()
 		handleMessage(rspBuffer, rspLen);
 }
 
-bool BaseStation::pair(uint32_t UID, uint32_t timeout)
+bool BaseStation::pair(uint32_t UID, char* sName, uint32_t timeout)
 {
 	uint8_t buffer[32];
 	uint16_t nMsgLen;
@@ -79,6 +79,7 @@ bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 			   memcmp(buffer + MSG_DST, &m_SavedData.UID, sizeof(m_SavedData.UID)) == 0) //And the destination
 			{				
 				bFound = true;
+				addPairedDevice(UID, sName);
 			}
 		}
 	}
@@ -86,7 +87,33 @@ bool BaseStation::pair(uint32_t UID, uint32_t timeout)
 	return bFound;
 }
 
-uint8_t BaseStation::getPairCount()
+bool BaseStation::unpair(uint32_t UID)
+{
+	for(uint8_t i = 0; i < MAX_PAIRED_COUNT; i++)
+	{
+		if(m_SavedData.pairedDevice[i].UID == UID)
+		{
+			m_SavedData.pairedDevice[i].UID = 0;
+			memset(m_SavedData.pairedDevice[i].name, 0, REMOTE_NAME_LENGTH);
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+bool BaseStation::isPaired(uint32_t UID)
+{
+	for(uint8_t i = 0; i < MAX_PAIRED_COUNT; i++)
+	{
+		if(m_SavedData.pairedDevice[i].UID == UID)
+			return true;
+	}
+	
+	return false;
+}
+
+uint8_t BaseStation::getPairedCount()
 {
 	return m_SavedData.nNumPairedDevices;
 }
@@ -126,7 +153,7 @@ void BaseStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, u
 		}		
 	}
 	else
-	{
+	{		
 		switch(cmd)
 		{
 			case REMOTE_INIT_MSG:
@@ -196,7 +223,7 @@ uint8_t BaseStation::addDiscoveredDevice(uint32_t UID, char* name)
 	return 0;
 }
 
-void BaseStation::addPairedDevice(uint32_t UID, char* name)
+void BaseStation::addPairedDevice(uint32_t UID, char* sName)
 {
 	uint8_t emptyIndex = MAX_PAIRED_COUNT;
 	
@@ -221,6 +248,6 @@ void BaseStation::addPairedDevice(uint32_t UID, char* name)
 	}
 	
 	m_SavedData.pairedDevice[emptyIndex].UID = UID;
-	memcpy(m_SavedData.pairedDevice[emptyIndex].name, name, REMOTE_NAME_LENGTH);
+	memcpy(m_SavedData.pairedDevice[emptyIndex].name, sName, REMOTE_NAME_LENGTH);
 	m_SavedData.nNumPairedDevices++;
 }

@@ -41,7 +41,7 @@ class ThermoStation : public BaseStation
 
     void background(DateTime now);
 
-    bool pair(uint32_t UID, uint32_t timeout);
+    bool pair(uint32_t UID, char* sName, uint32_t timeout);
 
     bool isFanOn();
     bool isHeatOn();

@@ -5,10 +5,6 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 
-#ifdef SERIAL_DEBUG
-#include "printf.h"
-#endif
-
 #include <Wire.h>
 #include <SPI.h>
 
@@ -58,7 +54,6 @@ void setup()
 {
 #ifdef SERIAL_DEBUG
   Serial.begin(115200);
-  printf_begin();
   Serial.println(APP_NAME);
   Serial.println(VERSION);
 #endif
@@ -84,12 +79,6 @@ void setup()
   //Start the thermostat object
   thermostat.addRadio(&radio);
   thermostat.begin();
-
-#ifdef SERIAL_DEBUG
-  radio.printDetails();
-
-  Serial.println();
-#endif
 }
 
 void HandleButtonPress()
@@ -163,6 +152,7 @@ void loop()
 
 #ifdef SERIAL_DEBUG
   uint32_t UID;
+  char sName[REMOTE_NAME_LENGTH];
 
   if (Serial.available())
   {
@@ -179,14 +169,9 @@ void loop()
         thermostat.stopDiscovery();
         break;
 
-      case 'x':
-      case 'X':
-        radio.printDetails();
-        break;
-
       case '0':
-        thermostat.getDiscoveredDevice(0, &UID, NULL);
-        if (thermostat.pair(UID, 1000))
+        thermostat.getDiscoveredDevice(0, &UID, sName);
+        if (thermostat.pair(UID, sName, 1000))
           Serial.println(F("SUCCESS"));
         else
           Serial.println(F("FAILED"));
