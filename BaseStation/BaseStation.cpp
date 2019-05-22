@@ -176,10 +176,14 @@ void BaseStation::handleMessage(const void* buffer, uint16_t len)
 	if(dst == m_SavedData.UID)
 	{
 		uint8_t cmd = *((uint8_t*)(buffer + MSG_TYPE));
-		uint16_t size;
-		memcpy((uint8_t*)buffer + MSG_LEN, &size, 2);
 		
-		handleCommand(cmd, src, buffer + MSG_PAYLOAD, size);
+		if(cmd == REMOTE_DISC_MSG || cmd == REMOTE_DISC_ACK || isPaired(src))
+		{
+			uint16_t size;
+			memcpy((uint8_t*)buffer + MSG_LEN, &size, 2);
+			
+			handleCommand(cmd, src, buffer + MSG_PAYLOAD, size);
+		}
 	}
 }
 
