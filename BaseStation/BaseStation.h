@@ -40,6 +40,8 @@ class BaseStation
 	
 	void discovery();
 	
+	void renameDevice(uint32_t UID, char* sNewName);
+	
 	virtual void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 	
 	protected:

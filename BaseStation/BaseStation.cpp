@@ -138,6 +138,19 @@ void BaseStation::discovery()
 	}
 }
 
+void BaseStation::renameDevice(uint32_t UID, char* sNewName)
+{
+	for(uint8_t i = 0; i < MAX_PAIRED_COUNT; i++)
+	{
+		if(m_SavedData.pairedDevice[i].UID == UID)
+		{
+			memset(m_SavedData.pairedDevice[i].name, 0, REMOTE_NAME_LENGTH);
+			strcpy(m_SavedData.pairedDevice[i].name, sNewName);
+			return;
+		}
+	}
+}
+
 void BaseStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)
 {
 	if(m_bInDiscovery)
