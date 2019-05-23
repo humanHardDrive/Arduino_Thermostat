@@ -61,6 +61,8 @@ void setup()
   SPI.begin();
   Wire.begin();
 
+  lcd.begin(20, 4);
+
   //Init the IO expander
   IOExpander.reset();
   IOExpander.writeReg(MCP23s17::IODIRA, 0xFF);
@@ -100,6 +102,7 @@ void HandleButtonPress()
 }
 
 bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false;
+uint32_t nLastTempUpdate = 0;
 
 void loop()
 {

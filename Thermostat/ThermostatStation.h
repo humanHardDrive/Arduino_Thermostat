@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define SERIAL_DEBUG
+//#define SERIAL_DEBUG
 
 #include "BaseStation.h"
 #include "MB85RS.h"
@@ -39,7 +39,7 @@ class ThermoStation : public BaseStation
 
     void getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name);
 
-    void background(DateTime now);
+    void background(const DateTime& now);
 
     bool pair(uint32_t UID, char* sName, uint32_t timeout);
 
@@ -90,7 +90,7 @@ class ThermoStation : public BaseStation
     void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 
   private:
-    uint8_t dayofweek(DateTime date);
+    uint8_t dayofweek(const DateTime& date);
 
     void handleTempQuery(uint32_t src, const void* buffer, uint16_t len);
 

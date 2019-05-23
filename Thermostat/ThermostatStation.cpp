@@ -152,7 +152,7 @@ bool ThermoStation::pair(uint32_t UID, char* sName, uint32_t timeout)
   return bRetVal;
 }
 
-void ThermoStation::background(DateTime t)
+void ThermoStation::background(const DateTime& t)
 {
   BaseStation::background();
 
@@ -171,7 +171,7 @@ void ThermoStation::background(DateTime t)
   }
 }
 
-uint8_t ThermoStation::dayofweek(DateTime date)
+uint8_t ThermoStation::dayofweek(const DateTime& date)
 {
   static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
   uint16_t y, m, d;
