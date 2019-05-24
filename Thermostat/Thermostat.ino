@@ -141,6 +141,7 @@ void setup()
   lcd.print(F("Start thermostat"));
   thermostat.addRadio(&radio);
   thermostat.begin();
+  thermostat.background(rtc.now()); //Call one iteration of the backround loop to get the target temp
   lcd.setCursor(0,1);
   lcd.print(thermostat.getPairedCount());
   lcd.print(F(" paired"));

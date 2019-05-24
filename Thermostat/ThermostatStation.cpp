@@ -7,8 +7,18 @@ ThermoStation::ThermoStation() :
   m_CoolOn(false),
   m_pRadio(NULL)
 {
-  //Temporary
+  //Temporary before recovering from storage
   strcpy(m_SavedData.networkID, "ABCDE");
+
+  for (uint8_t i = 0; i < ALL_HEAT_MODES; i++)
+  {
+    for (uint8_t j = 0; j < NUM_TIME_DIV; j++)
+    {
+      m_TempRules[0][i][j].h = m_TempRules[1][i][j].h = (j + 1) * (23 / NUM_TIME_DIV);
+      m_TempRules[0][i][j].m = m_TempRules[1][i][j].m = 0;
+      m_TempRules[0][i][j].temp = m_TempRules[1][i][j].temp = 72;
+    }
+  }
 }
 
 ThermoStation::~ThermoStation()
