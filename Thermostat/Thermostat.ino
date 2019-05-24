@@ -4,6 +4,7 @@
 #include "ThermostatStation.h"
 #include "nRF24L01.h"
 #include "RF24.h"
+#include "Menu.h"
 
 #define NO_RADIO
 //#define NO_IO_EXP
@@ -54,6 +55,9 @@ ThermoStation   thermostat;
 
 uint32_t lastIOExpUpdateTime = 0;
 byte tempButtonState = 0xFF, oldButtonState = 0xFF, currentButtonState = 0xFF;
+
+bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false, bForceUpdate = false;
+uint32_t nLastTempUpdate = 0;
 
 void setup()
 {
@@ -137,10 +141,15 @@ void setup()
   lcd.print(F("Start thermostat"));
   thermostat.addRadio(&radio);
   thermostat.begin();
-  delay(1000);
+  lcd.setCursor(0,1);
+  lcd.print(thermostat.getPairedCount());
+  lcd.print(F(" paired"));
+  delay(2000);
 
   lcd.clear();
   lcd.setCursor(0, 0);
+  lcd.print(SET_TEMP_STRING);
+  lcd.print(thermostat.getTargetTemp());
 }
 
 void HandleButtonPress()
@@ -160,9 +169,6 @@ void HandleButtonPress()
 
   oldButtonState = currentButtonState;
 }
-
-bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false;
-uint32_t nLastTempUpdate = 0;
 
 void loop()
 {

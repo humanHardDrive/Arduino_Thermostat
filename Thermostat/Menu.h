@@ -1,21 +1,20 @@
 #ifndef __MENU_H__
 #define __MENU_H__
 
-#include <avr/pgmspace.h>
+#include "Arduino.h"
 
-const char SET_TEMP_STRING[] PROGMEM = "Set: ";
-const char HEAT_STRING[] PROGMEM = "Heat";
-const char COOL_STRING[] PROGMEM = "Cool";
-const char ON_STRING[] PROGMEM = "On";
-const char OFF_STRING[] PROGMEM = "Off";
-const char AUTO_STRING[] PROGMEM = "Auto";
-const char MENU_STRING[] PROGMEM = "Menu";
-const char FAN_STRING[] PROGMEM = "Fan: ";
+#define SET_TEMP_STRING         F("Set: ")
+#define MODE_STRING             F("Mode: ")
+#define HEAT_STRING             F("Heat")
+#define COOL_STRING             F("Cool")
+#define ON_STRING               F("On")
+#define OFF_STRING              F("Off")
+#define AUTO_STRING             F("Auto")
+#define MENU_STRING             F("Menu")
+#define FAN_STRING              F("Fan: ")
+#define EXIT_STRING             F("Exit")
 
-const char DISCOVER_DEVICES_STRING[] PROGMEM = "Discover Devices";
-
-const char* const string_table[] PROGMEM = 
-{
-};
+#define DISCOVER_DEVICES_STRING F("Discover Devices")
+#define SET_SCHEDULE_STRING     F("Set Schedule")
 
 #endif
