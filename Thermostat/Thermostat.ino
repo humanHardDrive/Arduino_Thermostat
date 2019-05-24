@@ -5,10 +5,15 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 
+#define NO_RADIO
+//#define NO_IO_EXP
+#define NO_RTC
+#define NO_STORAGE
+
 #include <Wire.h>
 #include <SPI.h>
 
-#define APP_NAME    F("ARDUINO THERMOSTAT")
+#define APP_NAME    F("SMART THERMOSTAT")
 #define VERSION     F("v0.0")
 
 //Arduino Pins
@@ -61,26 +66,81 @@ void setup()
   SPI.begin();
   Wire.begin();
 
-  lcd.begin(20, 4);
+  lcd.begin(16, 2);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.println(APP_NAME);
+  lcd.setCursor(0, 1);
+  lcd.print(VERSION);
+  delay(1000);
 
+#ifndef NO_IO_EXP
   //Init the IO expander
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(F("Init IO expander"));
   IOExpander.reset();
   IOExpander.writeReg(MCP23s17::IODIRA, 0xFF);
   IOExpander.writeReg(MCP23s17::GPPUA, 0xFF);
   IOExpander.writeReg(MCP23s17::IODIRB, 0x00);
+  delay(500);
+  lcd.setCursor(0, 1);
+  lcd.print(F("SUCCESS"));
+  delay(1000);
+#endif
 
+#ifndef NO_RADIO
   //Check the radio
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(F("Check radio"));
+  lcd.setCursor(0, 1);
   if (!radio.isChipConnected())
   {
+    lcd.print(F("FAILED"));
 #ifdef SERIAL_DEBUG
     Serial.println(F("Failed to connect to radio..."));
 #endif
     while (1);
   }
+  delay(500);
+  lcd.print(F("SUCCESS"));
+  delay(1000);
+#endif
+
+#ifndef NO_RTC
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(F("Check RTC"));
+  DateTime now;
+  now = rtc.now();
+  delay(2000); //Wait at least 1 second
+  lcd.setCursor(0, 1);
+  if (now.unixtime() != rtc.now().unixtime())
+  {
+    lcd.print(F("SUCCESS"));
+    delay(1000);
+  }
+  else
+  {
+    lcd.print(F("FAILED"));
+#ifdef SERIAL_DEBUG
+    Serial.println(F("Failed to see RTC time change..."));
+#endif
+    while (1);
+  }
+#endif
 
   //Start the thermostat object
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(F("Start thermostat"));
   thermostat.addRadio(&radio);
   thermostat.begin();
+  delay(1000);
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
 }
 
 void HandleButtonPress()
@@ -147,6 +207,11 @@ void loop()
 #ifdef SERIAL_DEBUG
     Serial.println(F("FAN OFF"));
 #endif
+  }
+
+  if ((millis() - nLastTempUpdate) > 1000)
+  {
+    nLastTempUpdate = millis();
   }
 
   bOldHeatState = thermostat.isHeatOn();
