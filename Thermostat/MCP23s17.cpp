@@ -47,7 +47,7 @@ void MCP23s17::writeReg(byte reg, byte val)
     digitalWrite(m_CSPin, LOW);
 
     SPI.transfer(0x40 | (m_devAddress << 1) | 0x00);
-    //SPI.transfer(REG_ADDRESS[m_Bank][reg]); //Fix later
+    SPI.transfer(reg); //Fix later
     SPI.transfer(val);
     
     digitalWrite(m_CSPin, HIGH);
@@ -63,7 +63,7 @@ byte MCP23s17::readReg(byte reg)
     digitalWrite(m_CSPin, LOW);
 
     SPI.transfer(0x40 | (m_devAddress << 1) | 0x01);
-    //SPI.transfer(REG_ADDRESS[m_Bank][reg]); //Fix later
+    SPI.transfer(reg); //Fix later
     retVal = SPI.transfer(0x00);
     
     digitalWrite(m_CSPin, HIGH);

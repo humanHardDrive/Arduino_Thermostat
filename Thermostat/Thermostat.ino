@@ -89,7 +89,17 @@ void setup()
   IOExpander.writeReg(MCP23s17::IODIRB, 0x00);
   delay(500);
   lcd.setCursor(0, 1);
-  lcd.print(F("SUCCESS"));
+  if (IOExpander.readReg(MCP23s17::IODIRB) == 0x00 &&
+      IOExpander.readReg(MCP23s17::GPPUA) == 0xFF)
+    lcd.print(F("SUCCESS"));
+  else
+  {
+    lcd.print(F("FAILED"));
+#ifdef SERIAL_DEBUG
+    Serial.println(F("Failed to initialize IO expander..."));
+#endif
+    while (1);
+  }
   delay(1000);
 #endif
 
@@ -142,7 +152,7 @@ void setup()
   thermostat.addRadio(&radio);
   thermostat.begin();
   thermostat.background(rtc.now()); //Call one iteration of the backround loop to get the target temp
-  lcd.setCursor(0,1);
+  lcd.setCursor(0, 1);
   lcd.print(thermostat.getPairedCount());
   lcd.print(F(" paired"));
   delay(2000);
@@ -151,6 +161,7 @@ void setup()
   lcd.setCursor(0, 0);
   lcd.print(SET_TEMP_STRING);
   lcd.print(thermostat.getTargetTemp());
+  lcd.setCursor(0, 1);
 }
 
 void HandleButtonPress()
