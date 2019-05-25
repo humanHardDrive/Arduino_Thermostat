@@ -8,7 +8,7 @@
 
 #define NO_RADIO
 //#define NO_IO_EXP
-#define NO_RTC
+//#define NO_RTC
 #define NO_STORAGE
 
 #include <Wire.h>
@@ -46,6 +46,13 @@ enum BUTTON_INDEX
   ALL_BTNS
 };
 
+enum AC_CONTROL_INDEX
+{
+  HEAT_ON,
+  COOL_ON,
+  FAN_ON
+};
+
 //Variables
 RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
@@ -57,9 +64,10 @@ ThermoStation   thermostat;
 uint32_t lastIOExpUpdateTime = 0;
 byte buttonFilter[IO_DEBOUNCE_TIME], currentBtnState = 0xFF, oldBtnState = 0xFF;
 char btnEdge[ALL_BTNS];
+byte outputMirror = 0x00;
 
 bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false, bForceUpdate = false;
-uint32_t nLastTempUpdate = 0;
+uint32_t nLastTempUpdate = 0, nLastTimeUpdate = 0;
 
 void InitLCD()
 {
@@ -77,6 +85,7 @@ void InitIOExpander()
   IOExpander.writeReg(MCP23s17::IODIRA, 0xFF);
   IOExpander.writeReg(MCP23s17::GPPUA, 0xFF);
   IOExpander.writeReg(MCP23s17::IODIRB, 0x00);
+  IOExpander.writeReg(MCP23s17::OLATB, outputMirror);
   delay(500);
   lcd.setCursor(0, 1);
   if (IOExpander.readReg(MCP23s17::IODIRB) == 0x00 &&
@@ -153,7 +162,7 @@ void InitThermostat()
   lcd.setCursor(0, 0);
   lcd.print(SET_TEMP_STRING);
   lcd.print(thermostat.getTargetTemp());
-  lcd.setCursor(0, 1);  
+  lcd.setCursor(0, 1);
 }
 
 void setup()
@@ -231,22 +240,27 @@ void UpdateButtonStates()
 
 void loop()
 {
+  //Update the button states
   if ((millis() - lastIOExpUpdateTime) > 5)
   {
     UpdateButtonStates();
     lastIOExpUpdateTime = millis();
   }
 
+  //Update the thermostat with the current time
   thermostat.background(rtc.now());
 
+  //Check for changes to the heat control
   if (thermostat.isHeatOn() && !bOldHeatState)
   {
+    outputMirror |= (byte)(1 << HEAT_ON);
 #ifdef SERIAL_DEBUG
     Serial.println(F("HEAT ON"));
 #endif
   }
   else if (!thermostat.isHeatOn() && bOldHeatState)
   {
+    outputMirror &= (byte)(~(1 << HEAT_ON));
 #ifdef SERIAL_DEBUG
     Serial.println(F("HEAT OFF"));
 #endif
@@ -254,12 +268,14 @@ void loop()
 
   if (thermostat.isCoolOn() && !bOldCoolState)
   {
+    outputMirror |= (byte)(1 << COOL_ON);
 #ifdef SERIAL_DEBUG
     Serial.println(F("COOL ON"));
 #endif
   }
   else if (!thermostat.isCoolOn() && bOldCoolState)
   {
+    outputMirror &= (byte)(~(1 << COOL_ON));
 #ifdef SERIAL_DEBUG
     Serial.println(F("COOL OFF"));
 #endif
@@ -267,25 +283,98 @@ void loop()
 
   if (thermostat.isFanOn() && !bOldFanState)
   {
+    outputMirror |= (byte)(1 << FAN_ON);
 #ifdef SERIAL_DEBUG
     Serial.println(F("FAN ON"));
 #endif
   }
   else if (!thermostat.isFanOn() && bOldFanState)
   {
+    outputMirror &= (byte)(~(1 << FAN_ON));
 #ifdef SERIAL_DEBUG
     Serial.println(F("FAN OFF"));
 #endif
   }
-
-  if ((millis() - nLastTempUpdate) > 1000)
-  {
-    nLastTempUpdate = millis();
-  }
+  //Update the IO expander output
+  IOExpander.writeReg(MCP23s17::OLATB, outputMirror);
 
   bOldHeatState = thermostat.isHeatOn();
   bOldCoolState = thermostat.isCoolOn();
   bOldFanState = thermostat.isFanOn();
+
+  if ((millis() - nLastTempUpdate) > 1000)
+  {
+    lcd.setCursor(0, 0);
+    nLastTempUpdate = millis();
+  }
+
+  if ((millis() - nLastTimeUpdate) > 1000)
+  {
+    byte month, day, hour, minute;
+    month = rtc.now().month();
+    day = rtc.now().day();
+    hour = rtc.now().hour();
+    minute = rtc.now().minute();
+
+    lcd.setCursor(0, 1);
+
+    if (month < 10)
+      lcd.print(0);
+    lcd.print(month);
+
+    lcd.print('-');
+
+    if (day < 10)
+      lcd.print(0);
+    lcd.print(day);
+
+    lcd.print(F("  "));
+
+    if (hour < 10)
+      lcd.print(0);
+    lcd.print((int)hour);
+
+    lcd.print(':');
+
+    if (minute < 10)
+      lcd.print(0);
+    lcd.print((int)minute);
+
+    lcd.setCursor(14, 1);
+
+    switch(ThermoStation::dayofweek(rtc.now()))
+    {
+      case 0:
+      lcd.print(SUNDAY_STRING);
+      break;
+
+      case 1:
+      lcd.print(MONDAY_STRING);
+      break;
+
+      case 2:
+      lcd.print(TUESDAY_STRING);
+      break;
+
+      case 3:
+      lcd.print(WEDNESDAY_STRING);
+      break;
+
+      case 4:
+      lcd.print(THURSDAY_STRING);
+      break;
+
+      case 5:
+      lcd.print(FRIDAY_STRING);
+      break;
+
+      case 6:
+      lcd.print(SATURDAY_STRING);
+      break;
+    }
+
+    nLastTimeUpdate = millis();
+  }
 
 #ifdef SERIAL_DEBUG
   uint32_t UID;

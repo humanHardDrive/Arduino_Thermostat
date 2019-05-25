@@ -14,6 +14,14 @@
 #define FAN_STRING              F("Fan: ")
 #define EXIT_STRING             F("Exit")
 
+#define MONDAY_STRING           F(" M")
+#define TUESDAY_STRING          F(" T")
+#define WEDNESDAY_STRING        F(" W")
+#define THURSDAY_STRING         F("TH")
+#define FRIDAY_STRING           F(" F")
+#define SATURDAY_STRING         F("SA")
+#define SUNDAY_STRING           F("SU")
+
 #define DISCOVER_DEVICES_STRING F("Discover Devices")
 #define SET_SCHEDULE_STRING     F("Set Schedule")
 

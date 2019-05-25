@@ -16,9 +16,11 @@ ThermoStation::ThermoStation() :
     {
       m_TempRules[0][i][j].h = m_TempRules[1][i][j].h = (j + 1) * (23 / NUM_TIME_DIV);
       m_TempRules[0][i][j].m = m_TempRules[1][i][j].m = 0;
-      m_TempRules[0][i][j].temp = m_TempRules[1][i][j].temp = 72;
+      m_TempRules[0][i][j].temp = m_TempRules[1][i][j].temp = 60 + (5*j);
     }
   }
+
+  m_pActiveRule = &m_TempRules[0][0][0];
 }
 
 ThermoStation::~ThermoStation()
@@ -177,11 +179,13 @@ void ThermoStation::background(const DateTime& t)
     TEMP_RULE rule = m_TempRules[isWeekend][m_HeatMode][i];
 
     if (t.hour() > rule.h || t.minute() > rule.m)
-      m_TargetTemp = rule.temp;
+      m_pActiveRule = &m_TempRules[isWeekend][m_HeatMode][i];
   }
+
+  m_TargetTemp = m_pActiveRule->temp;
 }
 
-uint8_t ThermoStation::dayofweek(const DateTime& date)
+static uint8_t ThermoStation::dayofweek(const DateTime& date)
 {
   static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
   uint16_t y, m, d;

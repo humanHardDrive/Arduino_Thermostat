@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-//#define SERIAL_DEBUG
+#define SERIAL_DEBUG
 
 #include "BaseStation.h"
 #include "MB85RS.h"
@@ -46,6 +46,8 @@ class ThermoStation : public BaseStation
     bool isFanOn();
     bool isHeatOn();
     bool isCoolOn();
+
+    static uint8_t dayofweek(const DateTime& date);
 
   public:
     enum HEAT_MODE
@@ -90,8 +92,6 @@ class ThermoStation : public BaseStation
     void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 
   private:
-    uint8_t dayofweek(const DateTime& date);
-
     void handleTempQuery(uint32_t src, const void* buffer, uint16_t len);
 
   private:
@@ -107,6 +107,7 @@ class ThermoStation : public BaseStation
 
     byte m_HeatMode, m_FanMode, m_TargetTemp, m_CurrentTemp;
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
+    TEMP_RULE *m_pActiveRule;
 
     //Vars to retry messages
     uint32_t m_LastDeviceSentTo, m_LastMessageTime;
