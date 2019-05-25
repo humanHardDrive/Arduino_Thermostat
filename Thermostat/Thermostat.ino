@@ -49,12 +49,14 @@ enum BUTTON_INDEX
 //Variables
 RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
-MCP23s17        IOExpander(IO_EXP_CS_PIN, 0);
+MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 RTClib          rtc;
 ThermoStation   thermostat;
 
+#define IO_DEBOUNCE_TIME  5
 uint32_t lastIOExpUpdateTime = 0;
-byte tempButtonState = 0xFF, oldButtonState = 0xFF, currentButtonState = 0xFF;
+byte buttonFilter[IO_DEBOUNCE_TIME], currentBtnState = 0xFF, oldBtnState = 0xFF;
+char btnEdge[ALL_BTNS];
 
 bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false, bForceUpdate = false;
 uint32_t nLastTempUpdate = 0;
@@ -66,6 +68,8 @@ void setup()
   Serial.println(APP_NAME);
   Serial.println(VERSION);
 #endif
+
+  memset(buttonFilter, 0xFF, IO_DEBOUNCE_TIME);
 
   SPI.begin();
   Wire.begin();
@@ -164,28 +168,52 @@ void setup()
   lcd.setCursor(0, 1);
 }
 
-void HandleButtonPress()
+void UpdateButtonStates()
 {
-  for (byte i = 0; i < ALL_BTNS; i++)
-  {
-    char d = 0;
+  byte filteredBtnState;
+  currentBtnState = filteredBtnState = IOExpander.readReg(MCP23s17::GPIOA);
 
-    if ((currentButtonState & (1 << i)) != (oldButtonState & (1 << i)))
+  memset(btnEdge, 0, sizeof(btnEdge));
+
+  //Go through the old states and filter the current
+  for(byte i = 0; i < IO_DEBOUNCE_TIME; i++)
+  {
+    filteredBtnState ^= buttonFilter[i]; //Check for the differences
+    filteredBtnState = ~filteredBtnState; //Then find the similarities
+  }
+  //This should filter down to the bits that have stayed the same the last samples
+
+  //Update the previous states
+  for(byte i = 1; i < IO_DEBOUNCE_TIME; i++)
+    buttonFilter[i] = buttonFilter[i - 1]; //Shift everything back
+  buttonFilter[0] = currentBtnState;
+
+  currentBtnState &= filteredBtnState; //Keep the bits that were the same
+  currentBtnState |= (oldBtnState & ~filteredBtnState); //Bring back the old bits that didn't change
+
+  for(byte i = 0; i < ALL_BTNS; i++)
+  {
+    byte mask = (1 << i);
+    if((currentBtnState & mask) != (oldBtnState & mask))
     {
-      if ((currentButtonState & (1 << i)))
-        d = -1; //Release
+      if(currentBtnState & mask)
+        btnEdge[i] = -1;
       else
-        d = 1; //Press
+        btnEdge[i] = 1;
     }
   }
 
-  oldButtonState = currentButtonState;
+  oldBtnState = currentBtnState;
 }
 
 void loop()
 {
-  HandleButtonPress();
-
+  if((millis() - lastIOExpUpdateTime) > 5)
+  {
+    UpdateButtonStates();
+    lastIOExpUpdateTime = millis();
+  }
+  
   thermostat.background(rtc.now());
 
   if (thermostat.isHeatOn() && !bOldHeatState)
