@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define SERIAL_DEBUG
+//#define SERIAL_DEBUG
 
 #include "BaseStation.h"
 #include "MB85RS.h"

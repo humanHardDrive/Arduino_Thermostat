@@ -61,29 +61,15 @@ char btnEdge[ALL_BTNS];
 bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false, bForceUpdate = false;
 uint32_t nLastTempUpdate = 0;
 
-void setup()
+void InitLCD()
 {
-#ifdef SERIAL_DEBUG
-  Serial.begin(115200);
-  Serial.println(APP_NAME);
-  Serial.println(VERSION);
-#endif
-
-  memset(buttonFilter, 0xFF, IO_DEBOUNCE_TIME);
-
-  SPI.begin();
-  Wire.begin();
-
   lcd.begin(16, 2);
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.println(APP_NAME);
-  lcd.setCursor(0, 1);
-  lcd.print(VERSION);
-  delay(1000);
+}
 
-#ifndef NO_IO_EXP
-  //Init the IO expander
+void InitIOExpander()
+{
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(F("Init IO expander"));
@@ -105,10 +91,10 @@ void setup()
     while (1);
   }
   delay(1000);
-#endif
+}
 
-#ifndef NO_RADIO
-  //Check the radio
+void InitRadio()
+{
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(F("Check radio"));
@@ -124,9 +110,10 @@ void setup()
   delay(500);
   lcd.print(F("SUCCESS"));
   delay(1000);
-#endif
+}
 
-#ifndef NO_RTC
+void InitRTC()
+{
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(F("Check RTC"));
@@ -147,9 +134,10 @@ void setup()
 #endif
     while (1);
   }
-#endif
+}
 
-  //Start the thermostat object
+void InitThermostat()
+{
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(F("Start thermostat"));
@@ -165,7 +153,42 @@ void setup()
   lcd.setCursor(0, 0);
   lcd.print(SET_TEMP_STRING);
   lcd.print(thermostat.getTargetTemp());
+  lcd.setCursor(0, 1);  
+}
+
+void setup()
+{
+#ifdef SERIAL_DEBUG
+  Serial.begin(115200);
+  Serial.println(APP_NAME);
+  Serial.println(VERSION);
+#endif
+
+  memset(buttonFilter, 0xFF, IO_DEBOUNCE_TIME);
+
+  SPI.begin();
+  Wire.begin();
+
+  InitLCD();
+
+  lcd.println(APP_NAME);
   lcd.setCursor(0, 1);
+  lcd.print(VERSION);
+  delay(1000);
+
+#ifndef NO_IO_EXP
+  InitIOExpander();
+#endif
+
+#ifndef NO_RADIO
+  InitRadio();
+#endif
+
+#ifndef NO_RTC
+  InitRTC();
+#endif
+
+  InitThermostat();
 }
 
 void UpdateButtonStates()
@@ -176,7 +199,7 @@ void UpdateButtonStates()
   memset(btnEdge, 0, sizeof(btnEdge));
 
   //Go through the old states and filter the current
-  for(byte i = 0; i < IO_DEBOUNCE_TIME; i++)
+  for (byte i = 0; i < IO_DEBOUNCE_TIME; i++)
   {
     filteredBtnState ^= buttonFilter[i]; //Check for the differences
     filteredBtnState = ~filteredBtnState; //Then find the similarities
@@ -184,19 +207,19 @@ void UpdateButtonStates()
   //This should filter down to the bits that have stayed the same the last samples
 
   //Update the previous states
-  for(byte i = 1; i < IO_DEBOUNCE_TIME; i++)
+  for (byte i = 1; i < IO_DEBOUNCE_TIME; i++)
     buttonFilter[i] = buttonFilter[i - 1]; //Shift everything back
   buttonFilter[0] = currentBtnState;
 
   currentBtnState &= filteredBtnState; //Keep the bits that were the same
   currentBtnState |= (oldBtnState & ~filteredBtnState); //Bring back the old bits that didn't change
 
-  for(byte i = 0; i < ALL_BTNS; i++)
+  for (byte i = 0; i < ALL_BTNS; i++)
   {
     byte mask = (1 << i);
-    if((currentBtnState & mask) != (oldBtnState & mask))
+    if ((currentBtnState & mask) != (oldBtnState & mask))
     {
-      if(currentBtnState & mask)
+      if (currentBtnState & mask)
         btnEdge[i] = -1;
       else
         btnEdge[i] = 1;
@@ -208,12 +231,12 @@ void UpdateButtonStates()
 
 void loop()
 {
-  if((millis() - lastIOExpUpdateTime) > 5)
+  if ((millis() - lastIOExpUpdateTime) > 5)
   {
     UpdateButtonStates();
     lastIOExpUpdateTime = millis();
   }
-  
+
   thermostat.background(rtc.now());
 
   if (thermostat.isHeatOn() && !bOldHeatState)
