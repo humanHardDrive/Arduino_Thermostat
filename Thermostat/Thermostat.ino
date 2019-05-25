@@ -19,6 +19,7 @@
 
 //Arduino Pins
 #define IO_EXP_RST_PIN  A0
+#define LOCAL_TEMP_PIN  A1
 
 #define IO_EXP_CS_PIN   8
 #define RF24_CE_PIN     9
@@ -58,7 +59,7 @@ RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 RTClib          rtc;
-ThermoStation   thermostat;
+ThermoStation   thermostat(LOCAL_TEMP_PIN);
 
 #define IO_DEBOUNCE_TIME  5
 uint32_t lastIOExpUpdateTime = 0;
@@ -157,12 +158,6 @@ void InitThermostat()
   lcd.print(thermostat.getPairedCount());
   lcd.print(F(" paired"));
   delay(2000);
-
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print(SET_TEMP_STRING);
-  lcd.print(thermostat.getTargetTemp());
-  lcd.setCursor(0, 1);
 }
 
 void setup()
@@ -238,6 +233,77 @@ void UpdateButtonStates()
   oldBtnState = currentBtnState;
 }
 
+void UpdateTimeDisplay()
+{
+  if ((millis() - nLastTimeUpdate) > 1000)
+  {
+    byte month, day, hour, minute;
+    month = rtc.now().month();
+    day = rtc.now().day();
+    hour = rtc.now().hour();
+    minute = rtc.now().minute();
+
+    lcd.setCursor(0, 1);
+
+    if (month < 10)
+      lcd.print(0);
+    lcd.print(month);
+
+    lcd.print('-');
+
+    if (day < 10)
+      lcd.print(0);
+    lcd.print(day);
+
+    lcd.print(F("  "));
+
+    if (hour < 10)
+      lcd.print(0);
+    lcd.print((int)hour);
+
+    lcd.print(':');
+
+    if (minute < 10)
+      lcd.print(0);
+    lcd.print((int)minute);
+
+    lcd.setCursor(14, 1);
+
+    switch (ThermoStation::dayofweek(rtc.now()))
+    {
+      case 0:
+        lcd.print(SUNDAY_STRING);
+        break;
+
+      case 1:
+        lcd.print(MONDAY_STRING);
+        break;
+
+      case 2:
+        lcd.print(TUESDAY_STRING);
+        break;
+
+      case 3:
+        lcd.print(WEDNESDAY_STRING);
+        break;
+
+      case 4:
+        lcd.print(THURSDAY_STRING);
+        break;
+
+      case 5:
+        lcd.print(FRIDAY_STRING);
+        break;
+
+      case 6:
+        lcd.print(SATURDAY_STRING);
+        break;
+    }
+
+    nLastTimeUpdate = millis();
+  }
+}
+
 void loop()
 {
   //Update the button states
@@ -305,76 +371,36 @@ void loop()
   if ((millis() - nLastTempUpdate) > 1000)
   {
     lcd.setCursor(0, 0);
-    nLastTempUpdate = millis();
-  }
+    lcd.print(thermostat.getTargetTemp());
+    lcd.print((char)223); //degree symbol
 
-  if ((millis() - nLastTimeUpdate) > 1000)
-  {
-    byte month, day, hour, minute;
-    month = rtc.now().month();
-    day = rtc.now().day();
-    hour = rtc.now().hour();
-    minute = rtc.now().minute();
+    lcd.print('/');
 
-    lcd.setCursor(0, 1);
+    lcd.print(thermostat.getCurrentTemp());
+    lcd.print((char)223);
 
-    if (month < 10)
-      lcd.print(0);
-    lcd.print(month);
+    lcd.print(' ');
 
-    lcd.print('-');
-
-    if (day < 10)
-      lcd.print(0);
-    lcd.print(day);
-
-    lcd.print(F("  "));
-
-    if (hour < 10)
-      lcd.print(0);
-    lcd.print((int)hour);
-
-    lcd.print(':');
-
-    if (minute < 10)
-      lcd.print(0);
-    lcd.print((int)minute);
-
-    lcd.setCursor(14, 1);
-
-    switch(ThermoStation::dayofweek(rtc.now()))
+    switch(thermostat.getHeatMode())
     {
-      case 0:
-      lcd.print(SUNDAY_STRING);
+      case ThermoStation::OFF:
+      lcd.print(' ');
+      lcd.print(OFF_STRING);
       break;
 
-      case 1:
-      lcd.print(MONDAY_STRING);
+      case ThermoStation::HEAT:
+      lcd.print(HEAT_STRING);
       break;
 
-      case 2:
-      lcd.print(TUESDAY_STRING);
-      break;
-
-      case 3:
-      lcd.print(WEDNESDAY_STRING);
-      break;
-
-      case 4:
-      lcd.print(THURSDAY_STRING);
-      break;
-
-      case 5:
-      lcd.print(FRIDAY_STRING);
-      break;
-
-      case 6:
-      lcd.print(SATURDAY_STRING);
+      case ThermoStation::COOL:
+      lcd.print(COOL_STRING);
       break;
     }
 
-    nLastTimeUpdate = millis();
+    nLastTempUpdate = millis();
   }
+
+  UpdateTimeDisplay();
 
 #ifdef SERIAL_DEBUG
   uint32_t UID;

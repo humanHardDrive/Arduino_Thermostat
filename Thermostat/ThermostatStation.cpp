@@ -1,11 +1,16 @@
 #include "ThermostatStation.h"
 
-ThermoStation::ThermoStation() :
+ThermoStation::ThermoStation(byte analogTempPin) :
   m_HeatMode(0),
   m_FanMode(0),
   m_HeatOn(false),
   m_CoolOn(false),
-  m_pRadio(NULL)
+  m_pRadio(NULL),
+  m_LocalTemp(72),
+  m_RemoteTemp(72),
+  m_analogTempPin(analogTempPin),
+  m_bInCelsius(false),
+  m_bUseRemote(false)
 {
   //Temporary before recovering from storage
   strcpy(m_SavedData.networkID, "ABCDE");
@@ -16,7 +21,7 @@ ThermoStation::ThermoStation() :
     {
       m_TempRules[0][i][j].h = m_TempRules[1][i][j].h = (j + 1) * (23 / NUM_TIME_DIV);
       m_TempRules[0][i][j].m = m_TempRules[1][i][j].m = 0;
-      m_TempRules[0][i][j].temp = m_TempRules[1][i][j].temp = 60 + (5*j);
+      m_TempRules[0][i][j].temp = m_TempRules[1][i][j].temp = 60 + (5 * j);
     }
   }
 
@@ -54,10 +59,20 @@ void ThermoStation::setHeatMode(byte mode)
     m_HeatMode = mode;
 }
 
+byte ThermoStation::getHeatMode()
+{
+  return m_HeatMode;
+}
+
 void ThermoStation::setFanMode(byte mode)
 {
   if (mode < ALL_FAN_MODES)
     m_FanMode = mode;
+}
+
+byte ThermoStation::getFanMode()
+{
+  return m_FanMode;
 }
 
 void ThermoStation::setTargetTemp(byte temp)
@@ -68,6 +83,19 @@ void ThermoStation::setTargetTemp(byte temp)
 byte ThermoStation::getTargetTemp()
 {
   return m_TargetTemp;
+}
+
+byte ThermoStation::getCurrentTemp()
+{
+  if (m_bUseRemote)
+    return m_RemoteTemp;
+  else
+    return m_LocalTemp;
+}
+
+void ThermoStation::useRemoteSensor(bool use)
+{
+  m_bUseRemote = use;
 }
 
 bool ThermoStation::isFanOn()
@@ -183,6 +211,46 @@ void ThermoStation::background(const DateTime& t)
   }
 
   m_TargetTemp = m_pActiveRule->temp;
+
+  updateLocalTemp();
+}
+
+void ThermoStation::updateLocalTemp()
+{
+  if ((millis() - m_nLastTempSampleTime) > SAMPLE_DELAY)
+  {
+    uint16_t average = 0;
+    float r = 0;
+    for (uint8_t i = 0; i < NUM_SAMPLES; i++)
+      average += m_LocalTempSample[i];
+    average /= NUM_SAMPLES;
+
+    for (uint8_t i = 1; i < NUM_SAMPLES; i++)
+      m_LocalTempSample[i] = m_LocalTempSample[i - 1];
+    m_LocalTempSample[0] = analogRead(m_analogTempPin);
+
+    r = ((1023.0 - (float)average) / 1023.0) * 10;
+
+    for (uint8_t i = 0; i < 39; i++)
+    {
+      if (r >= rTable[i])
+      {
+        float lower, upper, temp;
+        lower = (i - 1) * 5 + TABLE_OFFSET;
+        upper = i * 5 + TABLE_OFFSET;
+        temp = (r - rTable[i]) / (rTable[i - 1] - rTable[i]);
+        temp = (1 - temp) * (upper - lower) + lower;
+
+        if (!m_bInCelsius)
+          temp = (temp * 9.0 / 5.0) + 32;
+
+        m_LocalTemp = (byte)temp;
+        break;
+      }
+    }
+
+    m_nLastTempSampleTime = millis();
+  }
 }
 
 static uint8_t ThermoStation::dayofweek(const DateTime& date)

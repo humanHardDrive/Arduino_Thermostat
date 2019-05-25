@@ -22,6 +22,7 @@
 #define SATURDAY_STRING         F("SA")
 #define SUNDAY_STRING           F("SU")
 
+#define SET_DATE_TIME_STRING    F("Set Date/Time")
 #define DISCOVER_DEVICES_STRING F("Discover Devices")
 #define SET_SCHEDULE_STRING     F("Set Schedule")
 
