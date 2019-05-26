@@ -16,7 +16,7 @@
 #define NUM_TIME_DIV    4
 
 #define NUM_SAMPLES   15
-#define SAMPLE_DELAY  100
+#define SAMPLE_DELAY  1000
 
 //Custom applicaiton messages
 #define QUERY_TEMPERATURE   (USER_MSG_BASE + 0x00)
@@ -104,6 +104,8 @@ class ThermoStation : public BaseStation
     void handleTempQuery(uint32_t src, const void* buffer, uint16_t len);
 
     void updateLocalTemp();
+    void updateSchedule(const DateTime& t);
+    void updateHeatState();
 
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;
@@ -130,6 +132,9 @@ class ThermoStation : public BaseStation
       byte h, m;
       byte temp;
     };
+
+    uint32_t m_nOnHysteresis = (uint32_t)(5*60*1000), m_nOffHysteresis = (uint32_t)(5*60*1000);
+    uint32_t m_nTimeLastCrossedThresh;
 
     byte m_HeatMode, m_FanMode, m_TargetTemp, m_LocalTemp, m_RemoteTemp;
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];

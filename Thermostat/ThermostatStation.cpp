@@ -196,6 +196,13 @@ void ThermoStation::background(const DateTime& t)
 {
   BaseStation::background();
 
+  updateSchedule(t);
+  updateHeatState();
+  updateLocalTemp();
+}
+
+void ThermoStation::updateSchedule(const DateTime& t)
+{
   byte day = dayofweek(t);
   byte isWeekend = 0;
 
@@ -211,8 +218,56 @@ void ThermoStation::background(const DateTime& t)
   }
 
   m_TargetTemp = m_pActiveRule->temp;
+}
 
-  updateLocalTemp();
+void ThermoStation::updateHeatState()
+{
+  if (m_HeatMode == HEAT)
+  {
+    if (!m_HeatOn)
+    {
+      if (getCurrentTemp() < m_TargetTemp)
+      {
+        if ((millis() - m_nTimeLastCrossedThresh) > m_nOnHysteresis)
+          m_HeatOn = true;
+      }
+      else
+        m_nTimeLastCrossedThresh = millis();
+    }
+    else
+    {
+      if (getCurrentTemp() > m_TargetTemp)
+      {
+        if ((millis() - m_nTimeLastCrossedThresh) > m_nOffHysteresis)
+          m_HeatOn = false;
+      }
+      else
+        m_nTimeLastCrossedThresh = millis();
+    }
+  }
+  else if (m_HeatMode == COOL)
+  {
+    if (!m_CoolOn)
+    {
+      if (getCurrentTemp() > m_TargetTemp)
+      {
+        if ((millis() - m_nTimeLastCrossedThresh) > m_nOnHysteresis)
+          m_CoolOn = true;
+      }
+      else
+        m_nTimeLastCrossedThresh = millis();
+    }
+    else
+    {
+      if(getCurrentTemp() < m_TargetTemp)
+      {
+        if((millis() - m_nTimeLastCrossedThresh) > m_nOffHysteresis)
+          m_CoolOn = false;
+      }
+      else
+        m_nTimeLastCrossedThresh = millis();
+    }
+  }
 }
 
 void ThermoStation::updateLocalTemp()
