@@ -73,7 +73,7 @@ uint32_t nLastTempUpdate = 0, nLastTimeUpdate = 0;
 
 void InitLCD()
 {
-  lcd.begin(16, 2);
+  lcd.begin(20, 4);
   lcd.clear();
   lcd.setCursor(0, 0);
 }
