@@ -6,6 +6,7 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   m_HeatOn(false),
   m_CoolOn(false),
   m_pRadio(NULL),
+  m_pMemoryDev(NULL),
   m_LocalTemp(72),
   m_RemoteTemp(72),
   m_analogTempPin(analogTempPin),
@@ -388,11 +389,14 @@ int ThermoStation::read(const void* buf, uint16_t len)
 
 void ThermoStation::save(uint16_t addr, const void* buf, uint16_t len)
 {
+  if(m_pMemoryDev)
+    m_pMemoryDev->write(addr + m_nMemoryOffset, (byte*)buf, len);
 }
 
 void ThermoStation::load(uint16_t addr, const void* buf, uint16_t len)
 {
-
+  if(m_pMemoryDev)
+    m_pMemoryDev->read(addr + m_nMemoryOffset, (byte*)buf, len);
 }
 
 void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)
