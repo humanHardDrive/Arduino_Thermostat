@@ -39,6 +39,12 @@ void ThermoStation::addRadio(RF24* pRadio)
   m_pRadio = pRadio;
 }
 
+void ThermoStation::addMemoryDevice(FM25V10* pMemDevice, uint32_t offset)
+{
+  m_pMemoryDev = pMemDevice;
+  m_nMemoryOffset = offset;
+}
+
 void ThermoStation::begin()
 {
 #ifdef SERIAL_DEBUG
@@ -371,35 +377,41 @@ int ThermoStation::write(const void* buf, uint16_t len)
 
 int ThermoStation::available()
 {
-  //Handle corrupt dynamic payloads
-  if (!m_pRadio->getDynamicPayloadSize())
-    return 0;
+  if (m_pRadio)
+  {
+    //Handle corrupt dynamic payloads
+    if (!m_pRadio->getDynamicPayloadSize())
+      return 0;
 
-  return m_pRadio->available();
+    return m_pRadio->available();
+  }
+  return 0;
 }
 
 int ThermoStation::read(const void* buf, uint16_t len)
 {
-  if (m_pRadio->available())
+  if (m_pRadio)
   {
-    uint8_t size = m_pRadio->getDynamicPayloadSize();
-    if (size > len)
-      size = len;
-
-    if (size)
+    if (m_pRadio->available())
     {
-      m_pRadio->read(buf, size);
+      uint8_t size = m_pRadio->getDynamicPayloadSize();
+      if (size > len)
+        size = len;
+
+      if (size)
+      {
+        m_pRadio->read(buf, size);
 
 #ifdef SERIAL_DEBUG
-      Serial.println(__PRETTY_FUNCTION__);
-      Serial.print("RECV: ");
-      printArr(buf, (uint8_t)size);
-      Serial.println();
+        Serial.println(__PRETTY_FUNCTION__);
+        Serial.print("RECV: ");
+        printArr(buf, (uint8_t)size);
+        Serial.println();
 #endif
+      }
+      return size;
     }
-    return size;
   }
-
   return 0;
 }
 

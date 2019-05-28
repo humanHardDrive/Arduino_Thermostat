@@ -29,7 +29,7 @@ class ThermoStation : public BaseStation
     ~ThermoStation();
 
     void addRadio(RF24* pRadio);
-    void addMemoryDevice(FM25V10* pMemDevice) {this->m_pMemoryDev = pMemDevice;}
+    void addMemoryDevice(FM25V10* pMemDevice, uint32_t offset);
     void begin();
 
     void setHeatMode(byte mode);

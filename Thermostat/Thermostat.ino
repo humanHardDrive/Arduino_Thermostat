@@ -127,6 +127,32 @@ void InitRadio()
   delay(1000);
 }
 
+void InitStorage()
+{
+  byte writeBuffer[8] = {0xDE, 0xAD, 0xBE, 0xEF, 0x11, 0x22, 0xAA, 0xBB};
+  byte readBuffer[8];
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(F("Check storage"));
+  lcd.setCursor(0, 1);
+
+  memoryDevice.write(0, writeBuffer, 8);
+  memoryDevice.read(0, readBuffer, 8);
+
+  if (memcmp(writeBuffer, readBuffer, 8))
+  {
+    lcd.print(F("FAILED"));
+#ifdef SERIAL_DEBUG
+    Serial.println(F("Failed to verify storage device..."));
+#endif
+  while(1);
+  }
+
+  lcd.print(F("SUCCESS"));
+  delay(1000);
+}
+
 void InitRTC()
 {
   lcd.clear();
@@ -157,7 +183,7 @@ void InitThermostat()
   lcd.setCursor(0, 0);
   lcd.print(F("Start thermostat"));
   thermostat.addRadio(&radio);
-  thermostat.addMemoryDevice(&memoryDevice);
+  thermostat.addMemoryDevice(&memoryDevice, 256); //Allocate 256 bytes for non-basestation uses
   thermostat.begin();
   thermostat.background(rtc.now()); //Call one iteration of the backround loop to get the target temp
   lcd.setCursor(0, 1);
@@ -192,6 +218,10 @@ void setup()
 
 #ifndef NO_RADIO
   InitRadio();
+#endif
+
+#ifndef NO_STORAGE
+  InitStorage();
 #endif
 
 #ifndef NO_RTC
@@ -387,20 +417,20 @@ void loop()
 
     lcd.print(' ');
 
-    switch(thermostat.getHeatMode())
+    switch (thermostat.getHeatMode())
     {
       case ThermoStation::OFF:
-      lcd.print(' ');
-      lcd.print(OFF_STRING);
-      break;
+        lcd.print(' ');
+        lcd.print(OFF_STRING);
+        break;
 
       case ThermoStation::HEAT:
-      lcd.print(HEAT_STRING);
-      break;
+        lcd.print(HEAT_STRING);
+        break;
 
       case ThermoStation::COOL:
-      lcd.print(COOL_STRING);
-      break;
+        lcd.print(COOL_STRING);
+        break;
     }
 
     nLastTempUpdate = millis();
