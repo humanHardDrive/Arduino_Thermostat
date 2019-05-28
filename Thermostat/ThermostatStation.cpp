@@ -45,14 +45,17 @@ void ThermoStation::begin()
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
-  m_pRadio->begin();
-  m_pRadio->enableDynamicPayloads();
+  if (m_pRadio)
+  {
+    m_pRadio->begin();
+    m_pRadio->enableDynamicPayloads();
 
-  m_pRadio->openWritingPipe(m_SavedData.networkID);
-  m_pRadio->openReadingPipe(1, m_SavedData.networkID);
-  m_pRadio->setCRCLength(RF24_CRC_16);
+    m_pRadio->openWritingPipe(m_SavedData.networkID);
+    m_pRadio->openReadingPipe(1, m_SavedData.networkID);
+    m_pRadio->setCRCLength(RF24_CRC_16);
 
-  m_pRadio->startListening();
+    m_pRadio->startListening();
+  }
 }
 
 void ThermoStation::setHeatMode(byte mode)
@@ -121,12 +124,15 @@ void ThermoStation::startDiscovery(uint32_t timeout)
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
-  m_pRadio->stopListening();
-  m_pRadio->openWritingPipe(DISCOVERY_PIPE);
-  m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
+  if (m_pRadio)
+  {
+    m_pRadio->stopListening();
+    m_pRadio->openWritingPipe(DISCOVERY_PIPE);
+    m_pRadio->closeReadingPipe(1);
+    m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
 
-  BaseStation::startDiscovery(timeout);
+    BaseStation::startDiscovery(timeout);
+  }
 }
 
 void ThermoStation::stopDiscovery()
@@ -135,26 +141,29 @@ void ThermoStation::stopDiscovery()
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
-  m_pRadio->stopListening();
-  m_pRadio->openWritingPipe(m_SavedData.networkID);
-  m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, m_SavedData.networkID);
-  m_pRadio->startListening();
+  if (m_pRadio)
+  {
+    m_pRadio->stopListening();
+    m_pRadio->openWritingPipe(m_SavedData.networkID);
+    m_pRadio->closeReadingPipe(1);
+    m_pRadio->openReadingPipe(1, m_SavedData.networkID);
+    m_pRadio->startListening();
 
 #ifdef SERIAL_DEBUG
-  for (uint8_t i = 0; i < MAX_DISCOVERY; i++)
-  {
-    if (m_DiscoveredDevice[i].UID)
+    for (uint8_t i = 0; i < MAX_DISCOVERY; i++)
     {
-      Serial.print(i);
-      Serial.print(" ");
-      Serial.print(F("Discovered 0x"));
-      Serial.print(m_DiscoveredDevice[i].UID, HEX);
-      Serial.print(" ");
-      Serial.println(m_DiscoveredDevice[i].name);
+      if (m_DiscoveredDevice[i].UID)
+      {
+        Serial.print(i);
+        Serial.print(" ");
+        Serial.print(F("Discovered 0x"));
+        Serial.print(m_DiscoveredDevice[i].UID, HEX);
+        Serial.print(" ");
+        Serial.println(m_DiscoveredDevice[i].name);
+      }
     }
-  }
 #endif
+  }
 }
 
 void ThermoStation::getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name)
@@ -178,19 +187,21 @@ bool ThermoStation::pair(uint32_t UID, char* sName, uint32_t timeout)
 
   bool bRetVal = false;
 
-  m_pRadio->openWritingPipe(DISCOVERY_PIPE);
-  m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
-  m_pRadio->stopListening();
+  if (m_pRadio)
+  {
+    m_pRadio->openWritingPipe(DISCOVERY_PIPE);
+    m_pRadio->closeReadingPipe(1);
+    m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
+    m_pRadio->stopListening();
 
-  //This call is blocking until the timeout
-  bRetVal = BaseStation::pair(UID, sName, timeout);
+    //This call is blocking until the timeout
+    bRetVal = BaseStation::pair(UID, sName, timeout);
 
-  m_pRadio->openWritingPipe(m_SavedData.networkID);
-  m_pRadio->closeReadingPipe(1);
-  m_pRadio->openReadingPipe(1, m_SavedData.networkID);
-  m_pRadio->startListening();
-
+    m_pRadio->openWritingPipe(m_SavedData.networkID);
+    m_pRadio->closeReadingPipe(1);
+    m_pRadio->openReadingPipe(1, m_SavedData.networkID);
+    m_pRadio->startListening();
+  }
   return bRetVal;
 }
 
@@ -261,9 +272,9 @@ void ThermoStation::updateHeatState()
     }
     else
     {
-      if(getCurrentTemp() < m_TargetTemp)
+      if (getCurrentTemp() < m_TargetTemp)
       {
-        if((millis() - m_nTimeLastCrossedThresh) > m_nOffHysteresis)
+        if ((millis() - m_nTimeLastCrossedThresh) > m_nOffHysteresis)
           m_CoolOn = false;
       }
       else
@@ -327,28 +338,33 @@ int ThermoStation::write(const void* buf, uint16_t len)
 {
   uint16_t i = 0;
 
-  m_pRadio->stopListening();
-
-  while (i < len)
+  if (m_pRadio)
   {
-    uint8_t size = 0;
-    if (len > MAX_PAYLOAD_SIZE)
-      size = MAX_PAYLOAD_SIZE;
-    else
-      size = len;
+    m_pRadio->stopListening();
 
-    m_pRadio->write(buf + i, size);
-    i += size;
-  }
+    while (i < len)
+    {
+      uint8_t size = 0;
+      if (len > MAX_PAYLOAD_SIZE)
+        size = MAX_PAYLOAD_SIZE;
+      else
+        size = len;
 
-  m_pRadio->startListening();
+      m_pRadio->write(buf + i, size);
+      i += size;
+    }
+
+    m_pRadio->startListening();
 
 #ifdef SERIAL_DEBUG
-  Serial.println(__PRETTY_FUNCTION__);
-  Serial.print(F("SENT: "));
-  printArr(buf, (uint8_t)len);
-  Serial.println();
+    Serial.println(__PRETTY_FUNCTION__);
+    Serial.print(F("SENT: "));
+    printArr(buf, (uint8_t)len);
+    Serial.println();
 #endif
+
+    return len;
+  }
 
   return 0;
 }
@@ -389,13 +405,13 @@ int ThermoStation::read(const void* buf, uint16_t len)
 
 void ThermoStation::save(uint16_t addr, const void* buf, uint16_t len)
 {
-  if(m_pMemoryDev)
+  if (m_pMemoryDev)
     m_pMemoryDev->write(addr + m_nMemoryOffset, (byte*)buf, len);
 }
 
 void ThermoStation::load(uint16_t addr, const void* buf, uint16_t len)
 {
-  if(m_pMemoryDev)
+  if (m_pMemoryDev)
     m_pMemoryDev->read(addr + m_nMemoryOffset, (byte*)buf, len);
 }
 
