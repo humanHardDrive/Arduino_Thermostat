@@ -29,6 +29,7 @@ class ThermoStation : public BaseStation
     ~ThermoStation();
 
     void addRadio(RF24* pRadio);
+    void addMemoryDevice(FM25V10* pMemDevice) {this->m_pMemoryDev = pMemDevice;}
     void begin();
 
     void setHeatMode(byte mode);
@@ -110,7 +111,6 @@ class ThermoStation : public BaseStation
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
-    const uint8_t DEFAULT_RETRY_PERIOD = 50;
   
     const float TABLE_OFFSET = -40.0;
     float rTable[39] =
@@ -143,6 +143,8 @@ class ThermoStation : public BaseStation
     bool m_HeatOn, m_CoolOn, m_bUseRemote;
 
     RF24* m_pRadio;
+    FM25V10* m_pMemoryDev;
+    uint32_t m_nMemoryOffset;
 };
 
 #endif

@@ -20,7 +20,10 @@
 
 //Arduino Pins
 #define IO_EXP_RST_PIN  A0
-#define LOCAL_TEMP_PIN  A1
+#define MEM_CS_PIN      A1
+#define LOCAL_TEMP_PIN  A2
+#define I2C_SDA         A4
+#define I2C_SCL         A5
 
 #define IO_EXP_CS_PIN   8
 #define RF24_CE_PIN     9
@@ -57,6 +60,7 @@ enum AC_CONTROL_INDEX
 
 //Variables
 RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
+FM25V10         memoryDevice(MEM_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 RTClib          rtc;
@@ -153,6 +157,7 @@ void InitThermostat()
   lcd.setCursor(0, 0);
   lcd.print(F("Start thermostat"));
   thermostat.addRadio(&radio);
+  thermostat.addMemoryDevice(&memoryDevice);
   thermostat.begin();
   thermostat.background(rtc.now()); //Call one iteration of the backround loop to get the target temp
   lcd.setCursor(0, 1);

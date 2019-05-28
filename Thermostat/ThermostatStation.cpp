@@ -10,7 +10,8 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   m_RemoteTemp(72),
   m_analogTempPin(analogTempPin),
   m_bInCelsius(false),
-  m_bUseRemote(false)
+  m_bUseRemote(false),
+  m_nMemoryOffset(0)
 {
   //Temporary before recovering from storage
   strcpy(m_SavedData.networkID, "ABCDE");

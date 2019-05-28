@@ -5,6 +5,8 @@
 FM25V10::FM25V10(byte csPin) :
   m_CSPin(csPin)
 {
+  pinMode(m_CSPin, OUTPUT);
+  digitalWrite(m_CSPin, HIGH);
 }
 
 FM25V10::~FM25V10()
