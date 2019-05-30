@@ -10,12 +10,12 @@
 #define NO_RADIO
 //#define NO_IO_EXP
 //#define NO_RTC
-#define NO_STORAGE
+//#define NO_STORAGE
 
 #include <Wire.h>
 #include <SPI.h>
 
-#define APP_NAME    F("SMART THERMOSTAT")
+#define APP_NAME    F("REMOTE THERMOSTAT")
 #define VERSION     F("v0.0")
 
 //Arduino Pins
@@ -129,6 +129,7 @@ void InitRadio()
 
 void InitStorage()
 {
+  byte clearBuffer[8] = {0, 0, 0, 0, 0, 0, 0, 0};
   byte writeBuffer[8] = {0xDE, 0xAD, 0xBE, 0xEF, 0x11, 0x22, 0xAA, 0xBB};
   byte readBuffer[8];
 
@@ -136,6 +137,18 @@ void InitStorage()
   lcd.setCursor(0, 0);
   lcd.print(F("Check storage"));
   lcd.setCursor(0, 1);
+
+  memoryDevice.write(0, clearBuffer, 8);
+  memoryDevice.read(0, readBuffer, 8);
+
+  if (memcmp(clearBuffer, readBuffer, 8))
+  {
+    lcd.print(F("FAILED"));
+#ifdef SERIAL_DEBUG
+    Serial.println(F("Failed to verify storage device..."));
+#endif
+    while (1);
+  }
 
   memoryDevice.write(0, writeBuffer, 8);
   memoryDevice.read(0, readBuffer, 8);
@@ -146,7 +159,7 @@ void InitStorage()
 #ifdef SERIAL_DEBUG
     Serial.println(F("Failed to verify storage device..."));
 #endif
-  while(1);
+    while (1);
   }
 
   lcd.print(F("SUCCESS"));
