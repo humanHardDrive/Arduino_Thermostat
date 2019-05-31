@@ -9,6 +9,7 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "msgs.h"
+#include "FM25V10.h"
 
 #include <SPI.h>
 
@@ -23,6 +24,11 @@ class TempSensor : public RemoteSensor
     ~TempSensor();
 
     void addRadio(RF24* pRadio);
+    void addMemoryDevice(FM25V10* pMemDevice, uint32_t nMemoryOffset);
+
+    virtual bool recover();
+    virtual void reset(bool nv);
+    
     void begin();
 
     void background();
@@ -39,8 +45,7 @@ class TempSensor : public RemoteSensor
     int available();
     int read(const void* buffer, uint16_t len);
 
-    void save(uint16_t addr, const void* buffer, uint16_t len);
-    void load(uint16_t addr, const void* buffer, uint16_t len);
+    virtual void save();
 
     void updateNetwork();
 
@@ -66,8 +71,10 @@ class TempSensor : public RemoteSensor
 #endif
 
     uint32_t m_u32LastSampleTime, m_u32SamplePeriod;
+    uint32_t m_nMemoryOffset;
 
     RF24* m_pRadio;
+    FM25V10* m_pMemoryDev;
 };
 
 #endif

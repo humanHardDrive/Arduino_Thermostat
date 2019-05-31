@@ -46,13 +46,6 @@ void RemoteSensor::discoveryBackground()
 	}
 }
 
-void RemoteSensor::forget()
-{
-	print(__PRETTY_FUNCTION__);
-	
-	memset(m_SavedData.networkID, 0, 8);
-}
-
 void RemoteSensor::pair(uint16_t timeout)
 {
 	print(__PRETTY_FUNCTION__);

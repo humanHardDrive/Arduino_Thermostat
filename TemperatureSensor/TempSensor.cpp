@@ -18,6 +18,26 @@ void TempSensor::addRadio(RF24* pRadio)
   m_pRadio = pRadio;
 }
 
+void TempSensor::addMemoryDevice(FM25V10* pMemDevice, uint32_t nMemoryOffset)
+{
+  m_pMemoryDev = pMemDevice;
+}
+
+bool TempSensor::recover()
+{
+
+}
+
+void TempSensor::reset(bool nv)
+{
+  
+}
+
+void TempSensor::save()
+{
+  
+}
+
 void TempSensor::begin()
 {
 #ifdef SERIAL_DEBUG
@@ -128,27 +148,17 @@ int TempSensor::read(const void* buffer, uint16_t len)
   return 0;
 }
 
-void TempSensor::save(uint16_t addr, const void* buffer, uint16_t len)
-{
-
-}
-
-void TempSensor::load(uint16_t addr, const void* buffer, uint16_t len)
-{
-
-}
-
 void TempSensor::updateNetwork()
 {
 #ifdef SERIAL_DEBUG
   Serial.println(__PRETTY_FUNCTION__);
 #endif
-  
+
   m_pRadio->stopListening();
   m_pRadio->openWritingPipe(m_SavedData.networkID);
   m_pRadio->closeReadingPipe(1);
   m_pRadio->openReadingPipe(1, m_SavedData.networkID);
-  m_pRadio->startListening();  
+  m_pRadio->startListening();
 }
 
 void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
@@ -177,7 +187,7 @@ void TempSensor::sampleAndSend()
   uint8_t buf[16];
   uint16_t len;
   uint8_t curTemp = 72;
-  
+
   buildPacket((uint8_t)(QUERY_TEMPERATURE), &m_nMsgID, m_SavedData.UID, (uint8_t)0,
               (uint8_t*)&curTemp, (uint16_t)1, buf, &len);
   write(buf, len);

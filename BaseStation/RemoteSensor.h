@@ -17,6 +17,9 @@ class RemoteSensor
 	void forget();
 	void pair(uint16_t timeout);
 	
+	virtual bool recover() = 0;
+	virtual void reset(bool nv) = 0;
+	
 	protected:
 	virtual uint32_t clockms() = 0;
 	virtual void print(const char* str) = 0;
@@ -26,8 +29,7 @@ class RemoteSensor
 	virtual int available() = 0;
 	virtual int read(const void* buffer, uint16_t len) = 0;
 	
-	virtual void save(uint16_t addr, const void* buffer, uint16_t len) = 0;
-	virtual void load(uint16_t addr, const void* buffer, uint16_t len) = 0;
+	virtual void save() = 0;
 	
 	virtual void seedRnd(uint16_t seed) = 0;
 	virtual uint16_t rnd() = 0;

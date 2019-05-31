@@ -3,6 +3,7 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "printf.h"
+#include "FM25V10.h"
 
 #include <SPI.h>
 
@@ -13,8 +14,10 @@
 
 #define RF24_CS_PIN   10
 #define RF24_CE_PIN   9
+#define MEM_CS_PIN    8
 
 RF24 radio(RF24_CE_PIN, RF24_CS_PIN);
+FM25V10 memoryDevice(MEM_CS_PIN);
 TempSensor temperatureSensor;
 
 void setup()
@@ -59,7 +62,7 @@ void loop()
       {
         case 'p':
         case 'P':
-        temperatureSensor.forget();
+        temperatureSensor.reset(false);
         temperatureSensor.pair(300);
         break;
 
