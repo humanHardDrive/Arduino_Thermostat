@@ -14,8 +14,7 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   m_bUseRemote(false),
   m_nMemoryOffset(0)
 {
-  //Temporary before recovering from storage
-  strcpy(m_SavedData.networkID, "ABCDE");
+  randomSeed(analogRead(analogTempPin));
 
   for (uint8_t i = 0; i < ALL_HEAT_MODES; i++)
   {
@@ -28,6 +27,8 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   }
 
   m_pActiveRule = &m_TempRules[0][0][0];
+
+  reset(false);
 }
 
 ThermoStation::~ThermoStation()
@@ -293,36 +294,6 @@ void ThermoStation::updateLocalTemp()
 {
   if ((millis() - m_nLastTempSampleTime) > SAMPLE_DELAY)
   {
-    uint16_t average = 0;
-    float r = 0;
-    for (uint8_t i = 0; i < NUM_SAMPLES; i++)
-      average += m_LocalTempSample[i];
-    average /= NUM_SAMPLES;
-
-    for (uint8_t i = 1; i < NUM_SAMPLES; i++)
-      m_LocalTempSample[i] = m_LocalTempSample[i - 1];
-    m_LocalTempSample[0] = analogRead(m_analogTempPin);
-
-    r = ((1023.0 - (float)average) / 1023.0) * 10;
-
-    for (uint8_t i = 0; i < 39; i++)
-    {
-      if (r >= rTable[i])
-      {
-        float lower, upper, temp;
-        lower = (i - 1) * 5 + TABLE_OFFSET;
-        upper = i * 5 + TABLE_OFFSET;
-        temp = (r - rTable[i]) / (rTable[i - 1] - rTable[i]);
-        temp = (1 - temp) * (upper - lower) + lower;
-
-        if (!m_bInCelsius)
-          temp = (temp * 9.0 / 5.0) + 32;
-
-        m_LocalTemp = (byte)temp;
-        break;
-      }
-    }
-
     m_nLastTempSampleTime = millis();
   }
 }
@@ -415,16 +386,48 @@ int ThermoStation::read(const void* buf, uint16_t len)
   return 0;
 }
 
-void ThermoStation::save(uint16_t addr, const void* buf, uint16_t len)
+bool ThermoStation::recover()
 {
   if (m_pMemoryDev)
-    m_pMemoryDev->write(addr + m_nMemoryOffset, (byte*)buf, len);
+  {
+    m_pMemoryDev->read(BASE_STATION_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_SavedData, sizeof(m_SavedData));
+    uint16_t calcChkSum = calcChecksum((uint8_t*)&m_SavedData, sizeof(m_SavedData) - 2); //Don't include the checksum in the calculation
+
+    if (m_SavedData.checksum == calcChkSum)
+    {
+      if (!m_SavedData.UID)
+        return false;
+
+      return true;
+    }
+  }
+
+  return false;
 }
 
-void ThermoStation::load(uint16_t addr, const void* buf, uint16_t len)
+void ThermoStation::reset(bool nv)
+{
+  memset(&m_SavedData, 0, sizeof(m_SavedData));
+
+  m_SavedData.UID = random(65535) + 1;
+  m_SavedData.UID *= random(65535) + 1;
+
+  for (uint8_t i = 0; i < NETWORK_LEGNTH; i++)
+    m_SavedData.networkID[i] = random(256);
+
+  if (nv)
+    save();
+}
+
+void ThermoStation::save()
 {
   if (m_pMemoryDev)
-    m_pMemoryDev->read(addr + m_nMemoryOffset, (byte*)buf, len);
+  {
+    m_SavedData.checksum = calcChecksum((uint8_t*)&m_SavedData, sizeof(m_SavedData) - 2); //Don't include the checksum in the calculation
+    
+    m_pMemoryDev->write(BASE_STATION_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_SavedData, sizeof(m_SavedData));
+    m_pMemoryDev->write(SCHEDULE_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_TempRules, sizeof(m_TempRules));
+  }
 }
 
 void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)

@@ -11,6 +11,7 @@
 //#define NO_IO_EXP
 //#define NO_RTC
 //#define NO_STORAGE
+//#define FIRST_BOOT
 
 #include <Wire.h>
 #include <SPI.h>
@@ -197,6 +198,21 @@ void InitThermostat()
   lcd.print(F("Start thermostat"));
   thermostat.addRadio(&radio);
   thermostat.addMemoryDevice(&memoryDevice, 256); //Allocate 256 bytes for non-basestation uses
+
+#ifdef FIRST_BOOT
+  thermostat.reset(true);
+#endif
+
+  if (!thermostat.recover())
+  {
+    lcd.setCursor(0, 1);
+    lcd.print(F("FAILED"));
+#ifdef SERIAL_DEBUG
+    Serial.println(F("Failed to see RTC time change..."));
+#endif
+    while (1);
+  }
+
   thermostat.begin();
   thermostat.background(rtc.now()); //Call one iteration of the backround loop to get the target temp
   lcd.setCursor(0, 1);

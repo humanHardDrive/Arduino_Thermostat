@@ -32,6 +32,9 @@ class ThermoStation : public BaseStation
     void addMemoryDevice(FM25V10* pMemDevice, uint32_t offset);
     void begin();
 
+    virtual bool recover();
+    virtual void reset(bool nv);
+
     void setHeatMode(byte mode);
     void setFanMode(byte mode);
 
@@ -96,8 +99,7 @@ class ThermoStation : public BaseStation
     int available();
     int read(const void* buf, uint16_t len);
 
-    void save(uint16_t addr, const void* buf, uint16_t len);
-    void load(uint16_t addr, const void* buf, uint16_t len);
+    virtual void save();
 
     void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 
@@ -111,16 +113,9 @@ class ThermoStation : public BaseStation
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
-  
-    const float TABLE_OFFSET = -40.0;
-    float rTable[39] =
-    {
-      166.047, 119.950, 87.600, 64.643, 48.179, 46.250, 27.523, 21.078,
-      16.277, 12.669, 9.936, 7.849, 6.244, 5.000, 4.030, 3.267, 2.665,
-      2.186, 1.803, 1.494, 1.245, 1.042, 0.8765, 0.7405, 0.6282, 0.5352,
-      0.4577, 0.393, 0.3386, 0.2929, 0.2542, 0.2213, 0.1933, 0.1694,
-      0.1488, 0.1312, 0.116, 0.1028, 0.09132
-    };
+
+    static const uint64_t BASE_STATION_DATA_OFFSET = 0;
+    static const uint64_t SCHEDULE_DATA_OFFSET = BASE_STATION_DATA_OFFSET + sizeof(m_SavedData);
 
     uint16_t m_LocalTempSample[NUM_SAMPLES];
     uint32_t m_nLastTempSampleTime = 0;

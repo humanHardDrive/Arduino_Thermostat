@@ -7,8 +7,6 @@ BaseStation::BaseStation()
 {
 	m_bInDiscovery = false;
 	m_nMsgID = 0;
-	
-	m_SavedData.UID = 0;
 }
 
 BaseStation::~BaseStation()
@@ -267,4 +265,14 @@ void BaseStation::addPairedDevice(uint32_t UID, char* sName)
 	m_SavedData.pairedDevice[emptyIndex].UID = UID;
 	memcpy(m_SavedData.pairedDevice[emptyIndex].name, sName, REMOTE_NAME_LENGTH);
 	m_SavedData.nNumPairedDevices++;
+}
+
+uint16_t BaseStation::calcChecksum(uint8_t* ptr, uint16_t len)
+{
+	uint16_t chksum = 0;
+	
+	for(uint16_t i = 0; i < len; i++)
+		chksum += ptr[i];
+	
+	return chksum;
 }
