@@ -6,6 +6,7 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "Menu.h"
+#include <Sleep_n0m1.h>
 
 #define NO_RADIO
 //#define NO_IO_EXP
@@ -14,6 +15,9 @@
 //#define FIRST_BOOT
 
 #define SERIAL_DEBUG
+
+#define SLEEP_TIME     (30*1000UL)
+#define AWAKE_TIME     (20*1000UL)
 
 #include <Wire.h>
 #include <SPI.h>
@@ -70,6 +74,7 @@ LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, 
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 RTClib          rtc;
 ThermoStation   thermostat(LOCAL_TEMP_PIN);
+Sleep           sleep;
 
 #define IO_DEBOUNCE_TIME  5
 uint32_t lastIOExpUpdateTime = 0;
@@ -78,7 +83,9 @@ char btnEdge[ALL_BTNS];
 byte outputMirror = 0x00;
 
 bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false, bForceUpdate = false;
+bool bAwake = true;
 uint32_t nLastTempUpdate = 0, nLastTimeUpdate = 0;
+uint32_t nTimeAwake = 0;
 
 void InitLCD()
 {
@@ -114,7 +121,7 @@ void InitIOExpander()
 
   pinMode(2, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(IO_EXP_INT_PIN), IOExpanderIntHandler, FALLING);
-  
+
   delay(1000);
 }
 
@@ -232,7 +239,11 @@ void InitThermostat()
 
 void IOExpanderIntHandler()
 {
-  Serial.println("INTERRUPT"); 
+  Serial.println("INTERRUPT");
+  outputMirror &= (byte)(~(1 << LCD_BACKLIGHT)); //Turn on the backlight
+  UpdateControlOutputs(); //Update the IO expander outputs
+  bAwake = true; //Wake up the device
+  nTimeAwake = millis();
 }
 
 void setup()
@@ -271,6 +282,7 @@ void setup()
   InitRTC();
 #endif
 
+  sleep.pwrDownMode();
   InitThermostat();
 }
 
@@ -438,8 +450,26 @@ void UpdateControlOutputs()
   bOldFanState = thermostat.isFanOn();
 }
 
+void UpdateSleepState()
+{
+  if ((millis() - nTimeAwake) > AWAKE_TIME)
+  {
+    Serial.println("SLEEP");
+    outputMirror |= (byte)((1 << LCD_BACKLIGHT)); //Turn off the backlight
+    UpdateControlOutputs(); //Update the IO expander outputs
+    delay(100);
+    bAwake = false;
+    sleep.sleepDelay(SLEEP_TIME, bAwake);
+    bAwake = true;
+    nTimeAwake = millis();
+    Serial.println("WAKEUP");
+  }
+}
+
 void loop()
 {
+  UpdateSleepState();
+
   //Update the button states
   if ((millis() - lastIOExpUpdateTime) > 5)
   {
