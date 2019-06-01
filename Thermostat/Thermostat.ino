@@ -13,6 +13,8 @@
 //#define NO_STORAGE
 //#define FIRST_BOOT
 
+#define SERIAL_DEBUG
+
 #include <Wire.h>
 #include <SPI.h>
 
@@ -20,29 +22,29 @@
 #define VERSION     F("v0.0")
 
 //Arduino Pins
-#define IO_EXP_RST_PIN  A0
-#define MEM_CS_PIN      A1
-#define LOCAL_TEMP_PIN  A2
+#define SPI_SCK_PIN     13
+#define SPI_MISO_PIN    12
+#define SPI_MOSI_PIN    11
+#define MEM_CS_PIN      10
+#define LCD_RS_PIN      9
+#define LCD_EN_PIN      8
+#define LCD_D4_PIN      7
+#define LCD_D5_PIN      6
+#define LCD_D6_PIN      5
+#define LCD_D7_PIN      4
+#define IO_EXP_INT_PIN  2
+
+#define IO_EXP_CS_PIN   A0
+#define IO_EXP_RST_PIN  A1
+#define RF24_CE_PIN     A2
+#define RF24_CS_PIN     A3
 #define I2C_SDA         A4
 #define I2C_SCL         A5
-
-#define IO_EXP_CS_PIN   8
-#define RF24_CE_PIN     9
-#define RF24_CS_PIN     10
-
-#define SPI_MOSI_PIN    11
-#define SPI_MISO_PIN    12
-#define SPI_SCK_PIN     13
-
-#define LCD_RS_PIN      7
-#define LCD_EN_PIN      6
-#define LCD_D4_PIN      5
-#define LCD_D5_PIN      4
-#define LCD_D6_PIN      3
-#define LCD_D7_PIN      2
+#define LOCAL_TEMP_PIN  A6
 
 //IO Expander Pins
-enum BUTTON_INDEX
+//Inputs
+enum IO_EXP_GPIOA
 {
   UP_BTN = 0,
   DOWN_BTN,
@@ -52,11 +54,13 @@ enum BUTTON_INDEX
   ALL_BTNS
 };
 
-enum AC_CONTROL_INDEX
+//Outputs
+enum IO_EXP_GPIOB
 {
   HEAT_ON,
   COOL_ON,
-  FAN_ON
+  FAN_ON,
+  LCD_BACKLIGHT
 };
 
 //Variables
@@ -89,9 +93,10 @@ void InitIOExpander()
   lcd.setCursor(0, 0);
   lcd.print(F("Init IO expander"));
   IOExpander.reset();
-  IOExpander.writeReg(MCP23s17::IODIRA, 0xFF);
-  IOExpander.writeReg(MCP23s17::GPPUA, 0xFF);
-  IOExpander.writeReg(MCP23s17::IODIRB, 0x00);
+  IOExpander.writeReg(MCP23s17::IODIRA, 0xFF); //Bank A are all inputs
+  IOExpander.writeReg(MCP23s17::GPPUA, 0xFF); //Enable pull-ups on bank A
+  IOExpander.writeReg(MCP23s17::GPINTENA, 0xFF); //Enable interrupts on all pins
+  IOExpander.writeReg(MCP23s17::IODIRB, 0x00); //Bank B are all outputs
   IOExpander.writeReg(MCP23s17::OLATB, outputMirror);
   delay(500);
   lcd.setCursor(0, 1);
@@ -106,6 +111,10 @@ void InitIOExpander()
 #endif
     while (1);
   }
+
+  pinMode(2, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(IO_EXP_INT_PIN), IOExpanderIntHandler, FALLING);
+  
   delay(1000);
 }
 
@@ -219,6 +228,11 @@ void InitThermostat()
   lcd.print(thermostat.getPairedCount());
   lcd.print(F(" paired"));
   delay(2000);
+}
+
+void IOExpanderIntHandler()
+{
+  Serial.println("INTERRUPT"); 
 }
 
 void setup()
@@ -369,18 +383,8 @@ void UpdateTimeDisplay()
   }
 }
 
-void loop()
+void UpdateControlOutputs()
 {
-  //Update the button states
-  if ((millis() - lastIOExpUpdateTime) > 5)
-  {
-    UpdateButtonStates();
-    lastIOExpUpdateTime = millis();
-  }
-
-  //Update the thermostat with the current time
-  thermostat.background(rtc.now());
-
   //Check for changes to the heat control
   if (thermostat.isHeatOn() && !bOldHeatState)
   {
@@ -432,6 +436,20 @@ void loop()
   bOldHeatState = thermostat.isHeatOn();
   bOldCoolState = thermostat.isCoolOn();
   bOldFanState = thermostat.isFanOn();
+}
+
+void loop()
+{
+  //Update the button states
+  if ((millis() - lastIOExpUpdateTime) > 5)
+  {
+    UpdateButtonStates();
+    UpdateControlOutputs();
+    lastIOExpUpdateTime = millis();
+  }
+
+  //Update the thermostat with the current time
+  thermostat.background(rtc.now());
 
   if ((millis() - nLastTempUpdate) > 1000)
   {
