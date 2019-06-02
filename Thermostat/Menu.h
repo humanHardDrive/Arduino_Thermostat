@@ -3,6 +3,18 @@
 
 #include "Arduino.h"
 
+#define TEMP_READING_LINE   0
+#define SCHEDULE_LINE       1
+#define MODE_LINE           2
+#define MODE_OFFSET         0
+#define FAN_LINE            2
+#define FAN_OFFSET          11
+#define TIME_LINE           3
+#define DATE_OFFSET         2
+#define TIME_OFFSET         (DATE_OFFSET + 7)
+#define DAY_OFFSET          (DATE_OFFSET + 14)
+
+#define SCHEDULE_STRING         F("Schedule: ")
 #define SET_TEMP_STRING         F("Set: ")
 #define MODE_STRING             F("Mode: ")
 #define HEAT_STRING             F("Heat")

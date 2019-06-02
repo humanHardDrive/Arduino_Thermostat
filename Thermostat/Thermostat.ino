@@ -14,7 +14,7 @@
 //#define NO_STORAGE
 //#define FIRST_BOOT
 
-#define SERIAL_DEBUG
+//#define SERIAL_DEBUG
 
 #define SLEEP_TIME     (30*1000UL)
 #define AWAKE_TIME     (20*1000UL)
@@ -84,7 +84,7 @@ byte outputMirror = 0x00;
 
 bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false, bForceUpdate = false;
 bool bAwake = true;
-uint32_t nLastTempUpdate = 0, nLastTimeUpdate = 0;
+uint32_t nLastLCDUpdate = 0;
 uint32_t nTimeAwake = 0;
 
 void InitLCD()
@@ -239,9 +239,12 @@ void InitThermostat()
 
 void IOExpanderIntHandler()
 {
-  Serial.println("INTERRUPT");
-  outputMirror &= (byte)(~(1 << LCD_BACKLIGHT)); //Turn on the backlight
-  UpdateControlOutputs(); //Update the IO expander outputs
+  if (!bAwake)
+  {
+    outputMirror &= (byte)(~(1 << LCD_BACKLIGHT)); //Turn on the backlight
+    UpdateControlOutputs(); //Update the IO expander outputs
+  }
+  UpdateButtonStates();
   bAwake = true; //Wake up the device
   nTimeAwake = millis();
 }
@@ -259,16 +262,11 @@ void setup()
   SPI.begin();
   Wire.begin();
 
-  InitLCD();
-
-  lcd.println(APP_NAME);
-  lcd.setCursor(0, 1);
-  lcd.print(VERSION);
-  delay(1000);
-
 #ifndef NO_IO_EXP
   InitIOExpander();
 #endif
+
+  InitLCD();
 
 #ifndef NO_RADIO
   InitRadio();
@@ -284,6 +282,7 @@ void setup()
 
   sleep.pwrDownMode();
   InitThermostat();
+  lcd.clear();
 }
 
 void UpdateButtonStates()
@@ -326,72 +325,67 @@ void UpdateButtonStates()
 
 void UpdateTimeDisplay()
 {
-  if ((millis() - nLastTimeUpdate) > 1000)
+  byte month, day, hour, minute;
+  month = rtc.now().month();
+  day = rtc.now().day();
+  hour = rtc.now().hour();
+  minute = rtc.now().minute();
+
+  lcd.setCursor(DATE_OFFSET, TIME_LINE);
+
+  if (month < 10)
+    lcd.print(0);
+  lcd.print(month);
+
+  lcd.print('-');
+
+  if (day < 10)
+    lcd.print(0);
+  lcd.print(day);
+
+  lcd.setCursor(TIME_OFFSET, TIME_LINE);
+
+  if (hour < 10)
+    lcd.print(0);
+  lcd.print((int)hour);
+
+  lcd.print(':');
+
+  if (minute < 10)
+    lcd.print(0);
+  lcd.print((int)minute);
+
+  lcd.setCursor(DAY_OFFSET, TIME_LINE);
+
+  switch (ThermoStation::dayofweek(rtc.now()))
   {
-    byte month, day, hour, minute;
-    month = rtc.now().month();
-    day = rtc.now().day();
-    hour = rtc.now().hour();
-    minute = rtc.now().minute();
+    case 0:
+      lcd.print(SUNDAY_STRING);
+      break;
 
-    lcd.setCursor(0, 1);
+    case 1:
+      lcd.print(MONDAY_STRING);
+      break;
 
-    if (month < 10)
-      lcd.print(0);
-    lcd.print(month);
+    case 2:
+      lcd.print(TUESDAY_STRING);
+      break;
 
-    lcd.print('-');
+    case 3:
+      lcd.print(WEDNESDAY_STRING);
+      break;
 
-    if (day < 10)
-      lcd.print(0);
-    lcd.print(day);
+    case 4:
+      lcd.print(THURSDAY_STRING);
+      break;
 
-    lcd.print(F("  "));
+    case 5:
+      lcd.print(FRIDAY_STRING);
+      break;
 
-    if (hour < 10)
-      lcd.print(0);
-    lcd.print((int)hour);
-
-    lcd.print(':');
-
-    if (minute < 10)
-      lcd.print(0);
-    lcd.print((int)minute);
-
-    lcd.setCursor(14, 1);
-
-    switch (ThermoStation::dayofweek(rtc.now()))
-    {
-      case 0:
-        lcd.print(SUNDAY_STRING);
-        break;
-
-      case 1:
-        lcd.print(MONDAY_STRING);
-        break;
-
-      case 2:
-        lcd.print(TUESDAY_STRING);
-        break;
-
-      case 3:
-        lcd.print(WEDNESDAY_STRING);
-        break;
-
-      case 4:
-        lcd.print(THURSDAY_STRING);
-        break;
-
-      case 5:
-        lcd.print(FRIDAY_STRING);
-        break;
-
-      case 6:
-        lcd.print(SATURDAY_STRING);
-        break;
-    }
-
-    nLastTimeUpdate = millis();
+    case 6:
+      lcd.print(SATURDAY_STRING);
+      break;
   }
 }
 
@@ -466,10 +460,8 @@ void UpdateSleepState()
   }
 }
 
-void loop()
+void UpdateIOExpander()
 {
-  UpdateSleepState();
-
   //Update the button states
   if ((millis() - lastIOExpUpdateTime) > 5)
   {
@@ -477,43 +469,76 @@ void loop()
     UpdateControlOutputs();
     lastIOExpUpdateTime = millis();
   }
+}
+
+void UpdateReadingDisplay()
+{
+  lcd.setCursor(0, TEMP_READING_LINE);
+  lcd.print(thermostat.getTargetTemp());
+  lcd.print((char)223); //degree symbol
+
+  lcd.print('/');
+
+  lcd.print(thermostat.getCurrentTemp());
+  lcd.print((char)223);
+}
+
+void UpdateModeDisplay()
+{
+  lcd.setCursor(MODE_OFFSET, MODE_LINE);
+  lcd.print(MODE_STRING);
+  switch (thermostat.getHeatMode())
+  {
+    case ThermoStation::OFF:
+      lcd.print(OFF_STRING);
+      break;
+
+    case ThermoStation::HEAT:
+      lcd.print(HEAT_STRING);
+      break;
+
+    case ThermoStation::COOL:
+      lcd.print(COOL_STRING);
+      break;
+  }
+
+  lcd.setCursor(FAN_OFFSET, FAN_LINE);
+  lcd.print(FAN_STRING);
+  switch (thermostat.getFanMode())
+  {
+    case ThermoStation::AUTO:
+      lcd.print(AUTO_STRING);
+      break;
+
+    case ThermoStation::ON:
+      lcd.print(ON_STRING);
+      break;
+  }
+}
+
+void UpdateScheduleDisplay()
+{
+  lcd.setCursor(0 , SCHEDULE_LINE);
+  lcd.print(SCHEDULE_STRING);
+}
+
+void loop()
+{
+  UpdateSleepState();
+  UpdateIOExpander();
+
+  if ((millis() - nLastLCDUpdate) > 1000)
+  {
+    UpdateReadingDisplay();
+    UpdateScheduleDisplay();
+    UpdateModeDisplay();
+    UpdateTimeDisplay();
+
+    nLastLCDUpdate = millis();
+  }
 
   //Update the thermostat with the current time
   thermostat.background(rtc.now());
-
-  if ((millis() - nLastTempUpdate) > 1000)
-  {
-    lcd.setCursor(0, 0);
-    lcd.print(thermostat.getTargetTemp());
-    lcd.print((char)223); //degree symbol
-
-    lcd.print('/');
-
-    lcd.print(thermostat.getCurrentTemp());
-    lcd.print((char)223);
-
-    lcd.print(' ');
-
-    switch (thermostat.getHeatMode())
-    {
-      case ThermoStation::OFF:
-        lcd.print(' ');
-        lcd.print(OFF_STRING);
-        break;
-
-      case ThermoStation::HEAT:
-        lcd.print(HEAT_STRING);
-        break;
-
-      case ThermoStation::COOL:
-        lcd.print(COOL_STRING);
-        break;
-    }
-
-    nLastTempUpdate = millis();
-  }
-
-  UpdateTimeDisplay();
 
 #ifdef SERIAL_DEBUG
   uint32_t UID;
