@@ -41,6 +41,8 @@ class ThermoStation : public BaseStation
     byte getHeatMode();
     byte getFanMode();
 
+    bool usingSchedule() const {return m_bUseSchedule;}
+
     void setTargetTemp(byte temp);
     byte getTargetTemp();
 
@@ -135,7 +137,7 @@ class ThermoStation : public BaseStation
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
     TEMP_RULE *m_pActiveRule;
 
-    bool m_HeatOn, m_CoolOn, m_bUseRemote;
+    bool m_HeatOn, m_CoolOn, m_bUseRemote, m_bUseSchedule;
 
     RF24* m_pRadio;
     FM25V10* m_pMemoryDev;

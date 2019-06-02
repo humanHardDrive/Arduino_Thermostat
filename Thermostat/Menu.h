@@ -3,12 +3,21 @@
 
 #include "Arduino.h"
 
-#define TEMP_READING_LINE   0
-#define SCHEDULE_LINE       1
+#define TEMP_READING_LINE     0
+
+#define SCHEDULE_LINE         1
+#define SCHEDULE_OFFSET       0
+#define SCHEDULE_VAL_OFFSET   10
+#define SET_LINE              1
+#define SET_OFFSET            15
+
 #define MODE_LINE           2
 #define MODE_OFFSET         0
+#define MODE_VAL_OFFSET     6
 #define FAN_LINE            2
 #define FAN_OFFSET          11
+#define FAN_VAL_OFFSET      16
+
 #define TIME_LINE           3
 #define DATE_OFFSET         2
 #define TIME_OFFSET         (DATE_OFFSET + 7)
@@ -20,7 +29,7 @@
 #define HEAT_STRING             F("Heat")
 #define COOL_STRING             F("Cool")
 #define ON_STRING               F("On")
-#define OFF_STRING              F("Off")
+#define OFF_STRING              F("Off ")
 #define AUTO_STRING             F("Auto")
 #define MENU_STRING             F("Menu")
 #define FAN_STRING              F("Fan: ")

@@ -14,13 +14,16 @@
 //#define NO_STORAGE
 //#define FIRST_BOOT
 
-//#define SERIAL_DEBUG
+#define SERIAL_DEBUG
 
 #define SLEEP_TIME     (30*1000UL)
 #define AWAKE_TIME     (20*1000UL)
 
 #include <Wire.h>
 #include <SPI.h>
+
+#define LCD_ROWS    4
+#define LCD_COLS    20
 
 #define APP_NAME    F("REMOTE THERMOSTAT")
 #define VERSION     F("v0.0")
@@ -87,9 +90,11 @@ bool bAwake = true;
 uint32_t nLastLCDUpdate = 0;
 uint32_t nTimeAwake = 0;
 
+char nSelectedColumn = -1, nSelectedRow = -1;
+
 void InitLCD()
 {
-  lcd.begin(20, 4);
+  lcd.begin(LCD_COLS, LCD_ROWS);
   lcd.clear();
   lcd.setCursor(0, 0);
 }
@@ -239,6 +244,7 @@ void InitThermostat()
 
 void IOExpanderIntHandler()
 {
+  Serial.println("INTERRUPT");
   if (!bAwake)
   {
     outputMirror &= (byte)(~(1 << LCD_BACKLIGHT)); //Turn on the backlight
@@ -321,6 +327,259 @@ void UpdateButtonStates()
   }
 
   oldBtnState = currentBtnState;
+}
+
+void ToggleFanMode()
+{
+  switch (thermostat.getFanMode())
+  {
+    case ThermoStation::ON:
+      thermostat.setFanMode(ThermoStation::AUTO);
+      break;
+
+    case ThermoStation::AUTO:
+      thermostat.setFanMode(ThermoStation::ON);
+      break;
+  }
+}
+
+void ToggleHeatMode(bool bUp)
+{
+  switch (thermostat.getHeatMode())
+  {
+    case ThermoStation::HEAT:
+      if (bUp)
+        thermostat.setHeatMode(ThermoStation::OFF);
+      else
+        thermostat.setHeatMode(ThermoStation::COOL);
+      break;
+
+    case ThermoStation::COOL:
+      if (bUp)
+        thermostat.setHeatMode(ThermoStation::HEAT);
+      else
+        thermostat.setHeatMode(ThermoStation::OFF);
+      break;
+
+    case ThermoStation::OFF:
+      if (bUp)
+        thermostat.setHeatMode(ThermoStation::COOL);
+      else
+        thermostat.setHeatMode(ThermoStation::HEAT);
+      break;
+  }
+}
+
+void UpdateMenu()
+{
+  char btnPressed = -1;
+
+  if (btnEdge[UP_BTN] == 1)
+    btnPressed = UP_BTN;
+  else if (btnEdge[DOWN_BTN] == 1)
+    btnPressed = DOWN_BTN;
+  else if (btnEdge[LEFT_BTN] == 1)
+    btnPressed = LEFT_BTN;
+  else if (btnEdge[RIGHT_BTN] == 1)
+    btnPressed = RIGHT_BTN;
+
+  switch (nSelectedRow)
+  {
+    case -1:
+      switch (btnPressed)
+      {
+        case DOWN_BTN:
+        case RIGHT_BTN:
+          nSelectedRow = TEMP_READING_LINE;
+          nSelectedColumn = 0;
+          break;
+      }
+      break;
+
+    case TEMP_READING_LINE:
+      switch (btnPressed)
+      {
+        case UP_BTN:
+          nSelectedRow = -1;
+          nSelectedColumn = -1;
+          break;
+
+        case DOWN_BTN:
+          nSelectedRow = SCHEDULE_LINE;
+          nSelectedColumn = 0;
+          break;
+
+        case LEFT_BTN:
+          //Change device
+          break;
+
+        case RIGHT_BTN:
+          //Change device
+          break;
+      }
+      break;
+
+    case SCHEDULE_LINE:
+      switch (btnPressed)
+      {
+        case UP_BTN:
+          switch (nSelectedColumn)
+          {
+            case 0:
+              nSelectedRow = TEMP_READING_LINE;
+              nSelectedColumn = 0;
+              break;
+
+            case SCHEDULE_VAL_OFFSET:
+              //Turn schedule on or off
+              break;
+
+            case SET_OFFSET:
+              //Increase target temp
+              break;
+          }
+          break;
+
+        case DOWN_BTN:
+          switch (nSelectedColumn)
+          {
+            case 0:
+              nSelectedRow = MODE_LINE;
+              nSelectedColumn = 0;
+              break;
+
+            case SCHEDULE_VAL_OFFSET:
+              //Turn schedule on or off
+              break;
+
+            case SET_OFFSET:
+              //Decrease target temp
+              break;
+          }
+          break;
+
+        case LEFT_BTN:
+          switch (nSelectedColumn)
+          {
+            case SCHEDULE_VAL_OFFSET:
+              nSelectedColumn = 0;
+              break;
+
+            case SET_OFFSET:
+              nSelectedColumn = SCHEDULE_VAL_OFFSET;
+              break;
+          }
+          break;
+
+        case RIGHT_BTN:
+          switch (nSelectedColumn)
+          {
+            case 0:
+              nSelectedColumn = SCHEDULE_VAL_OFFSET;
+              break;
+
+            case SCHEDULE_VAL_OFFSET:
+              nSelectedColumn = SET_OFFSET;
+              break;
+          }
+          break;
+      }
+      break;
+
+    case MODE_LINE:
+      switch (btnPressed)
+      {
+        case UP_BTN:
+          switch (nSelectedColumn)
+          {
+            case 0:
+              nSelectedRow = SCHEDULE_LINE;
+              nSelectedColumn = 0;
+              break;
+
+            case MODE_VAL_OFFSET:
+              ToggleHeatMode(true);
+              break;
+
+            case FAN_VAL_OFFSET:
+              ToggleFanMode();
+              break;
+          }
+          break;
+
+        case DOWN_BTN:
+          switch (nSelectedColumn)
+          {
+            case 0:
+              nSelectedRow = TIME_LINE;
+              nSelectedColumn = 0;
+              break;
+
+            case MODE_VAL_OFFSET:
+              ToggleHeatMode(false);
+              break;
+
+            case FAN_VAL_OFFSET:
+              ToggleFanMode();
+              break;
+          }
+          break;
+
+        case LEFT_BTN:
+          switch (nSelectedColumn)
+          {
+            case MODE_VAL_OFFSET:
+              nSelectedColumn = 0;
+              break;
+
+            case FAN_VAL_OFFSET:
+              nSelectedColumn = MODE_VAL_OFFSET;
+              break;
+          }
+          break;
+
+        case RIGHT_BTN:
+          switch (nSelectedColumn)
+          {
+            case 0:
+              nSelectedColumn = MODE_VAL_OFFSET;
+              break;
+
+            case MODE_VAL_OFFSET:
+              nSelectedColumn = FAN_VAL_OFFSET;
+              break;
+          }
+          break;
+      }
+      break;
+
+    case TIME_LINE:
+      switch (btnPressed)
+      {
+        case UP_BTN:
+          nSelectedRow = MODE_LINE;
+          nSelectedColumn = 0;
+          break;
+
+        case LEFT_BTN:
+          break;
+
+        case RIGHT_BTN:
+          break;
+      }
+      break;
+  }
+
+  if (btnPressed != -1)
+  {
+    nLastLCDUpdate = (millis() - 2000);
+    Serial.print((int)btnPressed);
+    Serial.print(' ');
+    Serial.print((int)nSelectedRow);
+    Serial.print(' ');
+    Serial.print((int)nSelectedColumn);
+    Serial.println();
+  }
 }
 
 void UpdateTimeDisplay()
@@ -449,14 +708,23 @@ void UpdateSleepState()
   if ((millis() - nTimeAwake) > AWAKE_TIME)
   {
     Serial.println("SLEEP");
+
     outputMirror |= (byte)((1 << LCD_BACKLIGHT)); //Turn off the backlight
     UpdateControlOutputs(); //Update the IO expander outputs
+
+    //Reset the menu selection when going to sleep
+    nSelectedColumn = -1;
+    nSelectedRow = -1;
+    lcd.noBlink();
+
     delay(100);
+
     bAwake = false;
     sleep.sleepDelay(SLEEP_TIME, bAwake);
     bAwake = true;
     nTimeAwake = millis();
-    Serial.println("WAKEUP");
+
+    Serial.println("WAKE");
   }
 }
 
@@ -467,6 +735,7 @@ void UpdateIOExpander()
   {
     UpdateButtonStates();
     UpdateControlOutputs();
+    UpdateMenu(); //Handle any button presses to update the menu
     lastIOExpUpdateTime = millis();
   }
 }
@@ -520,6 +789,15 @@ void UpdateScheduleDisplay()
 {
   lcd.setCursor(0 , SCHEDULE_LINE);
   lcd.print(SCHEDULE_STRING);
+
+  if (thermostat.usingSchedule())
+    lcd.print(ON_STRING);
+  else
+    lcd.print(OFF_STRING);
+
+  lcd.setCursor(SET_OFFSET, SCHEDULE_LINE);
+  lcd.print(thermostat.getTargetTemp());
+  lcd.print((char)223); //degree symbol
 }
 
 void loop()
@@ -529,10 +807,18 @@ void loop()
 
   if ((millis() - nLastLCDUpdate) > 1000)
   {
+    lcd.noBlink();
     UpdateReadingDisplay();
     UpdateScheduleDisplay();
     UpdateModeDisplay();
     UpdateTimeDisplay();
+
+    if (nSelectedRow >= 0 && nSelectedColumn >= 0)
+    {
+      lcd.setCursor(nSelectedColumn, nSelectedRow);
+      lcd.blink();
+    }
+
 
     nLastLCDUpdate = millis();
   }

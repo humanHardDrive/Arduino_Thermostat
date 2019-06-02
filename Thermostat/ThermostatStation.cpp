@@ -3,6 +3,7 @@
 ThermoStation::ThermoStation(byte analogTempPin) :
   m_HeatMode(0),
   m_FanMode(0),
+  m_bUseSchedule(true),
   m_HeatOn(false),
   m_CoolOn(false),
   m_pRadio(NULL),
