@@ -22,18 +22,21 @@
 #define DATE_OFFSET         2
 #define TIME_OFFSET         (DATE_OFFSET + 7)
 #define DAY_OFFSET          (DATE_OFFSET + 14)
+#define SETTINGS_LINE       3
+#define SETTINGS_OFFSET     6
 
 #define SCHEDULE_STRING         F("Schedule: ")
 #define SET_TEMP_STRING         F("Set: ")
 #define MODE_STRING             F("Mode: ")
 #define HEAT_STRING             F("Heat")
 #define COOL_STRING             F("Cool")
-#define ON_STRING               F("On")
+#define ON_STRING               F("On  ")
 #define OFF_STRING              F("Off ")
 #define AUTO_STRING             F("Auto")
 #define MENU_STRING             F("Menu")
 #define FAN_STRING              F("Fan: ")
 #define EXIT_STRING             F("Exit")
+#define SETTINGS_STRING         F("Settings")
 
 #define MONDAY_STRING           F(" M")
 #define TUESDAY_STRING          F(" T")

@@ -18,6 +18,9 @@
 #define NUM_SAMPLES   15
 #define SAMPLE_DELAY  1000
 
+#define MAX_TEMP  90
+#define MIN_TEMP  60
+
 //Custom applicaiton messages
 #define QUERY_TEMPERATURE   (USER_MSG_BASE + 0x00)
 #define SET_POLLING_RATE    (USER_MSG_BASE + 0x01)
@@ -40,6 +43,9 @@ class ThermoStation : public BaseStation
 
     byte getHeatMode();
     byte getFanMode();
+
+    void enableSchedule() {m_bUseSchedule = true;}
+    void disableSchedule() {m_bUseSchedule = false;}
 
     bool usingSchedule() const {return m_bUseSchedule;}
 

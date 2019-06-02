@@ -90,6 +90,11 @@ byte ThermoStation::getFanMode()
 
 void ThermoStation::setTargetTemp(byte temp)
 {
+  if (temp > MAX_TEMP)
+    temp = MAX_TEMP;
+  else if (temp < MIN_TEMP)
+    temp = MIN_TEMP;
+
   m_TargetTemp = temp;
 }
 
@@ -217,7 +222,9 @@ void ThermoStation::background(const DateTime& t)
 {
   BaseStation::background();
 
-  updateSchedule(t);
+  if (m_bUseSchedule)
+    updateSchedule(t);
+    
   updateHeatState();
   updateLocalTemp();
 }
@@ -425,7 +432,7 @@ void ThermoStation::save()
   if (m_pMemoryDev)
   {
     m_SavedData.checksum = calcChecksum((uint8_t*)&m_SavedData, sizeof(m_SavedData) - 2); //Don't include the checksum in the calculation
-    
+
     m_pMemoryDev->write(BASE_STATION_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_SavedData, sizeof(m_SavedData));
     m_pMemoryDev->write(SCHEDULE_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_TempRules, sizeof(m_TempRules));
   }

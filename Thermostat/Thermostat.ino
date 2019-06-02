@@ -86,9 +86,9 @@ char btnEdge[ALL_BTNS];
 byte outputMirror = 0x00;
 
 bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false, bForceUpdate = false;
-bool bAwake = true;
+bool bAwake = true, bShowSettings = false, bInSettings = false;
 uint32_t nLastLCDUpdate = 0;
-uint32_t nTimeAwake = 0;
+volatile uint32_t nTimeAwake = 0;
 
 char nSelectedColumn = -1, nSelectedRow = -1;
 
@@ -97,6 +97,15 @@ void InitLCD()
   lcd.begin(LCD_COLS, LCD_ROWS);
   lcd.clear();
   lcd.setCursor(0, 0);
+}
+
+bool IOExpanderGood()
+{
+  if (IOExpander.readReg(MCP23s17::IODIRB) == 0x00 &&
+      IOExpander.readReg(MCP23s17::GPPUA) == 0xFF)
+    return true;
+
+  return false;
 }
 
 void InitIOExpander()
@@ -112,8 +121,7 @@ void InitIOExpander()
   IOExpander.writeReg(MCP23s17::OLATB, outputMirror);
   delay(500);
   lcd.setCursor(0, 1);
-  if (IOExpander.readReg(MCP23s17::IODIRB) == 0x00 &&
-      IOExpander.readReg(MCP23s17::GPPUA) == 0xFF)
+  if (IOExpanderGood())
     lcd.print(F("SUCCESS"));
   else
   {
@@ -370,6 +378,26 @@ void ToggleHeatMode(bool bUp)
   }
 }
 
+void ToggleSchedule()
+{
+  if (thermostat.usingSchedule())
+    thermostat.disableSchedule();
+  else
+    thermostat.enableSchedule();
+}
+
+void IncreaseTargetTemp()
+{
+  thermostat.disableSchedule();
+  thermostat.setTargetTemp(thermostat.getTargetTemp() + 1);
+}
+
+void DecreaseTargetTemp()
+{
+  thermostat.disableSchedule();
+  thermostat.setTargetTemp(thermostat.getTargetTemp() - 1);
+}
+
 void UpdateMenu()
 {
   char btnPressed = -1;
@@ -431,11 +459,11 @@ void UpdateMenu()
               break;
 
             case SCHEDULE_VAL_OFFSET:
-              //Turn schedule on or off
+              ToggleSchedule();
               break;
 
             case SET_OFFSET:
-              //Increase target temp
+              IncreaseTargetTemp();
               break;
           }
           break;
@@ -449,11 +477,11 @@ void UpdateMenu()
               break;
 
             case SCHEDULE_VAL_OFFSET:
-              //Turn schedule on or off
+              ToggleSchedule();
               break;
 
             case SET_OFFSET:
-              //Decrease target temp
+              DecreaseTargetTemp();
               break;
           }
           break;
@@ -562,9 +590,18 @@ void UpdateMenu()
           break;
 
         case LEFT_BTN:
+        case RIGHT_BTN:
+          bShowSettings = !bShowSettings;
           break;
 
-        case RIGHT_BTN:
+        case OK_BTN:
+          if (bShowSettings)
+          {
+            nSelectedRow = 0;
+            nSelectedColumn = 0;
+            bInSettings = true;
+            bShowSettings = false;
+          }
           break;
       }
       break;
@@ -646,6 +683,12 @@ void UpdateTimeDisplay()
       lcd.print(SATURDAY_STRING);
       break;
   }
+}
+
+void UpdateSettingsDisplay()
+{
+  lcd.setCursor(SETTINGS_OFFSET, SETTINGS_LINE);
+  lcd.print(SETTINGS_STRING);
 }
 
 void UpdateControlOutputs()
@@ -733,6 +776,9 @@ void UpdateIOExpander()
   //Update the button states
   if ((millis() - lastIOExpUpdateTime) > 5)
   {
+    if(!IOExpanderGood())
+      Serial.println("BAD IO EXP");
+    
     UpdateButtonStates();
     UpdateControlOutputs();
     UpdateMenu(); //Handle any button presses to update the menu
@@ -807,11 +853,16 @@ void loop()
 
   if ((millis() - nLastLCDUpdate) > 1000)
   {
+    lcd.clear();
     lcd.noBlink();
+    
     UpdateReadingDisplay();
     UpdateScheduleDisplay();
     UpdateModeDisplay();
-    UpdateTimeDisplay();
+    if (!bShowSettings)
+      UpdateTimeDisplay();
+    else
+      UpdateSettingsDisplay();
 
     if (nSelectedRow >= 0 && nSelectedColumn >= 0)
     {
