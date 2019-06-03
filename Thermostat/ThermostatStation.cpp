@@ -10,7 +10,6 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   m_pMemoryDev(NULL),
   m_LocalTemp(72),
   m_analogTempPin(analogTempPin),
-  m_bInCelsius(false),
   m_nRemoteDevice(-1),
   m_nMemoryOffset(0)
 {

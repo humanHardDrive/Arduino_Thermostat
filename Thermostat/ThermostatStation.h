@@ -132,7 +132,6 @@ class ThermoStation : public BaseStation
     uint16_t m_LocalTempSample[NUM_SAMPLES];
     uint32_t m_nLastTempSampleTime = 0;
     byte m_analogTempPin;
-    bool m_bInCelsius;
 
     struct TEMP_RULE
     {
