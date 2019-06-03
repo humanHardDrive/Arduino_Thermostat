@@ -116,7 +116,7 @@ class ThermoStation : public BaseStation
     void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
 
   private:
-    void handleTempQuery(uint32_t src, const void* buffer, uint16_t len);
+    void handleTempQuery(uint8_t PID, const void* buffer, uint16_t len);
 
     void updateLocalTemp();
     void updateSchedule(const DateTime& t);
@@ -143,7 +143,7 @@ class ThermoStation : public BaseStation
     uint32_t m_nOnHysteresis = (uint32_t)(5*60*1000), m_nOffHysteresis = (uint32_t)(5*60*1000);
     uint32_t m_nTimeLastCrossedThresh;
 
-    byte m_HeatMode, m_FanMode, m_TargetTemp, m_LocalTemp, m_RemoteTemp;
+    byte m_HeatMode, m_FanMode, m_TargetTemp, m_LocalTemp, m_RemoteTemp[MAX_PAIRED_COUNT];
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
     TEMP_RULE *m_pActiveRule;
 

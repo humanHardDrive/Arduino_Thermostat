@@ -276,3 +276,14 @@ uint16_t BaseStation::calcChecksum(uint8_t* ptr, uint16_t len)
 	
 	return chksum;
 }
+
+uint8_t BaseStation::UIDtoPID(uint32_t UID)
+{
+	for(uint8_t i = 0; i < MAX_PAIRED_COUNT; i++)
+	{
+		if(m_SavedData.pairedDevice[i].UID == UID)
+			return i;
+	}
+	
+	return MAX_PAIRED_COUNT;
+}

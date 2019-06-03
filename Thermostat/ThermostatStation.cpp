@@ -9,7 +9,6 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   m_pRadio(NULL),
   m_pMemoryDev(NULL),
   m_LocalTemp(72),
-  m_RemoteTemp(72),
   m_analogTempPin(analogTempPin),
   m_bInCelsius(false),
   m_nRemoteDevice(-1),
@@ -26,6 +25,8 @@ ThermoStation::ThermoStation(byte analogTempPin) :
       m_TempRules[0][i][j].temp = m_TempRules[1][i][j].temp = 60 + (5 * j);
     }
   }
+
+  memset(m_RemoteTemp, 72, MAX_PAIRED_COUNT);
 
   m_pActiveRule = &m_TempRules[0][0][0];
 
@@ -108,7 +109,7 @@ byte ThermoStation::getCurrentTemp()
   if (m_nRemoteDevice == -1)
     return m_LocalTemp;
   else
-    return m_RemoteTemp;
+    return m_RemoteTemp[m_nRemoteDevice];
 }
 
 void ThermoStation::selectNextRemoteDevice()
@@ -481,23 +482,28 @@ void ThermoStation::save()
 
 void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)
 {
-  switch (cmd)
+  uint8_t PID = UIDtoPID(src);
+
+  if (PID != MAX_PAIRED_COUNT)
   {
-    case QUERY_TEMPERATURE:
-      handleTempQuery(src, buffer, len);
-      break;
+    switch (cmd)
+    {
+      case QUERY_TEMPERATURE:
+        handleTempQuery(PID, buffer, len);
+        break;
+    }
   }
 
   BaseStation::handleCommand(cmd, src, buffer, len);
 }
 
-void ThermoStation::handleTempQuery(uint32_t src, const void* buffer, uint16_t len)
+void ThermoStation::handleTempQuery(uint8_t PID, const void* buffer, uint16_t len)
 {
 #ifdef SERIAL_DEBUG
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
-  uint8_t curTemp = *((uint8_t*)buffer);
+  m_RemoteTemp[PID] = *((uint8_t*)buffer);
 
 #ifdef SERIAL_DEBUG
   Serial.print(F("TEMP: "));

@@ -48,6 +48,8 @@ class BaseStation
 	
 	uint16_t calcChecksum(uint8_t* ptr, uint16_t len);
 	
+	uint8_t UIDtoPID(uint32_t UID);
+	
 	protected:
 	struct DISC_DEVICE
 	{
