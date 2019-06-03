@@ -16,6 +16,7 @@
 //Custom applicaiton messages
 #define QUERY_TEMPERATURE   (USER_MSG_BASE + 0x00)
 #define SET_POLLING_RATE    (USER_MSG_BASE + 0x01)
+#define SET_REMOTE_RQST     (USER_MSG_BASE + 0x02)
 
 class TempSensor : public RemoteSensor
 {
