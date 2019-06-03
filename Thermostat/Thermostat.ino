@@ -9,6 +9,7 @@
 #include <Sleep_n0m1.h>
 
 #define NO_RADIO
+#define STAY_AWAKE
 //#define NO_IO_EXP
 //#define NO_RTC
 //#define NO_STORAGE
@@ -108,34 +109,41 @@ bool IOExpanderGood()
   return false;
 }
 
-void InitIOExpander()
+void InitIOExpander(bool post)
 {
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print(F("Init IO expander"));
+  if (post)
+  {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(F("Init IO expander"));
+  }
+
   IOExpander.reset();
   IOExpander.writeReg(MCP23s17::IODIRA, 0xFF); //Bank A are all inputs
   IOExpander.writeReg(MCP23s17::GPPUA, 0xFF); //Enable pull-ups on bank A
   IOExpander.writeReg(MCP23s17::GPINTENA, 0xFF); //Enable interrupts on all pins
   IOExpander.writeReg(MCP23s17::IODIRB, 0x00); //Bank B are all outputs
   IOExpander.writeReg(MCP23s17::OLATB, outputMirror);
-  delay(500);
-  lcd.setCursor(0, 1);
-  if (IOExpanderGood())
-    lcd.print(F("SUCCESS"));
-  else
+
+  if (post)
   {
-    lcd.print(F("FAILED"));
+    delay(500);
+    lcd.setCursor(0, 1);
+    if (IOExpanderGood())
+      lcd.print(F("SUCCESS"));
+    else
+    {
+      lcd.print(F("FAILED"));
 #ifdef SERIAL_DEBUG
-    Serial.println(F("Failed to initialize IO expander..."));
+      Serial.println(F("Failed to initialize IO expander..."));
 #endif
-    while (1);
+      while (1);
+    }
+    delay(1000);
   }
 
   pinMode(2, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(IO_EXP_INT_PIN), IOExpanderIntHandler, FALLING);
-
-  delay(1000);
 }
 
 void InitRadio()
@@ -277,7 +285,7 @@ void setup()
   Wire.begin();
 
 #ifndef NO_IO_EXP
-  InitIOExpander();
+  InitIOExpander(true);
 #endif
 
   InitLCD();
@@ -398,19 +406,9 @@ void DecreaseTargetTemp()
   thermostat.setTargetTemp(thermostat.getTargetTemp() - 1);
 }
 
-void UpdateMenu()
+
+void UpdateMainMenu(char btnPressed)
 {
-  char btnPressed = -1;
-
-  if (btnEdge[UP_BTN] == 1)
-    btnPressed = UP_BTN;
-  else if (btnEdge[DOWN_BTN] == 1)
-    btnPressed = DOWN_BTN;
-  else if (btnEdge[LEFT_BTN] == 1)
-    btnPressed = LEFT_BTN;
-  else if (btnEdge[RIGHT_BTN] == 1)
-    btnPressed = RIGHT_BTN;
-
   switch (nSelectedRow)
   {
     case -1:
@@ -438,11 +436,11 @@ void UpdateMenu()
           break;
 
         case LEFT_BTN:
-          //Change device
+          thermostat.selectPrevRemoteDevice();
           break;
 
         case RIGHT_BTN:
-          //Change device
+          thermostat.selectNextRemoteDevice();
           break;
       }
       break;
@@ -606,10 +604,34 @@ void UpdateMenu()
       }
       break;
   }
+}
+
+void UpdateSettingsMenu(char btnPressed)
+{
+
+}
+
+void UpdateMenu()
+{
+  char btnPressed = -1;
+
+  if (btnEdge[UP_BTN] == 1)
+    btnPressed = UP_BTN;
+  else if (btnEdge[DOWN_BTN] == 1)
+    btnPressed = DOWN_BTN;
+  else if (btnEdge[LEFT_BTN] == 1)
+    btnPressed = LEFT_BTN;
+  else if (btnEdge[RIGHT_BTN] == 1)
+    btnPressed = RIGHT_BTN;
 
   if (btnPressed != -1)
   {
-    nLastLCDUpdate = (millis() - 2000);
+    if (bInSettings)
+      UpdateSettingsMenu(btnPressed);
+    else
+      UpdateMainMenu(btnPressed);
+
+    nLastLCDUpdate = (millis() - 2000); //Force a redraw of the LCD
     Serial.print((int)btnPressed);
     Serial.print(' ');
     Serial.print((int)nSelectedRow);
@@ -748,6 +770,7 @@ void UpdateControlOutputs()
 
 void UpdateSleepState()
 {
+#ifndef STAY_AWAKE
   if ((millis() - nTimeAwake) > AWAKE_TIME)
   {
     Serial.println("SLEEP");
@@ -769,6 +792,7 @@ void UpdateSleepState()
 
     Serial.println("WAKE");
   }
+#endif
 }
 
 void UpdateIOExpander()
@@ -776,9 +800,13 @@ void UpdateIOExpander()
   //Update the button states
   if ((millis() - lastIOExpUpdateTime) > 5)
   {
-    if(!IOExpanderGood())
+    //Try to re-init the IO expander
+    if (!IOExpanderGood())
+    {
       Serial.println("BAD IO EXP");
-    
+      InitIOExpander(false);
+    }
+
     UpdateButtonStates();
     UpdateControlOutputs();
     UpdateMenu(); //Handle any button presses to update the menu
@@ -788,14 +816,14 @@ void UpdateIOExpander()
 
 void UpdateReadingDisplay()
 {
+  char name[REMOTE_NAME_LENGTH];
+  thermostat.getSelectedDeviceName(name);
+  
   lcd.setCursor(0, TEMP_READING_LINE);
-  lcd.print(thermostat.getTargetTemp());
-  lcd.print((char)223); //degree symbol
-
-  lcd.print('/');
-
+  lcd.print(name);
+  lcd.print(": ");
   lcd.print(thermostat.getCurrentTemp());
-  lcd.print((char)223);
+  lcd.print((char)223); //degree symbol
 }
 
 void UpdateModeDisplay()
@@ -851,11 +879,11 @@ void loop()
   UpdateSleepState();
   UpdateIOExpander();
 
-  if ((millis() - nLastLCDUpdate) > 1000)
+  if ((millis() - nLastLCDUpdate) > 2000)
   {
     lcd.clear();
     lcd.noBlink();
-    
+
     UpdateReadingDisplay();
     UpdateScheduleDisplay();
     UpdateModeDisplay();

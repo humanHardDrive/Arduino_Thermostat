@@ -53,12 +53,16 @@ class ThermoStation : public BaseStation
     byte getTargetTemp();
 
     byte getCurrentTemp();
-    void useRemoteSensor(bool use);
+
+    void selectNextRemoteDevice();
+    void selectPrevRemoteDevice();
+    void getSelectedDeviceName(char* name);
 
     void startDiscovery(uint32_t timeout);
     void stopDiscovery();
 
     void getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name);
+    void getTemperatureDevice(uint8_t index, char* name, char* reading);
 
     void background(const DateTime& now);
 
@@ -143,7 +147,8 @@ class ThermoStation : public BaseStation
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
     TEMP_RULE *m_pActiveRule;
 
-    bool m_HeatOn, m_CoolOn, m_bUseRemote, m_bUseSchedule;
+    char m_nRemoteDevice;
+    bool m_HeatOn, m_CoolOn, m_bUseSchedule;
 
     RF24* m_pRadio;
     FM25V10* m_pMemoryDev;

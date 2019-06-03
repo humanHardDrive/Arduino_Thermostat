@@ -12,7 +12,7 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   m_RemoteTemp(72),
   m_analogTempPin(analogTempPin),
   m_bInCelsius(false),
-  m_bUseRemote(false),
+  m_nRemoteDevice(-1),
   m_nMemoryOffset(0)
 {
   randomSeed(analogRead(analogTempPin));
@@ -105,15 +105,56 @@ byte ThermoStation::getTargetTemp()
 
 byte ThermoStation::getCurrentTemp()
 {
-  if (m_bUseRemote)
-    return m_RemoteTemp;
-  else
+  if (m_nRemoteDevice == -1)
     return m_LocalTemp;
+  else
+    return m_RemoteTemp;
 }
 
-void ThermoStation::useRemoteSensor(bool use)
+void ThermoStation::selectNextRemoteDevice()
 {
-  m_bUseRemote = use;
+  uint8_t i = m_nRemoteDevice;
+
+  if (m_nRemoteDevice < 0)
+    m_nRemoteDevice = 0;
+
+  for (i; i < MAX_PAIRED_COUNT; i++)
+  {
+    if (m_SavedData.pairedDevice[i].UID)
+    {
+      m_nRemoteDevice = i;
+      return;
+    }
+  }
+
+  m_nRemoteDevice = -1;
+}
+
+void ThermoStation::selectPrevRemoteDevice()
+{
+  uint8_t i = m_nRemoteDevice;
+
+  if (m_nRemoteDevice < 0)
+    m_nRemoteDevice = MAX_PAIRED_COUNT - 1;
+
+  for (i; i >= 0; i--)
+  {
+    if (m_SavedData.pairedDevice[i].UID)
+    {
+      m_nRemoteDevice = i;
+      return;
+    }
+  }
+
+  m_nRemoteDevice = -1;
+}
+
+void ThermoStation::getSelectedDeviceName(char* name)
+{
+  if (m_nRemoteDevice != -1)
+    memcpy(name, m_SavedData.pairedDevice[m_nRemoteDevice].name, REMOTE_NAME_LENGTH);
+  else
+    strcpy(name, "Local");
 }
 
 bool ThermoStation::isFanOn()
@@ -224,7 +265,7 @@ void ThermoStation::background(const DateTime& t)
 
   if (m_bUseSchedule)
     updateSchedule(t);
-    
+
   updateHeatState();
   updateLocalTemp();
 }
