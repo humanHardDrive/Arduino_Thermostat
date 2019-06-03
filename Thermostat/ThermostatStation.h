@@ -118,6 +118,7 @@ class ThermoStation : public BaseStation
 
   private:
     void handleTempQuery(uint8_t PID, const void* buffer, uint16_t len);
+    void handleRemoteRequest(uint8_t PID, const void* buffer, uint16_t len);
 
     void updateLocalTemp();
     void updateSchedule(const DateTime& t);

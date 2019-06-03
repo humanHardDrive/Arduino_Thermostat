@@ -490,6 +490,10 @@ void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer,
       case QUERY_TEMPERATURE:
         handleTempQuery(PID, buffer, len);
         break;
+
+      case SET_REMOTE_RQST:
+        handleRemoteRequest(PID, buffer, len);
+        break;
     }
   }
 
@@ -506,9 +510,18 @@ void ThermoStation::handleTempQuery(uint8_t PID, const void* buffer, uint16_t le
 
 #ifdef SERIAL_DEBUG
   Serial.print(F("TEMP: "));
-  Serial.print((int)curTemp);
+  Serial.print((int)m_RemoteTemp[PID]);
   Serial.println();
 #endif
+}
+
+void ThermoStation::handleRemoteRequest(uint8_t PID, const void* buffer, uint16_t len)
+{
+#ifdef SERIAL_DEBUG
+  Serial.println(__PRETTY_FUNCTION__);
+#endif
+
+  m_nRemoteDevice = PID;
 }
 
 uint32_t ThermoStation::clockms()

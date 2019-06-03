@@ -15,8 +15,6 @@
 //#define NO_STORAGE
 //#define FIRST_BOOT
 
-#define SERIAL_DEBUG
-
 #define SLEEP_TIME     (30*1000UL)
 #define AWAKE_TIME     (20*1000UL)
 
@@ -92,6 +90,7 @@ uint32_t nLastLCDUpdate = 0;
 volatile uint32_t nTimeAwake = 0;
 
 char nSelectedColumn = -1, nSelectedRow = -1;
+char nSettingsPage = 0;
 
 void InitLCD()
 {
@@ -260,7 +259,10 @@ void InitThermostat()
 
 void IOExpanderIntHandler()
 {
+#ifdef SERIAL_DEBUG
   Serial.println("INTERRUPT");
+#endif
+
   if (!bAwake)
   {
     outputMirror &= (byte)(~(1 << LCD_BACKLIGHT)); //Turn on the backlight
@@ -609,6 +611,12 @@ void UpdateMainMenu(char btnPressed)
 void UpdateSettingsMenu(char btnPressed)
 {
 
+
+  switch (nSettingsPage)
+  {
+    case 0:
+      break;
+  }
 }
 
 void UpdateMenu()
@@ -632,12 +640,14 @@ void UpdateMenu()
       UpdateMainMenu(btnPressed);
 
     nLastLCDUpdate = (millis() - 2000); //Force a redraw of the LCD
+#ifdef SERIAL_DEBUG
     Serial.print((int)btnPressed);
     Serial.print(' ');
     Serial.print((int)nSelectedRow);
     Serial.print(' ');
     Serial.print((int)nSelectedColumn);
     Serial.println();
+#endif
   }
 }
 
@@ -818,7 +828,7 @@ void UpdateReadingDisplay()
 {
   char name[REMOTE_NAME_LENGTH];
   thermostat.getSelectedDeviceName(name);
-  
+
   lcd.setCursor(0, TEMP_READING_LINE);
   lcd.print(name);
   lcd.print(": ");
@@ -904,38 +914,4 @@ void loop()
 
   //Update the thermostat with the current time
   thermostat.background(rtc.now());
-
-#ifdef SERIAL_DEBUG
-  uint32_t UID;
-  char sName[REMOTE_NAME_LENGTH];
-
-  if (Serial.available())
-  {
-    char c = Serial.read();
-    switch (c)
-    {
-      case 'd':
-      case 'D':
-        thermostat.startDiscovery(5000);
-        break;
-
-      case 's':
-      case 'S':
-        thermostat.stopDiscovery();
-        break;
-
-      case '0':
-        thermostat.getDiscoveredDevice(0, &UID, sName);
-        if (thermostat.pair(UID, sName, 1000))
-          Serial.println(F("SUCCESS"));
-        else
-          Serial.println(F("FAILED"));
-        break;
-
-      case 'q':
-      case 'Q':
-        break;
-    }
-  }
-#endif
 }
