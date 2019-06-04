@@ -90,7 +90,6 @@ uint32_t nLastLCDUpdate = 0;
 volatile uint32_t nTimeAwake = 0;
 
 char nSelectedColumn = -1, nSelectedRow = -1;
-char nSettingsPage = 0;
 
 void InitLCD()
 {
@@ -610,11 +609,75 @@ void UpdateMainMenu(char btnPressed)
 
 void UpdateSettingsMenu(char btnPressed)
 {
+  uint8_t nSettingsPage = nSelectedRow / LCD_ROWS;
 
+  switch (btnPressed)
+  {
+    case UP_BTN:
+      if (nSelectedRow > 0)
+        nSelectedRow--;
+      break;
+
+    case DOWN_BTN:
+      if (nSelectedRow < (NUM_SETTING_OPTIONS - 1))
+        nSelectedRow++;
+      break;
+
+    case OK_BTN:
+      switch (nSelectedRow)
+      {
+        case SET_SCHEDULE_OPTION:
+          break;
+
+        case SET_DATE_TIME_OPTION:
+          break;
+
+        case DISCOVER_DEVICES_OPTION:
+          break;
+
+        case UNPAIR_DEVICE_OPTION:
+          break;
+
+        case RESET_OPTION:
+          break;
+
+        case ABOUT_OPTION:
+          break;
+
+        case EXIT_OPTION:
+          nSelectedRow = -1;
+          nSelectedColumn = -1;
+          bInSettings = false;
+          break;
+      }
+      break;
+  }
+}
+
+void DisplaySettingsMenu()
+{
+  uint8_t nSettingsPage = nSelectedRow / LCD_ROWS;
 
   switch (nSettingsPage)
   {
     case 0:
+      lcd.setCursor(0, 0);
+      lcd.print(SET_SCHEDULE_STRING);
+      lcd.setCursor(0, 1);
+      lcd.print(SET_DATE_TIME_STRING);
+      lcd.setCursor(0, 2);
+      lcd.print(DISCOVER_DEVICES_STRING);
+      lcd.setCursor(0, 3);
+      lcd.print(UNPAIR_STRING);
+      break;
+
+    case 1:
+      lcd.setCursor(0, 0);
+      lcd.print(RESET_STRING);
+      lcd.setCursor(0, 1);
+      lcd.print(ABOUT_STRING);
+      lcd.setCursor(0, 2);
+      lcd.print(EXIT_STRING);
       break;
   }
 }
@@ -631,6 +694,8 @@ void UpdateMenu()
     btnPressed = LEFT_BTN;
   else if (btnEdge[RIGHT_BTN] == 1)
     btnPressed = RIGHT_BTN;
+  else if (btnEdge[OK_BTN] == 1)
+    btnPressed = OK_BTN;
 
   if (btnPressed != -1)
   {
@@ -894,17 +959,22 @@ void loop()
     lcd.clear();
     lcd.noBlink();
 
-    UpdateReadingDisplay();
-    UpdateScheduleDisplay();
-    UpdateModeDisplay();
-    if (!bShowSettings)
-      UpdateTimeDisplay();
+    if (!bInSettings)
+    {
+      UpdateReadingDisplay();
+      UpdateScheduleDisplay();
+      UpdateModeDisplay();
+      if (!bShowSettings)
+        UpdateTimeDisplay();
+      else
+        UpdateSettingsDisplay();
+    }
     else
-      UpdateSettingsDisplay();
+      DisplaySettingsMenu();
 
     if (nSelectedRow >= 0 && nSelectedColumn >= 0)
     {
-      lcd.setCursor(nSelectedColumn, nSelectedRow);
+      lcd.setCursor(nSelectedColumn, nSelectedRow % LCD_ROWS);
       lcd.blink();
     }
 

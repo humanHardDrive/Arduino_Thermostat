@@ -35,7 +35,6 @@
 #define AUTO_STRING             F("Auto")
 #define MENU_STRING             F("Menu")
 #define FAN_STRING              F("Fan: ")
-#define EXIT_STRING             F("Exit")
 #define SETTINGS_STRING         F("Settings")
 
 #define MONDAY_STRING           F(" M")
@@ -46,8 +45,27 @@
 #define SATURDAY_STRING         F("SA")
 #define SUNDAY_STRING           F("SU")
 
-#define SET_DATE_TIME_STRING    F("Set Date/Time")
-#define DISCOVER_DEVICES_STRING F("Discover Devices")
+#define NUM_SETTING_OPTIONS     7
+
+#define SET_SCHEDULE_OPTION     0
 #define SET_SCHEDULE_STRING     F("Set Schedule")
+
+#define SET_DATE_TIME_OPTION    1
+#define SET_DATE_TIME_STRING    F("Set Date/Time")
+
+#define DISCOVER_DEVICES_OPTION 2
+#define DISCOVER_DEVICES_STRING F("Discover Devices")
+
+#define UNPAIR_DEVICE_OPTION    3
+#define UNPAIR_STRING           F("Unpair Device")
+
+#define RESET_OPTION            4
+#define RESET_STRING            F("Reset Device")
+
+#define ABOUT_OPTION            5
+#define ABOUT_STRING            F("About")
+
+#define EXIT_OPTION             6
+#define EXIT_STRING             F("Exit")
 
 #endif
