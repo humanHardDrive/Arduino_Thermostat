@@ -91,6 +91,7 @@ void updateSleepState()
   {
     bAwake = false;
     radio.powerDown(); //Put the radio to sleep
+    digitalWrite(USER_LED_PIN, LOW); //Turn off the LED
 
     //Sleep for the alotted time
     sleep.sleepDelay(SLEEP_TIME, bAwake);
@@ -122,9 +123,19 @@ void updateUserBtn()
   }
 }
 
+void updateUserLED()
+{
+  if(temperatureSensor.isPairing())
+  {
+    //Softly blink the LED
+  }
+}
+
 void loop()
 {
   updateSleepState();
+  updateUserBtn();
+  updateUserLED();
   temperatureSensor.background();
 
 #ifdef SERIAL_DEBUG
