@@ -55,6 +55,8 @@
 
 #define DISCOVER_DEVICES_OPTION 2
 #define DISCOVER_DEVICES_STRING F("Discover Devices")
+#define DISCOVERING_STRING      F("Discovering...")
+#define FOUND_STRING            F("Found: ");
 
 #define UNPAIR_DEVICE_OPTION    3
 #define UNPAIR_STRING           F("Unpair Device")

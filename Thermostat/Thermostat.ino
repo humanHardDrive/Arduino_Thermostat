@@ -16,7 +16,7 @@
 //#define FIRST_BOOT
 
 #define SLEEP_TIME     (30*1000UL)
-#define AWAKE_TIME     (20*1000UL)
+#define AWAKE_TIME     (10*1000UL)
 
 #include <Wire.h>
 #include <SPI.h>
