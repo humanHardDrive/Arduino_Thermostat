@@ -17,6 +17,8 @@ class RemoteSensor
 	void forget();
 	void pair(uint16_t timeout);
 	
+	bool isPairing() const {return m_bInDiscovery;}
+	
 	virtual bool recover() = 0;
 	virtual void reset(bool nv) = 0;
 	

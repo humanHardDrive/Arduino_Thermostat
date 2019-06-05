@@ -9,7 +9,10 @@
 #include <SPI.h>
 
 #define SLEEP_TIME  (2*60*1000UL)
-#define AWAKE_TIME  (5*1000UL)
+#define AWAKE_TIME  (10*1000UL)
+
+#define REMOTE_REQUEST_TIME   500
+#define UNPAIR_TIME           2000
 
 #define APP_NAME  F("REMOTE TEMPERATURE SENSOR")
 #define VERSION   F("v0.0")
@@ -20,6 +23,7 @@
 #define RF24_CE_PIN   9
 #define MEM_CS_PIN    8
 
+#define USER_LED_PIN  4
 #define USER_BTN_PIN  2
 
 RF24 radio(RF24_CE_PIN, RF24_CS_PIN);
@@ -28,8 +32,16 @@ TempSensor temperatureSensor;
 Sleep sleep;
 
 uint32_t nUserBtnPressedTime = 0;
+bool bUserBtnState = false;
+
 volatile uint32_t nTimeAwake = 0;
 bool bAwake = false;
+
+void UserBtnHandler()
+{
+  bAwake = true;
+  nTimeAwake = millis();
+}
 
 void setup()
 {
@@ -55,7 +67,11 @@ void setup()
   temperatureSensor.addRadio(&radio);
   temperatureSensor.begin();
 
+  pinMode(USER_LED_PIN, OUTPUT);
+  digitalWrite(USER_LED_PIN, LOW);
+  
   pinMode(USER_BTN_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(USER_BTN_PIN), UserBtnHandler, FALLING);
 
   sleep.pwrDownMode();
 
@@ -67,6 +83,10 @@ void setup()
 
 void updateSleepState()
 {
+  //Stay awake while pairing
+  if(temperatureSensor.isPairing())
+    nTimeAwake = millis();
+  
   if ((millis() - nTimeAwake) > AWAKE_TIME)
   {
     bAwake = false;
@@ -78,6 +98,27 @@ void updateSleepState()
     //Wake everything back up
     nTimeAwake = millis();
     radio.powerUp();
+  }
+}
+
+void updateUserBtn()
+{
+  //If the button was just pressed
+  if (!digitalRead(USER_BTN_PIN) && !bUserBtnState)
+  {
+    bUserBtnState = true;
+    nUserBtnPressedTime = millis();
+  }
+  else if (digitalRead(USER_BTN_PIN) && bUserBtnState) //The button was released
+  {
+    if ((millis() - nUserBtnPressedTime) > UNPAIR_TIME)
+    {
+      //Unpair the device, forget the network
+    }
+    else if ((millis() - nUserBtnPressedTime) > REMOTE_REQUEST_TIME)
+    {
+      //Send request to base station to become the remote sensor
+    }
   }
 }
 

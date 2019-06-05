@@ -24,6 +24,7 @@ class BaseStation
 	bool unpair(uint32_t UID);
 	bool isPaired(uint32_t UID);
 	uint8_t getPairedCount();
+	bool inDiscovery() const {return m_bInDiscovery;}
 	
 	virtual bool recover() = 0;
 	virtual void reset(bool nv) = 0;
