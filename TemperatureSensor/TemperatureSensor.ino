@@ -34,6 +34,7 @@ TempSensor temperatureSensor(TEMP_SENSE_PIN);
 Sleep sleep;
 
 #define LED_PAIR_UPDATE_PERIOD  50
+#define LED_HEARTBEAT_PERIOD    1000
 
 uint32_t nLastUserLEDUpdateTime = 0;
 uint8_t nUserLEDValue = 0, nUserLEDChange = 1;
@@ -138,10 +139,23 @@ void updateUserLED()
     {
       if (!nUserLEDValue)
         nUserLEDChange = 1;
-      else
-        nUserLEDChange = 255;
+      else if (nUserLEDValue == 0xFF)
+        nUserLEDChange = 0xFF;
 
       nUserLEDValue += nUserLEDChange;
+      analogWrite(USER_LED_PIN, nUserLEDValue);
+      nLastUserLEDUpdateTime = millis();
+    }
+  }
+  else
+  {
+    if ((millis() - nLastUserLEDUpdateTime) > LED_HEARTBEAT_PERIOD)
+    {
+      if (!nUserLEDValue)
+        nUserLEDValue = 0xFF;
+      else if (nUserLEDValue == 0xFF)
+        nUserLEDValue = 0;
+        
       analogWrite(USER_LED_PIN, nUserLEDValue);
       nLastUserLEDUpdateTime = millis();
     }
