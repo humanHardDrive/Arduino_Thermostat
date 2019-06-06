@@ -21,7 +21,7 @@
 class TempSensor : public RemoteSensor
 {
   public:
-    TempSensor();
+    TempSensor(byte tempSensePin);
     ~TempSensor();
 
     void addRadio(RF24* pRadio);
@@ -56,7 +56,8 @@ class TempSensor : public RemoteSensor
     virtual uint16_t rnd();
 
   private:
-    void sampleAndSend();
+    void postTemperature();
+    void takeTemperatureReading();
 
     void handleTemperatureQueryMsg(const void* buffer, uint16_t len);
     void handleSetPollingRateMsg(const void* buffer, uint16_t len);
@@ -66,13 +67,23 @@ class TempSensor : public RemoteSensor
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
 
 #ifdef SERIAL_DEBUG
-    const uint32_t DEFAULT_SAMPLE_PERIOD = 5000;
+    const uint32_t DEFAULT_POST_PERIOD = 5000;
 #else
-    const uint32_t DEFAULT_SAMPLE_PERIOD = (5*1000*60); //Default sample every 5 minutes
+    const uint32_t DEFAULT_POST_PERIOD = (5*1000*60UL); //Default post reading every 5 minutes
 #endif
 
-    uint32_t m_u32LastSampleTime, m_u32SamplePeriod;
+    uint32_t m_nLastPostTime, m_nPostPeriod;
     uint32_t m_nMemoryOffset;
+
+    const uint32_t SAMPLE_PERIOD = 50; //While awake, sample every 50ms
+    const float ANALOG_VREF = 3.3;
+    const float VOLT_PER_C = 0.01;
+    static const uint8_t SAMPLE_AVERAGE_WINDOW = 10;
+    
+    byte m_nTempSensePin;
+    uint32_t m_nLastSampleTime;
+    uint16_t m_SampleWindow[SAMPLE_AVERAGE_WINDOW];
+    uint8_t m_nCurrentTemp;
 
     RF24* m_pRadio;
     FM25V10* m_pMemoryDev;

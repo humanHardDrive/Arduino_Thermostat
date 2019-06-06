@@ -19,16 +19,18 @@
 
 #define SERIAL_DEBUG
 
-#define RF24_CS_PIN   10
-#define RF24_CE_PIN   9
-#define MEM_CS_PIN    8
+#define TEMP_SENSE_PIN  A0
 
-#define USER_LED_PIN  4
-#define USER_BTN_PIN  2
+#define RF24_CS_PIN     10
+#define RF24_CE_PIN     9
+#define MEM_CS_PIN      8
+
+#define USER_LED_PIN    4
+#define USER_BTN_PIN    2
 
 RF24 radio(RF24_CE_PIN, RF24_CS_PIN);
 FM25V10 memoryDevice(MEM_CS_PIN);
-TempSensor temperatureSensor;
+TempSensor temperatureSensor(TEMP_SENSE_PIN);
 Sleep sleep;
 
 uint32_t nUserBtnPressedTime = 0;

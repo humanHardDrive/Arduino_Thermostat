@@ -1,11 +1,17 @@
 #include "TempSensor.h"
 
-TempSensor::TempSensor()
+TempSensor::TempSensor(byte tempSensePin) :
+  m_nTempSensePin(tempSensePin),
+  m_nCurrentTemp(72)
 {
   seedRnd(analogRead(0));
 
-  m_u32LastSampleTime = millis();
-  m_u32SamplePeriod = DEFAULT_SAMPLE_PERIOD;
+  m_nLastSampleTime = millis();
+  m_nPostPeriod = DEFAULT_POST_PERIOD;
+
+  //Default the filter to 72 degrees
+  for (uint8_t i = 0; i < SAMPLE_AVERAGE_WINDOW; i++)
+    m_SampleWindow[i] = 72;
 }
 
 TempSensor::~TempSensor()
@@ -30,12 +36,12 @@ bool TempSensor::recover()
 
 void TempSensor::reset(bool nv)
 {
-  
+
 }
 
 void TempSensor::save()
 {
-  
+
 }
 
 void TempSensor::begin()
@@ -52,14 +58,15 @@ void TempSensor::begin()
 void TempSensor::background()
 {
   if (!m_bInDiscovery &&
-      (millis() - m_u32LastSampleTime) > m_u32SamplePeriod)
+      (millis() - m_nLastPostTime) > m_nPostPeriod)
   {
-    sampleAndSend();
-    m_u32LastSampleTime = millis();
+    postTemperature();
+    m_nLastPostTime = millis();
   }
   else if (m_bInDiscovery)
-    m_u32LastSampleTime = millis();
+    m_nLastPostTime = millis();
 
+  takeTemperatureReading();
   RemoteSensor::background();
 }
 
@@ -178,7 +185,7 @@ void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
   RemoteSensor::handleCommand(cmd, buffer, len);
 }
 
-void TempSensor::sampleAndSend()
+void TempSensor::postTemperature()
 {
 #ifdef SERIAL_DEBUG
   Serial.println(__PRETTY_FUNCTION__);
@@ -193,6 +200,29 @@ void TempSensor::sampleAndSend()
   write(buf, len);
 }
 
+void TempSensor::takeTemperatureReading()
+{
+  if ((millis() - m_nLastSampleTime) > SAMPLE_PERIOD)
+  {
+    for (uint8_t i = 1; i < SAMPLE_AVERAGE_WINDOW; i++)
+      m_SampleWindow[i] = m_SampleWindow[i - 1];
+
+    m_SampleWindow[0] = analogRead(m_nTempSensePin);
+
+    float average = 0;
+    for(uint8_t i = 0; i < SAMPLE_AVERAGE_WINDOW; i++)
+      average += m_SampleWindow[i];
+    average /= SAMPLE_AVERAGE_WINDOW;
+
+    average = (average / 1023.0) * ANALOG_VREF; //Convert to voltage
+    average *= VOLT_PER_C; //Convert to degrees Celsius
+    average = ((average * 9) / 5) + 32; //Convert to fahrenheit
+    average += 0.5; //Round
+    
+    m_nCurrentTemp = (uint8_t)average;
+  }
+}
+
 void TempSensor::handleTemperatureQueryMsg(const void* buffer, uint16_t len)
 {
 #ifdef SERIAL_DEBUG
@@ -200,7 +230,7 @@ void TempSensor::handleTemperatureQueryMsg(const void* buffer, uint16_t len)
 #endif
 
   //Update the last sample time to sample in 50ms
-  m_u32LastSampleTime = (millis() + m_u32SamplePeriod) - 50;
+  m_nLastPostTime = millis() - (m_nPostPeriod - 50);
 }
 
 void TempSensor::handleSetPollingRateMsg(const void* buffer, uint16_t len)
@@ -209,8 +239,8 @@ void TempSensor::handleSetPollingRateMsg(const void* buffer, uint16_t len)
   Serial.println(__PRETTY_FUNCTION__);
 #endif
 
-  memcpy(&m_u32SamplePeriod, buffer, sizeof(m_u32SamplePeriod)); //Update the period
-  m_u32LastSampleTime = millis(); //Reset the sample timer
+  memcpy(&m_nPostPeriod, buffer, sizeof(m_nPostPeriod)); //Update the period
+  m_nLastPostTime = millis(); //Reset the sample timer
 }
 
 void TempSensor::print(const char* str)
