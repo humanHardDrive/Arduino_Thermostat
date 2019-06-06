@@ -33,6 +33,11 @@ FM25V10 memoryDevice(MEM_CS_PIN);
 TempSensor temperatureSensor(TEMP_SENSE_PIN);
 Sleep sleep;
 
+#define LED_PAIR_UPDATE_PERIOD  50
+
+uint32_t nLastUserLEDUpdateTime = 0;
+uint8_t nUserLEDValue = 0, nUserLEDChange = 1;
+
 uint32_t nUserBtnPressedTime = 0;
 bool bUserBtnState = false;
 
@@ -71,7 +76,7 @@ void setup()
 
   pinMode(USER_LED_PIN, OUTPUT);
   digitalWrite(USER_LED_PIN, LOW);
-  
+
   pinMode(USER_BTN_PIN, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(USER_BTN_PIN), UserBtnHandler, FALLING);
 
@@ -86,9 +91,9 @@ void setup()
 void updateSleepState()
 {
   //Stay awake while pairing
-  if(temperatureSensor.isPairing())
+  if (temperatureSensor.isPairing())
     nTimeAwake = millis();
-  
+
   if ((millis() - nTimeAwake) > AWAKE_TIME)
   {
     bAwake = false;
@@ -127,9 +132,19 @@ void updateUserBtn()
 
 void updateUserLED()
 {
-  if(temperatureSensor.isPairing())
+  if (temperatureSensor.isPairing())
   {
-    //Softly blink the LED
+    if ((millis() - nLastUserLEDUpdateTime) > LED_PAIR_UPDATE_PERIOD)
+    {
+      if (!nUserLEDValue)
+        nUserLEDChange = 1;
+      else
+        nUserLEDChange = 255;
+
+      nUserLEDValue += nUserLEDChange;
+      analogWrite(USER_LED_PIN, nUserLEDValue);
+      nLastUserLEDUpdateTime = millis();
+    }
   }
 }
 
