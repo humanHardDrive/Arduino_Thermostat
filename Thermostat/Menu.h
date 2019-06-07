@@ -3,6 +3,19 @@
 
 #include "Arduino.h"
 
+typedef struct MENU_ITEM
+{
+  char cursorRow, cursorCol;
+  
+  void (*printLabel)(void);
+  void (*printField)(void);
+  
+  MENU_ITEM* nextItem[4];
+  bool (*btnFn)(uint8_t btn);
+} MENU_ITEM_T;
+
+void Menu_SetupMainMenu();
+
 #define TEMP_READING_LINE     0
 
 #define SCHEDULE_LINE         1

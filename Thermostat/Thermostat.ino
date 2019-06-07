@@ -303,6 +303,8 @@ void setup()
   InitRTC();
 #endif
 
+  Menu_SetupMainMenu();
+
   sleep.pwrDownMode();
   InitThermostat();
   lcd.clear();
