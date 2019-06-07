@@ -5,7 +5,7 @@
 #include "ThermostatStation.h"
 #include "nRF24L01.h"
 #include "RF24.h"
-#include "Menu.h"
+#include "LCDMenu.h"
 #include <Sleep_n0m1.h>
 
 #define NO_RADIO
@@ -302,8 +302,6 @@ void setup()
 #ifndef NO_RTC
   InitRTC();
 #endif
-
-  Menu_SetupMainMenu();
 
   sleep.pwrDownMode();
   InitThermostat();

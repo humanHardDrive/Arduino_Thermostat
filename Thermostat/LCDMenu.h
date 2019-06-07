@@ -1,5 +1,5 @@
-#ifndef __MENU_H__
-#define __MENU_H__
+#ifndef __LCD_MENU_H__
+#define __LCD_MENU_H__
 
 #include "Arduino.h"
 
@@ -14,7 +14,48 @@ typedef struct MENU_ITEM
   bool (*btnFn)(uint8_t btn);
 } MENU_ITEM_T;
 
-void Menu_SetupMainMenu();
+//Main Menu Definitions
+enum
+{
+  NULL_ITEM = 0,
+  TEMPERATURE_READING_ITEM,
+  SCHEDULE_ITEM,
+  CONTROL_ITEM,
+  MODE_ITEM,
+  FAN_ITEM
+};
+
+const MENU_ITEM MAIN_MENU[] PROGMEM =
+{
+  { //Temperature reading menu item
+    .cursorRow = 0, .cursorCol = 0,
+    .printLabel = NULL,
+    .printField = NULL,
+    .nextItem = { &MAIN_MENU[NULL_ITEM], &MAIN_MENU[SCHEDULE_ITEM], NULL, NULL},
+    .btnFn = NULL
+  },
+  { //Schedule menu item
+    .cursorRow = 0, .cursorCol = 0,
+    .printLabel = NULL,
+    .printField = NULL,
+    .nextItem = { &MAIN_MENU[TEMPERATURE_READING_ITEM], &MAIN_MENU[MODE_ITEM], NULL, &MAIN_MENU[CONTROL_ITEM]},
+    .btnFn = NULL
+  },
+  { //Control item
+    .cursorRow = 0, .cursorCol = 0,
+    .printLabel = NULL,
+    .printField = NULL,
+    .nextItem = { &MAIN_MENU[TEMPERATURE_READING_ITEM], &MAIN_MENU[FAN_ITEM], &MAIN_MENU[SCHEDULE_ITEM], NULL},
+    .btnFn = NULL
+  },
+  { //Null menu item
+    .cursorRow = -1, .cursorCol = -1,
+    .printLabel = NULL,
+    .printField = NULL,
+    .nextItem = { NULL, &MAIN_MENU[TEMPERATURE_READING_ITEM], NULL, &MAIN_MENU[TEMPERATURE_READING_ITEM]},
+    .btnFn = NULL
+  }
+};
 
 #define TEMP_READING_LINE     0
 
