@@ -127,6 +127,8 @@ class ThermoStation : public BaseStation
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F;
     static const uint8_t MAX_PAYLOAD_SIZE = 32;
+    const float VOLT_PER_C = 0.01;
+    const float VREF = 3.3;
 
     static const uint64_t BASE_STATION_DATA_OFFSET = 0;
     static const uint64_t SCHEDULE_DATA_OFFSET = BASE_STATION_DATA_OFFSET + sizeof(m_SavedData);

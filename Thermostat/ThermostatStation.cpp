@@ -343,6 +343,25 @@ void ThermoStation::updateLocalTemp()
 {
   if ((millis() - m_nLastTempSampleTime) > SAMPLE_DELAY)
   {
+    float average = 0;
+
+    for (uint8_t i = 1; i < NUM_SAMPLES; i++)
+    {
+      average += m_LocalTempSample[i];
+      m_LocalTempSample[i] = m_LocalTempSample[i - 1];
+    }
+
+    m_LocalTempSample[0] = analogRead(m_analogTempPin);
+    average += m_LocalTempSample[0];
+    average /= NUM_SAMPLES;
+
+    average = (average / 1023.0) * VREF; //Convert to volts
+    average /= VOLT_PER_C; //Converts to degrees C
+    average = ((average * 9) / 5) + 32; //Convert to degrees F
+    average += 0.5; //Round
+
+    m_LocalTemp = (uint8_t)average;
+
     m_nLastTempSampleTime = millis();
   }
 }
