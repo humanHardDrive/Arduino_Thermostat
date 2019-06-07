@@ -56,38 +56,60 @@ enum
   SCHEDULE_ITEM,
   CONTROL_ITEM,
   MODE_ITEM,
-  FAN_ITEM
+  FAN_ITEM,
+  SETTINGS_ITEM
 };
 
 typedef struct MENU_ITEM
 {
   char cursorRow, cursorCol;
-  
+
   void (*printLabel)(void);
   void (*printField)(void);
-  
+
   MENU_ITEM* nextItem[4];
   bool (*btnFn)(uint8_t btn);
 } MENU_ITEM_T;
 
-const MENU_ITEM MAIN_MENU[] PROGMEM =
+static MENU_ITEM MAIN_MENU[] =
 {
   { //Temperature reading menu item
     .cursorRow = 0, .cursorCol = 0,
     .printLabel = NULL,
     .printField = NULL,
-    .nextItem = { &MAIN_MENU[NULL_ITEM], &MAIN_MENU[SCHEDULE_ITEM], NULL, NULL},
+    .nextItem = { &MAIN_MENU[NULL_ITEM], &MAIN_MENU[SCHEDULE_ITEM], &MAIN_MENU[NULL_ITEM], NULL},
     .btnFn = NULL
   },
   { //Schedule menu item
-    .cursorRow = 0, .cursorCol = 0,
+    .cursorRow = 1, .cursorCol = 0,
     .printLabel = NULL,
     .printField = NULL,
     .nextItem = { &MAIN_MENU[TEMPERATURE_READING_ITEM], &MAIN_MENU[MODE_ITEM], NULL, &MAIN_MENU[CONTROL_ITEM]},
     .btnFn = NULL
   },
   { //Control item
-    .cursorRow = 0, .cursorCol = 0,
+    .cursorRow = 1, .cursorCol = 15,
+    .printLabel = NULL,
+    .printField = NULL,
+    .nextItem = { &MAIN_MENU[TEMPERATURE_READING_ITEM], &MAIN_MENU[FAN_ITEM], &MAIN_MENU[SCHEDULE_ITEM], NULL},
+    .btnFn = NULL
+  },
+  { //Mode item
+    .cursorRow = 2, .cursorCol = 0,
+    .printLabel = NULL,
+    .printField = NULL,
+    .nextItem = { &MAIN_MENU[TEMPERATURE_READING_ITEM], &MAIN_MENU[SETTINGS_ITEM], &MAIN_MENU[SCHEDULE_ITEM], NULL},
+    .btnFn = NULL
+  },
+  { //Fan item
+    .cursorRow = 2, .cursorCol = 15,
+    .printLabel = NULL,
+    .printField = NULL,
+    .nextItem = { &MAIN_MENU[TEMPERATURE_READING_ITEM], &MAIN_MENU[SETTINGS_ITEM], &MAIN_MENU[MODE_ITEM], NULL},
+    .btnFn = NULL
+  },
+  { //Settings item
+    .cursorRow = 3, .cursorCol = 0,
     .printLabel = NULL,
     .printField = NULL,
     .nextItem = { &MAIN_MENU[TEMPERATURE_READING_ITEM], &MAIN_MENU[FAN_ITEM], &MAIN_MENU[SCHEDULE_ITEM], NULL},

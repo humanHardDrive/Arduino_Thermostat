@@ -74,6 +74,7 @@ FM25V10         memoryDevice(MEM_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 RTClib          rtc;
+LCDMenu         mainmenu(MAIN_MENU);
 ThermoStation   thermostat(LOCAL_TEMP_PIN);
 Sleep           sleep;
 
