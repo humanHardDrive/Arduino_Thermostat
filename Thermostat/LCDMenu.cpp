@@ -1,6 +1,6 @@
 #include "LCDMenu.h"
 
-void Menu_DrawMainMenu()
+/*void Menu_DrawMainMenu()
 {
   MENU_ITEM drawItem;
   uint8_t itemIndex = 0;
@@ -11,4 +11,4 @@ void Menu_DrawMainMenu()
     itemIndex++;
     memcpy_P(&drawItem, &MAIN_MENU[itemIndex], sizeof(MENU_ITEM));
   }
-}
+}*/
