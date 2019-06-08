@@ -4,7 +4,8 @@
 #include "ThermostatStation.h"
 #include "nRF24L01.h"
 #include "RF24.h"
-#include "LCDMenu.h"
+#include "Menu.h"
+#include <LiquidCrystal.h>
 #include <Sleep_n0m1.h>
 
 #define NO_RADIO
@@ -51,11 +52,12 @@
 //Inputs
 enum IO_EXP_GPIOA
 {
-  UP_BTN = 0,
-  DOWN_BTN,
-  LEFT_BTN,
-  RIGHT_BTN,
-  OK_BTN,
+  UP_TEMP_BTN = 0,
+  DOWN_TEMP_BTN,
+  TOGGLE_MODE_BTN,
+  TOGGLE_FAN_BTN,
+  SETTINGS_BTN,
+  TOGGLE_REMOTE_BTN,
   ALL_BTNS
 };
 
@@ -74,7 +76,6 @@ FM25V10         memoryDevice(MEM_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 RTClib          rtc;
-LCDMenu         mainmenu(MAIN_MENU);
 ThermoStation   thermostat(LOCAL_TEMP_PIN);
 Sleep           sleep;
 
@@ -350,16 +351,30 @@ void UpdateMenu()
 {
   char btnPressed = -1;
 
-  if (btnEdge[UP_BTN] == 1)
-    btnPressed = UP_BTN;
-  else if (btnEdge[DOWN_BTN] == 1)
-    btnPressed = DOWN_BTN;
-  else if (btnEdge[LEFT_BTN] == 1)
-    btnPressed = LEFT_BTN;
-  else if (btnEdge[RIGHT_BTN] == 1)
-    btnPressed = RIGHT_BTN;
-  else if (btnEdge[OK_BTN] == 1)
-    btnPressed = OK_BTN;
+  if (btnEdge[UP_TEMP_BTN] == 1)
+  {
+
+  }
+  
+  if (btnEdge[DOWN_TEMP_BTN] == 1)
+  {
+
+  }
+  
+  if (btnEdge[TOGGLE_MODE_BTN] == 1)
+  {
+
+  }
+  
+  if (btnEdge[TOGGLE_FAN_BTN] == 1)
+  {
+
+  }
+  
+  if (btnEdge[SETTINGS_BTN] == 1)
+  {
+
+  }
 }
 
 void UpdateControlOutputs()
