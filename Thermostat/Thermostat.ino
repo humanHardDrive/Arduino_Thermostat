@@ -8,6 +8,8 @@
 #include <LiquidCrystal.h>
 #include <Sleep_n0m1.h>
 
+#define SERIAL_DEBUG
+
 #define NO_RADIO
 #define STAY_AWAKE
 //#define NO_IO_EXP
@@ -91,10 +93,26 @@ bool bOldHeatState = false, bOldCoolState = false, bOldFanState = false;
 bool bAwake = true;
 volatile uint32_t nTimeAwake = 0;
 
+bool ScheduleSettingsFn();
+bool DateTimeSettingsFn();
+bool DiscoverDeviceSettingsFn();
+bool UnpairDeviceSettingsFn();
+bool ResetDeviceSettingsFn();
+bool AboutSettingsFn();
+
 char blankLine[LCD_COLS + 1]; //Array used to clear a specific line
 bool bInSettings = false, bForceLCDUpdate = true;
 bool (*settingsFn)(void) = NULL;
 uint8_t nSettingsCursorPos = 0;
+bool (*aSettingsFn[ALL_SETTINGS])(void) =
+{
+  ScheduleSettingsFn,
+  DateTimeSettingsFn,
+  DiscoverDeviceSettingsFn,
+  UnpairDeviceSettingsFn,
+  ResetDeviceSettingsFn,
+  AboutSettingsFn
+};
 
 //Boot functions
 void InitLCD()
@@ -686,6 +704,146 @@ void UpdateThermostatMenu(bool force)
   UpdateTimeMenuItem(force);
 }
 
+//Settings functions
+bool ScheduleSettingsFn()
+{
+  static bool bFirstCall = true;
+  static uint8_t nMonth, nDay, nHour, nMinute;
+  static uint8_t nSelectedPos;
+
+  if (bFirstCall)
+  {
+    DateTime now = rtc.now();
+    nMonth = now.month();
+    nDay = now.day();
+    nHour = now.hour();
+    nMinute = now.minute();
+
+    lcd.clear();
+
+    lcd.setCursor(7, 0);
+    if (nMonth < 10)
+      lcd.print(0);
+    lcd.print(nMonth);
+
+    lcd.print('-');
+
+    if (nDay < 10)
+      lcd.print(0);
+    lcd.print(nDay);
+
+    bFirstCall = false;
+  }
+
+  if(btnEdge[SETTINGS_BTN] == 1)
+  {
+    return true;
+  }
+
+  return false;
+}
+
+bool DateTimeSettingsFn()
+{
+  return true;
+}
+
+bool DiscoverDeviceSettingsFn()
+{
+  static bool bFirstCall = true;
+  static bool bOldDiscoveryState = false;
+  static uint8_t nDiscoveredDevices = 0;
+
+  if (bFirstCall)
+  {
+    lcd.clear();
+
+    lcd.setCursor(0, 0);
+    lcd.print(DISCOVERING_STRING);
+
+    lcd.setCursor(0, 1);
+    lcd.print(FOUND_STRING);
+    lcd.print(0);
+
+    Serial.print("A");
+    thermostat.startDiscovery(5000);
+    Serial.print("B");
+    bOldDiscoveryState = true;
+
+    bFirstCall = false;
+  }
+
+  if (nDiscoveredDevices != thermostat.getDiscoveryCount())
+  {
+    lcd.setCursor(0, 1);
+    lcd.print(blankLine);
+
+    lcd.setCursor(0, 1);
+    lcd.print(FOUND_STRING);
+    lcd.print(thermostat.getDiscoveryCount());
+
+    nDiscoveredDevices = thermostat.getDiscoveryCount();
+  }
+
+  if (bOldDiscoveryState && !thermostat.inDiscovery())
+  {
+    lcd.setCursor(0, 3);
+    lcd.print("DONE");
+    bOldDiscoveryState = false;
+  }
+
+  for (uint8_t i = 0; i < ALL_BTNS; i++)
+  {
+    if (btnEdge[i] == 1)
+    {
+      Serial.println("C");
+      thermostat.stopDiscovery();
+      bFirstCall = true;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool UnpairDeviceSettingsFn()
+{
+  return true;
+}
+
+bool ResetDeviceSettingsFn()
+{
+  return true;
+}
+
+bool AboutSettingsFn()
+{
+  static bool bFirstCall = true;
+
+  if (bFirstCall)
+  {
+    lcd.clear();
+
+    lcd.setCursor(0, 0);
+    lcd.print(APP_NAME);
+
+    lcd.setCursor(0, 1);
+    lcd.print(VERSION);
+    bFirstCall = false;
+  }
+
+  for (uint8_t i = 0; i < ALL_BTNS; i++)
+  {
+    if (btnEdge[i] == 1)
+    {
+      bFirstCall = true;
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void HandleSettingsInput()
 {
   if (btnEdge[UP_TEMP_BTN] == 1)
@@ -704,6 +862,7 @@ void HandleSettingsInput()
 
   if (btnEdge[TOGGLE_MODE_BTN] == 1)
   {
+    settingsFn = aSettingsFn[nSettingsCursorPos];
   }
 
   if (btnEdge[TOGGLE_FAN_BTN] == 1)
@@ -786,7 +945,10 @@ void UpdateSettingsMenu(bool force)
   else
   {
     if (settingsFn())
+    {
+      bForceLCDUpdate = true;
       settingsFn = NULL;
+    }
   }
 }
 

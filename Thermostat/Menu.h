@@ -41,7 +41,6 @@ enum
   UPAIR_DEVICE_SETTING,
   RESET_DEVICE_SETTING,
   ABOUT_SETTING,
-  EXIT_SETTING,
   ALL_SETTINGS
 };
 
@@ -52,8 +51,7 @@ static const char *const SETTING_STRING_TABLE[] PROGMEM =
   DISCOVER_DEVICES_STRING,
   UNPAIR_DEVICE_STRING,
   RESET_DEVICE_STRING,
-  ABOUT_STRING,
-  EXIT_STRING
+  ABOUT_STRING
 };
 
 #define SET_SCHEDULE_OPTION     0
@@ -65,7 +63,7 @@ static const char *const SETTING_STRING_TABLE[] PROGMEM =
 #define DISCOVER_DEVICES_OPTION 2
 #define DISCOVER_DEVICES_STRING F("Discover Devices")
 #define DISCOVERING_STRING      F("Discovering...")
-#define FOUND_STRING            F("Found: ");
+#define FOUND_STRING            F("Found: ")
 
 #define UNPAIR_DEVICE_OPTION    3
 #define UNPAIR_STRING           F("Unpair Device")
