@@ -721,14 +721,16 @@ void HandleSettingsInput()
 void DrawSettingsList(bool force)
 {
   static uint8_t nOldCursorPos = 0;
-  uint8_t nCurrentPage, nBaseIndex;
+  uint8_t nCurrentPage, nOldPage, nBaseIndex;
   char sBuffer[LCD_COLS];
 
   nCurrentPage = nSettingsCursorPos / LCD_ROWS;
+  nOldPage = nOldCursorPos / LCD_ROWS;
   nBaseIndex = nCurrentPage * LCD_ROWS;
 
-  if (force || nOldCursorPos != nSettingsCursorPos)
+  if (force || nCurrentPage != nOldPage)
   {
+    //Redraw everything
     for (uint8_t i = 0; i < LCD_ROWS; i++)
     {
       lcd.setCursor(0, i);
@@ -744,9 +746,30 @@ void DrawSettingsList(bool force)
         lcd.print(sBuffer);
       }
     }
-
-    nOldCursorPos = nSettingsCursorPos;
   }
+  else if (nOldCursorPos != nSettingsCursorPos)
+  {
+    uint8_t modPos;
+    //Only redraw what's changed
+    //Redraw the old selection
+    modPos = nOldCursorPos % LCD_ROWS;
+    lcd.setCursor(0, modPos);
+    lcd.print(blankLine);
+    strcpy_P(sBuffer, (char*)pgm_read_word(&SETTING_STRING_TABLE[nBaseIndex + modPos]));
+    lcd.setCursor(0, modPos);
+    lcd.print(sBuffer);
+
+    //Draw the new
+    modPos = nSettingsCursorPos % LCD_ROWS;
+    lcd.setCursor(0, modPos);
+    lcd.print(blankLine);
+    strcpy_P(sBuffer, (char*)pgm_read_word(&SETTING_STRING_TABLE[nBaseIndex + modPos]));
+    lcd.setCursor(0, modPos);
+    lcd.print('>');
+    lcd.print(sBuffer);
+  }
+
+  nOldCursorPos = nSettingsCursorPos;
 }
 
 void UpdateSettingsMenu(bool force)
