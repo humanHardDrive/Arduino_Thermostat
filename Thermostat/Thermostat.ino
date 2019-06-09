@@ -58,6 +58,7 @@ enum IO_EXP_GPIOA
   TOGGLE_FAN_BTN,
   SETTINGS_BTN,
   TOGGLE_REMOTE_BTN,
+  TOGGLE_SCHEDULE_BTN,
   ALL_BTNS
 };
 
@@ -90,13 +91,17 @@ bool bAwake = true, bShowSettings = false, bInSettings = false;
 uint32_t nLastLCDUpdate = 0;
 volatile uint32_t nTimeAwake = 0;
 
-char nSelectedColumn = -1, nSelectedRow = -1;
+char blankLine[LCD_COLS + 1]; //Array used to clear a specific line
 
+//Boot functions
 void InitLCD()
 {
   lcd.begin(LCD_COLS, LCD_ROWS);
   lcd.clear();
   lcd.setCursor(0, 0);
+
+  memset(blankLine, ' ', sizeof(blankLine)); //Write all spaces
+  blankLine[LCD_COLS] = '\0'; //Except the last character to make it a valid string
 }
 
 bool IOExpanderGood()
@@ -284,6 +289,8 @@ void setup()
   memset(buttonFilter, 0xFF, IO_DEBOUNCE_TIME);
 
   SPI.begin();
+  SPI.setClockDivider(SPI_CLOCK_DIV32);
+
   Wire.begin();
 
 #ifndef NO_IO_EXP
@@ -307,6 +314,7 @@ void setup()
   sleep.pwrDownMode();
   InitThermostat();
   lcd.clear();
+  UpdateThermostatMenu(true);
 }
 
 void UpdateButtonStates()
@@ -347,36 +355,61 @@ void UpdateButtonStates()
   oldBtnState = currentBtnState;
 }
 
-void UpdateMenu()
+void UpdateThermostatControl()
 {
   char btnPressed = -1;
 
   if (btnEdge[UP_TEMP_BTN] == 1)
   {
-
+    thermostat.setTargetTemp(thermostat.getTargetTemp() + 1);
+    thermostat.disableSchedule();
   }
-  
+
   if (btnEdge[DOWN_TEMP_BTN] == 1)
   {
-
+    thermostat.setTargetTemp(thermostat.getTargetTemp() - 1);
+    thermostat.disableSchedule();
   }
-  
+
   if (btnEdge[TOGGLE_MODE_BTN] == 1)
   {
+    switch(thermostat.getHeatMode())
+    {
+      case ThermoStation::OFF:
+      thermostat.setHeatMode(ThermoStation::HEAT);
+      break;
 
+      case ThermoStation::HEAT:
+      thermostat.setHeatMode(ThermoStation::COOL);
+      break;
+
+      case ThermoStation::COOL:
+      thermostat.setHeatMode(ThermoStation::OFF);
+      break;
+    }
   }
-  
+
   if (btnEdge[TOGGLE_FAN_BTN] == 1)
   {
+    switch(thermostat.getFanMode())
+    {
+      case ThermoStation::ON:
+      thermostat.setFanMode(ThermoStation::AUTO);
+      break;
 
+      case ThermoStation::AUTO:
+      thermostat.setFanMode(ThermoStation::ON);
+      break;
+    }
   }
-  
+
   if (btnEdge[SETTINGS_BTN] == 1)
   {
 
   }
 }
 
+//IO Expander Functions
 void UpdateControlOutputs()
 {
   //Check for changes to the heat control
@@ -473,15 +506,96 @@ void UpdateIOExpander()
 
     UpdateButtonStates();
     UpdateControlOutputs();
-    UpdateMenu(); //Handle any button presses to update the menu
+    UpdateThermostatControl(); //Handle any button presses to update the thermostat
     lastIOExpUpdateTime = millis();
   }
+}
+
+//Menu functions
+void UpdateScheduleMenuItem(bool force)
+{
+  static bool bOldScheduleSetting = false;
+  static uint8_t nOldTargetTemp = 0;
+
+  if (force || bOldScheduleSetting != thermostat.usingSchedule() || nOldTargetTemp != thermostat.getTargetTemp())
+  {
+    //Clear the line
+    lcd.setCursor(0, 1);
+    lcd.print(blankLine);
+
+    lcd.setCursor(0, 1);
+    lcd.print(SCHEDULE_STRING);
+
+    if (thermostat.usingSchedule())
+      lcd.print(ON_STRING);
+    else
+      lcd.print(OFF_STRING);
+
+    lcd.setCursor(15, 1);
+    lcd.print(thermostat.getTargetTemp());
+    lcd.write(223); //Degree symbol
+
+    bOldScheduleSetting = thermostat.usingSchedule();
+    nOldTargetTemp = thermostat.getTargetTemp();
+  }
+}
+
+void UpdateModeandFanMenuItem(bool force)
+{
+  static uint8_t nOldFanSetting = 0, nOldModeSetting = 0;
+
+  if (force || nOldFanSetting != thermostat.getFanMode() || nOldModeSetting != thermostat.getHeatMode())
+  {
+    //Clear the line
+    lcd.setCursor(0, 2);
+    lcd.print(blankLine);
+
+    lcd.setCursor(0, 2);
+    lcd.print(MODE_STRING);
+    switch (thermostat.getHeatMode())
+    {
+      case ThermoStation::OFF:
+        lcd.print(OFF_STRING);
+        break;
+
+      case ThermoStation::HEAT:
+        lcd.print(HEAT_STRING);
+        break;
+
+      case ThermoStation::COOL:
+        lcd.print(COOL_STRING);
+        break;
+    }
+
+    lcd.setCursor(11, 2);
+    lcd.print(FAN_STRING);
+    switch (thermostat.getFanMode())
+    {
+      case ThermoStation::ON:
+        lcd.print(ON_STRING);
+        break;
+
+      case ThermoStation::AUTO:
+        lcd.print(AUTO_STRING);
+        break;
+    }
+
+    nOldFanSetting = thermostat.getFanMode();
+    nOldModeSetting = thermostat.getHeatMode();
+  }
+}
+
+void UpdateThermostatMenu(bool force)
+{
+  UpdateScheduleMenuItem(force);
+  UpdateModeandFanMenuItem(force);
 }
 
 void loop()
 {
   UpdateSleepState();
   UpdateIOExpander();
+  UpdateThermostatMenu(false);
 
   //Update the thermostat with the current time
   thermostat.background(rtc.now());
