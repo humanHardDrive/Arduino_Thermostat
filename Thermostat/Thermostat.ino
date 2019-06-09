@@ -512,6 +512,28 @@ void UpdateIOExpander()
 }
 
 //Menu functions
+void UpdateSensorMenuItem(bool force)
+{
+  static char sOldRemoteName[REMOTE_NAME_LENGTH];
+  char sCurrentRemoteName[REMOTE_NAME_LENGTH];
+
+  thermostat.getSelectedDeviceName(sCurrentRemoteName);
+  if(force || strcmp(sCurrentRemoteName, sOldRemoteName) != 0)
+  {
+    lcd.setCursor(0, 0);
+    lcd.print(blankLine);
+
+    lcd.setCursor(0, 0);
+    lcd.print(sCurrentRemoteName);
+    lcd.print(": ");
+
+    lcd.print(thermostat.getCurrentTemp());
+    lcd.write(223); //Degree symbol
+    
+    strcpy(sOldRemoteName, sCurrentRemoteName);
+  }
+}
+
 void UpdateScheduleMenuItem(bool force)
 {
   static bool bOldScheduleSetting = false;
@@ -609,18 +631,7 @@ void UpdateTimeMenuItem(bool force)
       lcd.print(0);
     lcd.print(now.day());
 
-    lcd.setCursor(8, 3);
-    if (now.hour() < 10)
-      lcd.print(0);
-    lcd.print(now.hour());
-
-    lcd.print(':');
-
-    if (now.minute() < 10)
-      lcd.print(0);
-    lcd.print(now.minute());
-
-    lcd.setCursor(14, 3);
+    lcd.setCursor(9, 3);
     switch(ThermoStation::dayofweek(now))
     {
       case ThermoStation::SUNDAY:
@@ -652,12 +663,24 @@ void UpdateTimeMenuItem(bool force)
       break;
     }
 
+    lcd.setCursor(13, 3);
+    if (now.hour() < 10)
+      lcd.print(0);
+    lcd.print(now.hour());
+
+    lcd.print(':');
+
+    if (now.minute() < 10)
+      lcd.print(0);
+    lcd.print(now.minute());
+
     oldRTCMinute = now.minute();
   }
 }
 
 void UpdateThermostatMenu(bool force)
 {
+  UpdateSensorMenuItem(force);
   UpdateScheduleMenuItem(force);
   UpdateModeandFanMenuItem(force);
   UpdateTimeMenuItem(force);
