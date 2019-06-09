@@ -373,33 +373,33 @@ void UpdateThermostatControl()
 
   if (btnEdge[TOGGLE_MODE_BTN] == 1)
   {
-    switch(thermostat.getHeatMode())
+    switch (thermostat.getHeatMode())
     {
       case ThermoStation::OFF:
-      thermostat.setHeatMode(ThermoStation::HEAT);
-      break;
+        thermostat.setHeatMode(ThermoStation::HEAT);
+        break;
 
       case ThermoStation::HEAT:
-      thermostat.setHeatMode(ThermoStation::COOL);
-      break;
+        thermostat.setHeatMode(ThermoStation::COOL);
+        break;
 
       case ThermoStation::COOL:
-      thermostat.setHeatMode(ThermoStation::OFF);
-      break;
+        thermostat.setHeatMode(ThermoStation::OFF);
+        break;
     }
   }
 
   if (btnEdge[TOGGLE_FAN_BTN] == 1)
   {
-    switch(thermostat.getFanMode())
+    switch (thermostat.getFanMode())
     {
       case ThermoStation::ON:
-      thermostat.setFanMode(ThermoStation::AUTO);
-      break;
+        thermostat.setFanMode(ThermoStation::AUTO);
+        break;
 
       case ThermoStation::AUTO:
-      thermostat.setFanMode(ThermoStation::ON);
-      break;
+        thermostat.setFanMode(ThermoStation::ON);
+        break;
     }
   }
 
@@ -585,10 +585,82 @@ void UpdateModeandFanMenuItem(bool force)
   }
 }
 
+void UpdateTimeMenuItem(bool force)
+{
+  static uint8_t oldRTCMinute = 0;
+
+  DateTime now = rtc.now();
+
+  //Only need to update on the minute mark
+  if (force || oldRTCMinute != now.minute())
+  {
+    lcd.setCursor(0, 3);
+    lcd.print(blankLine);
+
+    lcd.setCursor(2, 3);
+
+    if (now.month() < 10)
+      lcd.print(0);
+    lcd.print(now.month());
+
+    lcd.print('-');
+
+    if (now.day() < 10)
+      lcd.print(0);
+    lcd.print(now.day());
+
+    lcd.setCursor(8, 3);
+    if (now.hour() < 10)
+      lcd.print(0);
+    lcd.print(now.hour());
+
+    lcd.print(':');
+
+    if (now.minute() < 10)
+      lcd.print(0);
+    lcd.print(now.minute());
+
+    lcd.setCursor(14, 3);
+    switch(ThermoStation::dayofweek(now))
+    {
+      case ThermoStation::SUNDAY:
+      lcd.print(SUNDAY_STRING);
+      break;
+
+      case ThermoStation::MONDAY:
+      lcd.print(MONDAY_STRING);
+      break;
+
+      case ThermoStation::TUESDAY:
+      lcd.print(TUESDAY_STRING);
+      break;
+
+      case ThermoStation::WEDNESDAY:
+      lcd.print(WEDNESDAY_STRING);
+      break;
+
+      case ThermoStation::THURSDAY:
+      lcd.print(THURSDAY_STRING);
+      break;
+
+      case ThermoStation::FRIDAY:
+      lcd.print(FRIDAY_STRING);
+      break;
+
+      case ThermoStation::SATURDAY:
+      lcd.print(SATURDAY_STRING);
+      break;
+    }
+
+    oldRTCMinute = now.minute();
+  }
+}
+
 void UpdateThermostatMenu(bool force)
 {
   UpdateScheduleMenuItem(force);
   UpdateModeandFanMenuItem(force);
+  UpdateTimeMenuItem(force);
 }
 
 void loop()
