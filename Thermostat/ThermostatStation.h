@@ -65,7 +65,7 @@ class ThermoStation : public BaseStation
     void getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name);
     void getTemperatureDevice(uint8_t index, char* name, char* reading);
 
-    void background(const DateTime& now);
+    void background(const uint8_t& nDayOfWeek, const uint8_t& nHour, const uint8_t& nMinute);
 
     bool pair(uint32_t UID, char* sName, uint32_t timeout);
 
@@ -121,7 +121,7 @@ class ThermoStation : public BaseStation
     void handleRemoteRequest(uint8_t PID, const void* buffer, uint16_t len);
 
     void updateLocalTemp();
-    void updateSchedule(const DateTime& t);
+    void updateSchedule(const uint8_t& nDayOfWeek, const uint8_t& nHour, const uint8_t& nMinute);
     void updateHeatState();
 
   private:

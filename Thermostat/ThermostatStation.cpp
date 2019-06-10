@@ -259,30 +259,25 @@ bool ThermoStation::pair(uint32_t UID, char* sName, uint32_t timeout)
   return bRetVal;
 }
 
-void ThermoStation::background(const DateTime& t)
+void ThermoStation::background(const uint8_t& nDayOfWeek, const uint8_t& nHour, const uint8_t& nMinute)
 {
   BaseStation::background();
 
   if (m_bUseSchedule)
-    updateSchedule(t);
+    updateSchedule(nDayOfWeek, nHour, nMinute);
 
   updateHeatState();
   updateLocalTemp();
 }
 
-void ThermoStation::updateSchedule(const DateTime& t)
+void ThermoStation::updateSchedule(const uint8_t& nDayOfWeek, const uint8_t& nHour, const uint8_t& nMinute)
 {
-  byte day = dayofweek(t);
-  byte isWeekend = 0;
-
-  if (day == SATURDAY || day == SUNDAY)
-    isWeekend = 1;
-
+  bool isWeekend = (nDayOfWeek == SATURDAY || nDayOfWeek == SUNDAY);
   for (byte i = 0; i < NUM_TIME_DIV; i++)
   {
     TEMP_RULE rule = m_TempRules[isWeekend][m_HeatMode][i];
 
-    if (t.hour() > rule.h || t.minute() > rule.m)
+    if (nHour > rule.h || nMinute > rule.m)
       m_pActiveRule = &m_TempRules[isWeekend][m_HeatMode][i];
   }
 
@@ -365,20 +360,6 @@ void ThermoStation::updateLocalTemp()
     m_nLastTempSampleTime = millis();
   }
 }
-
-static uint8_t ThermoStation::dayofweek(const DateTime& date)
-{
-  static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
-  uint16_t y, m, d;
-
-  y = date.year();
-  m = date.month();
-  d = date.day();
-
-  y -= m < 3;
-  return ( y + y / 4 - y / 100 + y / 400 + t[m - 1] + d) % 7;
-}
-
 int ThermoStation::write(const void* buf, uint16_t len)
 {
   uint16_t i = 0;

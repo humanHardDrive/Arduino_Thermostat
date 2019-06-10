@@ -8,7 +8,7 @@
 #include <LiquidCrystal.h>
 #include <Sleep_n0m1.h>
 
-#define SERIAL_DEBUG
+//#define SERIAL_DEBUG
 
 #define NO_RADIO
 #define STAY_AWAKE
@@ -78,7 +78,7 @@ RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
 FM25V10         memoryDevice(MEM_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
-RTClib          rtc;
+DS3231          rtc;
 ThermoStation   thermostat(LOCAL_TEMP_PIN);
 Sleep           sleep;
 
@@ -113,6 +113,12 @@ bool (*aSettingsFn[ALL_SETTINGS])(void) =
   ResetDeviceSettingsFn,
   AboutSettingsFn
 };
+
+uint8_t RTCHour()
+{
+  bool b1, b2;
+  return rtc.getHour(b1, b2);
+}
 
 //Boot functions
 void InitLCD()
@@ -234,11 +240,11 @@ void InitRTC()
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(F("Check RTC"));
-  DateTime now;
-  now = rtc.now();
+  uint8_t nSecond;
+  nSecond = rtc.getSecond();
   delay(2000); //Wait at least 1 second
   lcd.setCursor(0, 1);
-  if (now.unixtime() != rtc.now().unixtime())
+  if (nSecond != rtc.getSecond())
   {
     lcd.print(F("SUCCESS"));
     delay(1000);
@@ -276,7 +282,7 @@ void InitThermostat()
   }
 
   thermostat.begin();
-  thermostat.background(rtc.now()); //Call one iteration of the backround loop to get the target temp
+  thermostat.background(rtc.getDoW(), RTCHour(), rtc.getMinute()); //Call one iteration of the backround loop to get the target temp
   lcd.setCursor(0, 1);
   lcd.print(thermostat.getPairedCount());
   lcd.print(F(" paired"));
@@ -467,6 +473,53 @@ void UpdateIOExpander()
 }
 
 //Menu functions
+void PrintDayOfWeek(uint8_t day)
+{
+  switch (day)
+  {
+    case ThermoStation::SUNDAY:
+      lcd.print(SUNDAY_STRING);
+      break;
+
+    case ThermoStation::MONDAY:
+      lcd.print(MONDAY_STRING);
+      break;
+
+    case ThermoStation::TUESDAY:
+      lcd.print(TUESDAY_STRING);
+      break;
+
+    case ThermoStation::WEDNESDAY:
+      lcd.print(WEDNESDAY_STRING);
+      break;
+
+    case ThermoStation::THURSDAY:
+      lcd.print(THURSDAY_STRING);
+      break;
+
+    case ThermoStation::FRIDAY:
+      lcd.print(FRIDAY_STRING);
+      break;
+
+    case ThermoStation::SATURDAY:
+      lcd.print(SATURDAY_STRING);
+      break;
+  }
+}
+
+void PrintTimeOfDay(uint8_t nHour, uint8_t nMinute, bool b24hour)
+{
+  if (nHour < 10)
+    lcd.print(0);
+  lcd.print(nHour);
+
+  lcd.print(':');
+
+  if (nMinute < 10)
+    lcd.print(0);
+  lcd.print(nMinute);
+}
+
 void HandleThermostatControlInput()
 {
   if (btnEdge[UP_TEMP_BTN] == 1)
@@ -622,70 +675,19 @@ void UpdateTimeMenuItem(bool force)
 {
   static uint8_t oldRTCMinute = 0;
 
-  DateTime now = rtc.now();
-
   //Only need to update on the minute mark
-  if (force || oldRTCMinute != now.minute())
+  if (force || oldRTCMinute != rtc.getMinute())
   {
     lcd.setCursor(0, 3);
     lcd.print(blankLine);
 
     lcd.setCursor(2, 3);
-
-    if (now.month() < 10)
-      lcd.print(0);
-    lcd.print(now.month());
-
-    lcd.print('-');
-
-    if (now.day() < 10)
-      lcd.print(0);
-    lcd.print(now.day());
-
-    lcd.setCursor(9, 3);
-    switch (ThermoStation::dayofweek(now))
-    {
-      case ThermoStation::SUNDAY:
-        lcd.print(SUNDAY_STRING);
-        break;
-
-      case ThermoStation::MONDAY:
-        lcd.print(MONDAY_STRING);
-        break;
-
-      case ThermoStation::TUESDAY:
-        lcd.print(TUESDAY_STRING);
-        break;
-
-      case ThermoStation::WEDNESDAY:
-        lcd.print(WEDNESDAY_STRING);
-        break;
-
-      case ThermoStation::THURSDAY:
-        lcd.print(THURSDAY_STRING);
-        break;
-
-      case ThermoStation::FRIDAY:
-        lcd.print(FRIDAY_STRING);
-        break;
-
-      case ThermoStation::SATURDAY:
-        lcd.print(SATURDAY_STRING);
-        break;
-    }
+    PrintDayOfWeek(rtc.getDoW());
 
     lcd.setCursor(13, 3);
-    if (now.hour() < 10)
-      lcd.print(0);
-    lcd.print(now.hour());
+    PrintTimeOfDay(RTCHour(), rtc.getMinute(), true);
 
-    lcd.print(':');
-
-    if (now.minute() < 10)
-      lcd.print(0);
-    lcd.print(now.minute());
-
-    oldRTCMinute = now.minute();
+    oldRTCMinute = rtc.getMinute();
   }
 }
 
@@ -707,45 +709,166 @@ void UpdateThermostatMenu(bool force)
 //Settings functions
 bool ScheduleSettingsFn()
 {
-  static bool bFirstCall = true;
-  static uint8_t nMonth, nDay, nHour, nMinute;
-  static uint8_t nSelectedPos;
-
-  if (bFirstCall)
-  {
-    DateTime now = rtc.now();
-    nMonth = now.month();
-    nDay = now.day();
-    nHour = now.hour();
-    nMinute = now.minute();
-
-    lcd.clear();
-
-    lcd.setCursor(7, 0);
-    if (nMonth < 10)
-      lcd.print(0);
-    lcd.print(nMonth);
-
-    lcd.print('-');
-
-    if (nDay < 10)
-      lcd.print(0);
-    lcd.print(nDay);
-
-    bFirstCall = false;
-  }
-
-  if(btnEdge[SETTINGS_BTN] == 1)
-  {
-    return true;
-  }
-
-  return false;
+  return true;
 }
 
 bool DateTimeSettingsFn()
 {
-  return true;
+  static bool bFirstCall = true;
+  static uint8_t nDayOfWeek, nHour, nMinute;
+  static uint8_t nSelectedPos;
+
+  if (bFirstCall)
+  {
+    bool b1, b2;
+    nDayOfWeek = rtc.getDoW();
+
+    nHour = RTCHour();
+    nMinute = rtc.getMinute();
+    
+    lcd.clear();
+
+    lcd.setCursor(2, 0);
+    PrintDayOfWeek(nDayOfWeek);
+
+    lcd.setCursor(13, 0);
+    PrintTimeOfDay(nHour, nMinute, true);
+
+    lcd.setCursor(3, 0);
+    lcd.blink();
+
+    bFirstCall = false;
+  }
+
+  if (btnEdge[TOGGLE_MODE_BTN] == 1)
+  {
+    nSelectedPos--;
+    if (nSelectedPos > 2)
+      nSelectedPos = 2;
+
+    switch (nSelectedPos)
+    {
+      case 0: //Day
+        lcd.setCursor(3, 0);
+        break;
+
+      case 1: //Hour
+        lcd.setCursor(14, 0);
+        break;
+
+      case 2: //Minute
+        lcd.setCursor(17, 0);
+        break;
+    }
+  }
+
+  if (btnEdge[TOGGLE_FAN_BTN] == 1)
+  {
+    nSelectedPos++;
+    if (nSelectedPos > 2)
+      nSelectedPos = 0;
+
+    switch (nSelectedPos)
+    {
+      case 0: //Day
+        lcd.setCursor(3, 0);
+        break;
+
+      case 1: //Hour
+        lcd.setCursor(14, 0);
+        break;
+
+      case 2: //Minute
+        lcd.setCursor(17, 0);
+        break;
+    }
+  }
+
+  if (btnEdge[UP_TEMP_BTN] == 1)
+  {
+    switch (nSelectedPos)
+    {
+      case 0: //Day
+        nDayOfWeek++;
+        if (nDayOfWeek >= 7) //Greater than saturday?
+          nDayOfWeek = 0; //Back to sunday
+
+        lcd.setCursor(2, 0);
+        PrintDayOfWeek(nDayOfWeek);
+        lcd.setCursor(3, 0); //Put the cursor back where it was
+        break;
+
+      case 1: //Hour
+        nHour++;
+        if (nHour >= 24)
+          nHour = 0;
+
+        lcd.setCursor(13, 0);
+        PrintTimeOfDay(nHour, nMinute, true);
+        lcd.setCursor(14, 0);
+        break;
+
+      case 2: //Minute
+        nMinute++;
+        if (nMinute >= 60)
+          nMinute = 0;
+
+        lcd.setCursor(13, 0);
+        PrintTimeOfDay(nHour, nMinute, true);
+        lcd.setCursor(17, 0);
+        break;
+    }
+  }
+
+  if (btnEdge[DOWN_TEMP_BTN] == 1)
+  {
+    switch (nSelectedPos)
+    {
+      case 0: //Day
+        nDayOfWeek--;
+        if (nDayOfWeek >= 7) //Less than sunday?
+          nDayOfWeek = 6; //Back to saturday
+
+        lcd.setCursor(2, 0);
+        PrintDayOfWeek(nDayOfWeek);
+        lcd.setCursor(3, 0); //Put the cursor back where it was
+        break;
+
+      case 1: //Hour
+        nHour--;
+        if (nHour >= 24)
+          nHour = 23;
+
+        lcd.setCursor(13, 0);
+        PrintTimeOfDay(nHour, nMinute, true);
+        lcd.setCursor(14, 0);
+        break;
+
+      case 2: //Minute
+        nMinute--;
+        if (nMinute >= 60)
+          nMinute = 59;
+
+        lcd.setCursor(13, 0);
+        PrintTimeOfDay(nHour, nMinute, true);
+        lcd.setCursor(17, 0);
+        break;        
+    }
+  }
+
+  if (btnEdge[SETTINGS_BTN] == 1)
+  {
+    rtc.setDoW(nDayOfWeek);
+    rtc.setHour(nHour);
+    rtc.setMinute(nMinute);
+    rtc.setSecond(0);
+    
+    lcd.noBlink();
+    bFirstCall = true;
+    return true;
+  }
+
+  return false;
 }
 
 bool DiscoverDeviceSettingsFn()
@@ -954,6 +1077,8 @@ void UpdateSettingsMenu(bool force)
 
 void loop()
 {
+  bool b1, b2;
+  
   UpdateSleepState();
   UpdateIOExpander();
 
@@ -963,7 +1088,7 @@ void loop()
     UpdateSettingsMenu(bForceLCDUpdate);
 
   //Update the thermostat with the current time
-  thermostat.background(rtc.now());
+  thermostat.background(rtc.getDoW(), rtc.getHour(b1, b2), rtc.getMinute());
 
   //Clear button inputs
   memset(btnEdge, 0, sizeof(btnEdge));
