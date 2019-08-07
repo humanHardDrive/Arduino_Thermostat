@@ -1,0 +1,359 @@
+EESchema Schematic File Version 4
+LIBS:Thermostat_Layout-cache
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 7 7
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L RF:nRF24L01P U6
+U 1 1 5D438B4B
+P 5700 3550
+F 0 "U6" H 5700 4531 50  0000 C CNN
+F 1 "nRF24L01P" H 5700 4440 50  0000 C CNN
+F 2 "Package_DFN_QFN:QFN-20-1EP_4x4mm_P0.5mm_EP2.5x2.5mm" H 5900 4350 50  0001 L CIN
+F 3 "http://www.nordicsemi.com/eng/content/download/2726/34069/file/nRF24L01P_Product_Specification_1_0.pdf" H 5700 3650 50  0001 C CNN
+	1    5700 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5600 2750 5700 2750
+Wire Wire Line
+	5700 2750 5800 2750
+Connection ~ 5700 2750
+Wire Wire Line
+	5600 4350 5700 4350
+Wire Wire Line
+	5700 4350 5750 4350
+Connection ~ 5700 4350
+Wire Wire Line
+	5800 4350 5900 4350
+Connection ~ 5800 4350
+Wire Wire Line
+	5100 3050 4500 3050
+Wire Wire Line
+	5100 3150 4500 3150
+Wire Wire Line
+	5100 3250 4500 3250
+Wire Wire Line
+	5100 3350 4500 3350
+Wire Wire Line
+	5100 3550 4500 3550
+$Comp
+L SparkFun-PowerSymbols:GND #GND0112
+U 1 1 5D43A0A0
+P 5750 4350
+F 0 "#GND0112" H 5800 4300 45  0001 L BNN
+F 1 "GND" H 5750 4180 45  0000 C CNN
+F 2 "" H 5750 4250 60  0001 C CNN
+F 3 "" H 5750 4250 60  0001 C CNN
+	1    5750 4350
+	1    0    0    -1  
+$EndComp
+Connection ~ 5750 4350
+Wire Wire Line
+	5750 4350 5800 4350
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY0109
+U 1 1 5D43AA98
+P 5700 2450
+F 0 "#SUPPLY0109" H 5750 2450 45  0001 L BNN
+F 1 "3.3V" H 5700 2726 45  0000 C CNN
+F 2 "XXX-00000" H 5700 2631 60  0000 C CNN
+F 3 "" H 5700 2450 60  0001 C CNN
+	1    5700 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5700 2450 5700 2750
+Text GLabel 4500 3050 0    50   Input ~ 0
+MOSI
+Text GLabel 4500 3150 0    50   Input ~ 0
+MISO
+Text GLabel 4500 3250 0    50   Input ~ 0
+SCK
+Text GLabel 4500 3350 0    50   Input ~ 0
+RF_CSN
+Text GLabel 4500 3550 0    50   Input ~ 0
+RF_CE
+$Comp
+L Device:R_US R8
+U 1 1 5D4625DA
+P 4950 3850
+F 0 "R8" V 4745 3850 50  0000 C CNN
+F 1 "22kΩ" V 4836 3850 50  0000 C CNN
+F 2 "Resistors:0402" V 4990 3840 50  0001 C CNN
+F 3 "~" H 4950 3850 50  0001 C CNN
+	1    4950 3850
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C8
+U 1 1 5D46361C
+P 5000 4200
+F 0 "C8" H 5115 4246 50  0000 L CNN
+F 1 "33nF" H 5115 4155 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 5038 4050 50  0001 C CNN
+F 3 "~" H 5000 4200 50  0001 C CNN
+	1    5000 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4800 3850 4650 3850
+Wire Wire Line
+	4650 3850 4650 4350
+Wire Wire Line
+	4650 4350 4850 4350
+Wire Wire Line
+	5000 4050 5100 4050
+$Comp
+L SparkFun-PowerSymbols:GND #GND0113
+U 1 1 5D4644BC
+P 4850 4350
+F 0 "#GND0113" H 4900 4300 45  0001 L BNN
+F 1 "GND" H 4850 4180 45  0000 C CNN
+F 2 "" H 4850 4250 60  0001 C CNN
+F 3 "" H 4850 4250 60  0001 C CNN
+	1    4850 4350
+	1    0    0    -1  
+$EndComp
+Connection ~ 4850 4350
+Wire Wire Line
+	4850 4350 5000 4350
+$Comp
+L Device:Crystal Y2
+U 1 1 5D464C1C
+P 6800 4200
+F 0 "Y2" H 6800 4468 50  0000 C CNN
+F 1 "16MHz" H 6800 4377 50  0000 C CNN
+F 2 "Crystal:Crystal_SMD_SeikoEpson_MC405-2Pin_9.6x4.1mm" H 6800 4200 50  0001 C CNN
+F 3 "~" H 6800 4200 50  0001 C CNN
+	1    6800 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R9
+U 1 1 5D465EEC
+P 6800 4550
+F 0 "R9" V 6595 4550 50  0000 C CNN
+F 1 "1MΩ" V 6686 4550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 6840 4540 50  0001 C CNN
+F 3 "~" H 6800 4550 50  0001 C CNN
+	1    6800 4550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C9
+U 1 1 5D4668C4
+P 6650 4750
+F 0 "C9" H 6765 4796 50  0000 L CNN
+F 1 "22pF" H 6765 4705 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 6688 4600 50  0001 C CNN
+F 3 "~" H 6650 4750 50  0001 C CNN
+	1    6650 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C11
+U 1 1 5D4670D7
+P 6950 4750
+F 0 "C11" H 7065 4796 50  0000 L CNN
+F 1 "22pF" H 7065 4705 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 6988 4600 50  0001 C CNN
+F 3 "~" H 6950 4750 50  0001 C CNN
+	1    6950 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6650 4200 6650 4550
+Wire Wire Line
+	6650 4550 6650 4600
+Connection ~ 6650 4550
+Wire Wire Line
+	6950 4550 6950 4600
+Wire Wire Line
+	6950 4550 6950 4200
+Connection ~ 6950 4550
+Wire Wire Line
+	6300 4050 6650 4050
+Wire Wire Line
+	6650 4050 6650 4200
+Connection ~ 6650 4200
+Wire Wire Line
+	6300 3850 6950 3850
+Wire Wire Line
+	6950 3850 6950 4200
+Connection ~ 6950 4200
+Wire Wire Line
+	6650 4900 6800 4900
+$Comp
+L SparkFun-PowerSymbols:GND #GND0114
+U 1 1 5D468EDC
+P 6800 4900
+F 0 "#GND0114" H 6850 4850 45  0001 L BNN
+F 1 "GND" H 6800 4730 45  0000 C CNN
+F 2 "" H 6800 4800 60  0001 C CNN
+F 3 "" H 6800 4800 60  0001 C CNN
+	1    6800 4900
+	1    0    0    -1  
+$EndComp
+Connection ~ 6800 4900
+Wire Wire Line
+	6800 4900 6950 4900
+$Comp
+L Device:L L1
+U 1 1 5D46963A
+P 7450 3400
+F 0 "L1" H 7406 3354 50  0000 R CNN
+F 1 "12nH" H 7406 3445 50  0000 R CNN
+F 2 "Inductor_SMD:L_0402_1005Metric" H 7450 3400 50  0001 C CNN
+F 3 "~" H 7450 3400 50  0001 C CNN
+	1    7450 3400
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:L L2
+U 1 1 5D46B10E
+P 7600 3250
+F 0 "L2" V 7790 3250 50  0000 C CNN
+F 1 "2.3nH" V 7699 3250 50  0000 C CNN
+F 2 "Inductor_SMD:L_0402_1005Metric" H 7600 3250 50  0001 C CNN
+F 3 "~" H 7600 3250 50  0001 C CNN
+	1    7600 3250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:L L3
+U 1 1 5D46BA7D
+P 7600 3550
+F 0 "L3" V 7790 3550 50  0000 C CNN
+F 1 "7.9nH" V 7699 3550 50  0000 C CNN
+F 2 "Inductor_SMD:L_0402_1005Metric" H 7600 3550 50  0001 C CNN
+F 3 "~" H 7600 3550 50  0001 C CNN
+	1    7600 3550
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6300 3250 7450 3250
+Connection ~ 7450 3250
+Wire Wire Line
+	6300 3050 6950 3050
+Wire Wire Line
+	8000 3050 8000 3250
+Wire Wire Line
+	8000 3250 7750 3250
+$Comp
+L Device:C C10
+U 1 1 5D46CE74
+P 6950 2900
+F 0 "C10" H 7065 2946 50  0000 L CNN
+F 1 "2.2nF" H 7065 2855 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 6988 2750 50  0001 C CNN
+F 3 "~" H 6950 2900 50  0001 C CNN
+	1    6950 2900
+	1    0    0    -1  
+$EndComp
+Connection ~ 6950 3050
+Wire Wire Line
+	6950 3050 7350 3050
+$Comp
+L Device:C C12
+U 1 1 5D46DFF8
+P 7350 2900
+F 0 "C12" H 7465 2946 50  0000 L CNN
+F 1 "4.7pF" H 7465 2855 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 7388 2750 50  0001 C CNN
+F 3 "~" H 7350 2900 50  0001 C CNN
+	1    7350 2900
+	1    0    0    -1  
+$EndComp
+Connection ~ 7350 3050
+Wire Wire Line
+	7350 3050 8000 3050
+Wire Wire Line
+	6950 2750 7150 2750
+$Comp
+L Device:C C13
+U 1 1 5D46EBB6
+P 7900 3550
+F 0 "C13" V 7648 3550 50  0000 C CNN
+F 1 "15pF" V 7739 3550 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 7938 3400 50  0001 C CNN
+F 3 "~" H 7900 3550 50  0001 C CNN
+	1    7900 3550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C14
+U 1 1 5D46F35B
+P 8150 3700
+F 0 "C14" H 8265 3746 50  0000 L CNN
+F 1 "1.5pF" H 8265 3655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 8188 3550 50  0001 C CNN
+F 3 "~" H 8150 3700 50  0001 C CNN
+	1    8150 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8050 3550 8150 3550
+$Comp
+L Connector:Conn_Coaxial J4
+U 1 1 5D47018F
+P 8750 3550
+F 0 "J4" H 8850 3525 50  0000 L CNN
+F 1 "Conn_Coaxial" H 8850 3434 50  0000 L CNN
+F 2 "Connector_Coaxial:U.FL_Molex_MCRF_73412-0110_Vertical" H 8750 3550 50  0001 C CNN
+F 3 " ~" H 8750 3550 50  0001 C CNN
+	1    8750 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8150 3550 8550 3550
+Connection ~ 8150 3550
+Wire Wire Line
+	8150 3850 8450 3850
+Wire Wire Line
+	8750 3850 8750 3750
+$Comp
+L SparkFun-PowerSymbols:GND #GND0115
+U 1 1 5D47238E
+P 8450 3850
+F 0 "#GND0115" H 8500 3800 45  0001 L BNN
+F 1 "GND" H 8450 3680 45  0000 C CNN
+F 2 "" H 8450 3750 60  0001 C CNN
+F 3 "" H 8450 3750 60  0001 C CNN
+	1    8450 3850
+	1    0    0    -1  
+$EndComp
+Connection ~ 8450 3850
+Wire Wire Line
+	8450 3850 8750 3850
+$Comp
+L SparkFun-PowerSymbols:GND #GND0116
+U 1 1 5D472A92
+P 7150 2750
+F 0 "#GND0116" H 7200 2700 45  0001 L BNN
+F 1 "GND" H 7150 2580 45  0000 C CNN
+F 2 "" H 7150 2650 60  0001 C CNN
+F 3 "" H 7150 2650 60  0001 C CNN
+	1    7150 2750
+	-1   0    0    1   
+$EndComp
+Connection ~ 7150 2750
+Wire Wire Line
+	7150 2750 7350 2750
+Wire Wire Line
+	6300 3450 6300 3550
+Wire Wire Line
+	6300 3550 7450 3550
+Connection ~ 7450 3550
+$EndSCHEMATC

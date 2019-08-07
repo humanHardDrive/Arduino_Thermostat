@@ -1,0 +1,204 @@
+EESchema Schematic File Version 4
+LIBS:Thermostat_Layout-cache
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 7
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L power:+9V #PWR0101
+U 1 1 5D3E58CF
+P 5500 2750
+F 0 "#PWR0101" H 5500 2600 50  0001 C CNN
+F 1 "+9V" H 5515 2923 50  0000 C CNN
+F 2 "" H 5500 2750 50  0001 C CNN
+F 3 "" H 5500 2750 50  0001 C CNN
+	1    5500 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x02_Male J2
+U 1 1 5D3E6F45
+P 4700 3000
+F 0 "J2" H 4808 3181 50  0000 C CNN
+F 1 "Conn_01x02_Male" H 4808 3090 50  0000 C CNN
+F 2 "Connector_JST:JST_PH_S2B-PH-SM4-TB_1x02-1MP_P2.00mm_Horizontal" H 4700 3000 50  0001 C CNN
+F 3 "~" H 4700 3000 50  0001 C CNN
+	1    4700 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4900 3000 5150 3000
+$Comp
+L Device:CP C4
+U 1 1 5D3EA330
+P 5150 3150
+F 0 "C4" H 5268 3196 50  0000 L CNN
+F 1 "10uF" H 5268 3105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 5188 3000 50  0001 C CNN
+F 3 "~" H 5150 3150 50  0001 C CNN
+	1    5150 3150
+	1    0    0    -1  
+$EndComp
+Connection ~ 5150 3000
+$Comp
+L Regulator_Switching:TSR_1-2433 U3
+U 1 1 5D3E43BD
+P 6050 3100
+F 0 "U3" H 6050 3467 50  0000 C CNN
+F 1 "TSR_1-2433" H 6050 3376 50  0000 C CNN
+F 2 "Converter_DCDC:Converter_DCDC_TRACO_TSR-1_THT" H 6050 2950 50  0001 L CIN
+F 3 "http://www.tracopower.com/products/tsr1.pdf" H 6050 3100 50  0001 C CNN
+	1    6050 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C5
+U 1 1 5D3EBB10
+P 5500 3150
+F 0 "C5" H 5618 3196 50  0000 L CNN
+F 1 "1uF" H 5618 3105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 5538 3000 50  0001 C CNN
+F 3 "~" H 5500 3150 50  0001 C CNN
+	1    5500 3150
+	1    0    0    -1  
+$EndComp
+Connection ~ 5500 3000
+Wire Wire Line
+	5500 3000 5650 3000
+Wire Wire Line
+	4900 3100 4900 3300
+Wire Wire Line
+	4900 3300 5150 3300
+Wire Wire Line
+	5150 3300 5500 3300
+Connection ~ 5150 3300
+Wire Wire Line
+	5500 3300 6050 3300
+Connection ~ 5500 3300
+Wire Wire Line
+	5150 3000 5500 3000
+Wire Wire Line
+	5500 2750 5500 3000
+$Comp
+L SparkFun-PowerSymbols:GND #GND0103
+U 1 1 5D3ED84A
+P 6050 3400
+F 0 "#GND0103" H 6100 3350 45  0001 L BNN
+F 1 "GND" H 6050 3230 45  0000 C CNN
+F 2 "" H 6050 3300 60  0001 C CNN
+F 3 "" H 6050 3300 60  0001 C CNN
+	1    6050 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C6
+U 1 1 5D3EDD28
+P 6600 3150
+F 0 "C6" H 6718 3196 50  0000 L CNN
+F 1 "1uF" H 6718 3105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 6638 3000 50  0001 C CNN
+F 3 "~" H 6600 3150 50  0001 C CNN
+	1    6600 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C7
+U 1 1 5D3EE418
+P 7000 3150
+F 0 "C7" H 7118 3196 50  0000 L CNN
+F 1 "0.1uF" H 7118 3105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 7038 3000 50  0001 C CNN
+F 3 "~" H 7000 3150 50  0001 C CNN
+	1    7000 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6050 3300 6600 3300
+Connection ~ 6050 3300
+Wire Wire Line
+	6600 3300 7000 3300
+Connection ~ 6600 3300
+Wire Wire Line
+	6450 3000 6600 3000
+Wire Wire Line
+	6600 3000 7000 3000
+Connection ~ 6600 3000
+Wire Wire Line
+	6050 3400 6050 3300
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY0102
+U 1 1 5D3EF310
+P 6600 2750
+F 0 "#SUPPLY0102" H 6650 2750 45  0001 L BNN
+F 1 "3.3V" H 6600 3026 45  0000 C CNN
+F 2 "XXX-00000" H 6600 2931 60  0000 C CNN
+F 3 "" H 6600 2750 60  0001 C CNN
+	1    6600 2750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6600 2750 6600 3000
+$Comp
+L Device:R_US R5
+U 1 1 5D3F0E01
+P 5350 4200
+F 0 "R5" H 5418 4246 50  0000 L CNN
+F 1 "220k" H 5418 4155 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 5390 4190 50  0001 C CNN
+F 3 "~" H 5350 4200 50  0001 C CNN
+	1    5350 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R6
+U 1 1 5D3F14FB
+P 5350 4500
+F 0 "R6" H 5418 4546 50  0000 L CNN
+F 1 "100k" H 5418 4455 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 5390 4490 50  0001 C CNN
+F 3 "~" H 5350 4500 50  0001 C CNN
+	1    5350 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+9V #PWR0102
+U 1 1 5D3F1ECA
+P 5350 4000
+F 0 "#PWR0102" H 5350 3850 50  0001 C CNN
+F 1 "+9V" H 5365 4173 50  0000 C CNN
+F 2 "" H 5350 4000 50  0001 C CNN
+F 3 "" H 5350 4000 50  0001 C CNN
+	1    5350 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND0104
+U 1 1 5D3F23F7
+P 5350 4700
+F 0 "#GND0104" H 5400 4650 45  0001 L BNN
+F 1 "GND" H 5350 4530 45  0000 C CNN
+F 2 "" H 5350 4600 60  0001 C CNN
+F 3 "" H 5350 4600 60  0001 C CNN
+	1    5350 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5350 4000 5350 4050
+Wire Wire Line
+	5350 4650 5350 4700
+Wire Wire Line
+	5350 4350 6050 4350
+Connection ~ 5350 4350
+Text HLabel 6050 4350 2    50   Input ~ 0
+BATT_MON
+$EndSCHEMATC

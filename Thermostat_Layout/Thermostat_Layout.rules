@@ -1,0 +1,83 @@
+
+(rules PCB Thermostat_Layout
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 4548)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 2.2)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.9)
+    )
+  )
+  (rule
+    (width 250.0)
+    (clear 200.2)
+    (clear 125.0 (type smd_to_turn_gap))
+    (clear 50.0 (type smd_smd))
+  )
+  (padstack "Via[0-1]_800:400_um"
+    (shape
+      (circle F.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 800.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_800:400_um" "Via[0-1]_800:400_um" default
+  )
+  (via 
+    "Via[0-1]_800:400_um-kicad_default" "Via[0-1]_800:400_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_800:400_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_800:400_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    GND "Net-(BT1-Pad1)" "Net-(C1-Pad1)" /ProcessorConnections/X1 /ProcessorConnections/X2 +9V 3.3V "Net-(C8-Pad1)"
+    "Net-(C9-Pad1)" "Net-(C10-Pad2)" "Net-(C11-Pad1)" "Net-(C13-Pad2)" "Net-(C13-Pad1)" "Net-(J1-Pad3)" "Net-(J1-Pad1)" "LCD_LED"
+    "Net-(J3-Pad15)" "LCD_D7" "LCD_D6" "LCD_D5" "LCD_D4" "LCD_EN" "LCD_RS" "LCD_CONT"
+    COMMON "FAN_HOT" "COOL_HOT" "HEAT_HOT" "UNUSED_BTN" "SCHED_BTN" "REMOTE_BTN" "SETTINGS_BTN"
+    "FAN_BTN" "MODE_BTN" "DWN_BTN" "UP_BTN" "Net-(L1-Pad2)" "Net-(L1-Pad1)" SDA SCL
+    "UC_TX" "UC_RX" "/Power/BATT_MON" "Net-(R8-Pad1)" "Net-(R10-Pad1)" "Net-(R11-Pad1)" "Net-(R12-Pad1)" "Net-(TP1-Pad1)"
+    "/ProcessorConnections/ANA_TEMP" "EXP_INT" "RF_CE" "EXP_RST" "EXP_CS" SCK MISO MOSI
+    "FAN_ON" "COOL_ON" "HEAT_ON" "UC_RST" "MEM_CS"
+    (clearance_class "kicad_default")
+    (via_rule kicad_default)
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
