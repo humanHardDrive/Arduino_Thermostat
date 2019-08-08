@@ -357,13 +357,13 @@ Wire Wire Line
 	3500 6000 3000 6000
 Wire Wire Line
 	3500 6150 3000 6150
-Text GLabel 3450 5300 0    50   Input ~ 0
+Text GLabel 3000 5700 0    50   Input ~ 0
 MEM_CS
-Text GLabel 3450 5450 0    50   Output ~ 0
+Text GLabel 3000 5850 0    50   Output ~ 0
 MISO
-Text GLabel 3450 5600 0    50   Input ~ 0
+Text GLabel 3000 6000 0    50   Input ~ 0
 MOSI
-Text GLabel 3450 5750 0    50   Input ~ 0
+Text GLabel 3000 6150 0    50   Input ~ 0
 SCK
 $Comp
 L Connector_Generic:Conn_01x03 J1
