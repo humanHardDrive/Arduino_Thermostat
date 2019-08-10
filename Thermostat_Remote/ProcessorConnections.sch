@@ -212,14 +212,6 @@ Text Label 4450 2450 0    50   ~ 0
 LEFT_BTN
 Text Label 4450 2550 0    50   ~ 0
 RIGHT_BTN
-Wire Wire Line
-	5100 2750 4450 2750
-Wire Wire Line
-	5100 2850 4450 2850
-Text Label 4450 2750 0    50   ~ 0
-XTAL1
-Text Label 4450 2850 0    50   ~ 0
-XTAL2
 $Comp
 L Device:Crystal Y1
 U 1 1 5D4C02C2
@@ -436,18 +428,6 @@ F 3 "" H 4150 6100 60  0001 C CNN
 $EndComp
 Text Label 3750 6400 0    50   ~ 0
 UC_RST
-Wire Wire Line
-	5100 2250 4250 2250
-Wire Wire Line
-	5100 2350 4250 2350
-Wire Wire Line
-	5100 2650 4250 2650
-Text GLabel 4250 2650 0    50   Output ~ 0
-MEM_CS
-Text GLabel 4250 2350 0    50   Output ~ 0
-RF_CE
-Text GLabel 4250 2250 0    50   Output ~ 0
-RF_CS
 $Comp
 L SparkFun-PowerSymbols:3.3V #SUPPLY0105
 U 1 1 5D4AA7A4
@@ -599,4 +579,24 @@ Wire Wire Line
 	5100 3450 4250 3450
 Text GLabel 4250 3450 0    50   Input ~ 0
 BATT_MON
+Wire Wire Line
+	5100 2250 4450 2250
+Wire Wire Line
+	5100 2350 4450 2350
+Text Label 4450 2250 0    50   ~ 0
+XTAL1
+Text Label 4450 2350 0    50   ~ 0
+XTAL2
+Wire Wire Line
+	5100 2750 4250 2750
+Wire Wire Line
+	5100 2850 4250 2850
+Wire Wire Line
+	5100 2950 4250 2950
+Text GLabel 4250 2750 0    50   Output ~ 0
+MEM_CS
+Text GLabel 4250 2850 0    50   Output ~ 0
+RF_CS
+Text GLabel 4250 2950 0    50   Output ~ 0
+RF_CE
 $EndSCHEMATC

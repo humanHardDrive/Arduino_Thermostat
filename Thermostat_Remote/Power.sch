@@ -15,32 +15,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L SparkFun-Batteries:BATTERY-20MM_SMD BT1
-U 1 1 5D51775D
-P 3550 2400
-F 0 "BT1" V 3455 2578 45  0000 L CNN
-F 1 "BATTERY-20MM_SMD" V 3539 2578 45  0000 L CNN
-F 2 "Battery:BatteryHolder_Keystone_3034_1x20mm" H 3550 2650 20  0001 C CNN
-F 3 "" H 3550 2400 50  0001 C CNN
-F 4 "BATT-11519" V 3634 2578 60  0000 L CNN "Field4"
-	1    3550 2400
-	0    1    1    0   
-$EndComp
-$Comp
-L SparkFun-Batteries:BATTERY-20MM_SMD BT2
-U 1 1 5D518681
-P 3550 2950
-F 0 "BT2" V 3455 3128 45  0000 L CNN
-F 1 "BATTERY-20MM_SMD" V 3539 3128 45  0000 L CNN
-F 2 "Battery:BatteryHolder_Keystone_3034_1x20mm" H 3550 3200 20  0001 C CNN
-F 3 "" H 3550 2950 50  0001 C CNN
-F 4 "BATT-11519" V 3634 3128 60  0000 L CNN "Field4"
-	1    3550 2950
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	3550 2750 3550 2600
-$Comp
 L Regulator_Switching:TSR_1-2433 U5
 U 1 1 5D5193D4
 P 6000 2300
@@ -85,8 +59,6 @@ Wire Wire Line
 Connection ~ 5200 2200
 Wire Wire Line
 	5200 2200 5600 2200
-Wire Wire Line
-	3550 3150 3550 3300
 Wire Wire Line
 	3550 3300 4650 3300
 Wire Wire Line
@@ -225,4 +197,37 @@ Wire Wire Line
 Connection ~ 4700 4600
 Text GLabel 5300 4600 2    50   Output ~ 0
 BATT_MON
+$Comp
+L SparkFun-Batteries:BATTERY-20MM_SMD BT1
+U 1 1 5D51775D
+P 3550 2400
+F 0 "BT1" V 3455 2578 45  0000 L CNN
+F 1 "BATTERY-20MM_SMD" V 3539 2578 45  0000 L CNN
+F 2 "Batteries:BATTCON_20MM" H 3550 2650 20  0001 C CNN
+F 3 "" H 3550 2400 50  0001 C CNN
+F 4 "BATT-11519" V 3634 2578 60  0000 L CNN "Field4"
+	1    3550 2400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3550 2600 3550 3300
+$Comp
+L Connector_Generic:Conn_01x02 J?
+U 1 1 5D531177
+P 2850 2200
+F 0 "J?" H 2768 2417 50  0000 C CNN
+F 1 "Conn_01x02" H 2768 2326 50  0000 C CNN
+F 2 "Connector_JST:JST_PH_S2B-PH-SM4-TB_1x02-1MP_P2.00mm_Horizontal" H 2850 2200 50  0001 C CNN
+F 3 "~" H 2850 2200 50  0001 C CNN
+	1    2850 2200
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	3050 2200 3550 2200
+Connection ~ 3550 2200
+Wire Wire Line
+	3050 2300 3050 3300
+Wire Wire Line
+	3050 3300 3550 3300
+Connection ~ 3550 3300
 $EndSCHEMATC

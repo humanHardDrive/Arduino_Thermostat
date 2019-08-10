@@ -5,8 +5,11 @@
 #include "printf.h"
 #include "FM25V10.h"
 #include <Sleep_n0m1.h>
-
+#include <Wire.h>
 #include <SPI.h>
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
 #define SLEEP_TIME  (2*60*1000UL)
 #define AWAKE_TIME  (10*1000UL)
@@ -17,39 +20,36 @@
 #define APP_NAME  F("REMOTE TEMPERATURE SENSOR")
 #define VERSION   F("v0.0")
 
-#define SERIAL_DEBUG
+//#define SERIAL_DEBUG
+
+#define LCD_WIDTH  128
+#define LCD_HEIGHT 64
 
 #define TEMP_SENSE_PIN  A0
+#define BATT_MON_PIN    A1
 
-#define RF24_CS_PIN     10
-#define RF24_CE_PIN     9
+#define SCK             13
+#define MISO            12
+#define MOSI            11
+
+#define RF24_CE_PIN     10
+#define RF24_CS_PIN     9
 #define MEM_CS_PIN      8
 
-#define USER_LED_PIN    4
-#define USER_BTN_PIN    2
+#define RIGHT_BTN_PIN   6
+#define LEFT_BTN_PIN    5
+#define DOWN_BTN_PIN    4
+#define UP_BTN_PIN      3
+#define CENTER_BTN_PIN  2
 
 RF24 radio(RF24_CE_PIN, RF24_CS_PIN);
 FM25V10 memoryDevice(MEM_CS_PIN);
 TempSensor temperatureSensor(TEMP_SENSE_PIN);
+Adafruit_SSD1306 lcd(LCD_WIDTH, LCD_HEIGHT, &Wire, -1);
 Sleep sleep;
-
-#define LED_PAIR_UPDATE_PERIOD  50
-#define LED_HEARTBEAT_PERIOD    1000
-
-uint32_t nLastUserLEDUpdateTime = 0;
-uint8_t nUserLEDValue = 0, nUserLEDChange = 1;
-
-uint32_t nUserBtnPressedTime = 0;
-bool bUserBtnState = false;
 
 volatile uint32_t nTimeAwake = 0;
 bool bAwake = false;
-
-void UserBtnHandler()
-{
-  bAwake = true;
-  nTimeAwake = millis();
-}
 
 void setup()
 {
@@ -75,11 +75,12 @@ void setup()
   temperatureSensor.addRadio(&radio);
   temperatureSensor.begin();
 
-  pinMode(USER_LED_PIN, OUTPUT);
-  digitalWrite(USER_LED_PIN, LOW);
-
-  pinMode(USER_BTN_PIN, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(USER_BTN_PIN), UserBtnHandler, FALLING);
+  pinMode(CENTER_BTN_PIN, INPUT_PULLUP);
+  pinMode(UP_BTN_PIN, INPUT_PULLUP);
+  pinMode(DOWN_BTN_PIN, INPUT_PULLUP);
+  pinMode(LEFT_BTN_PIN, INPUT_PULLUP);
+  pinMode(RIGHT_BTN_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(CENTER_BTN_PIN), UserBtnHandler, FALLING);
 
   sleep.pwrDownMode();
 
@@ -99,7 +100,6 @@ void updateSleepState()
   {
     bAwake = false;
     radio.powerDown(); //Put the radio to sleep
-    digitalWrite(USER_LED_PIN, LOW); //Turn off the LED
 
     //Sleep for the alotted time
     sleep.sleepDelay(SLEEP_TIME, bAwake);
@@ -107,58 +107,6 @@ void updateSleepState()
     //Wake everything back up
     nTimeAwake = millis();
     radio.powerUp();
-  }
-}
-
-void updateUserBtn()
-{
-  //If the button was just pressed
-  if (!digitalRead(USER_BTN_PIN) && !bUserBtnState)
-  {
-    bUserBtnState = true;
-    nUserBtnPressedTime = millis();
-  }
-  else if (digitalRead(USER_BTN_PIN) && bUserBtnState) //The button was released
-  {
-    if ((millis() - nUserBtnPressedTime) > UNPAIR_TIME)
-    {
-      //Unpair the device, forget the network
-    }
-    else if ((millis() - nUserBtnPressedTime) > REMOTE_REQUEST_TIME)
-    {
-      //Send request to base station to become the remote sensor
-    }
-  }
-}
-
-void updateUserLED()
-{
-  if (temperatureSensor.isPairing())
-  {
-    if ((millis() - nLastUserLEDUpdateTime) > LED_PAIR_UPDATE_PERIOD)
-    {
-      if (!nUserLEDValue)
-        nUserLEDChange = 1;
-      else if (nUserLEDValue == 0xFF)
-        nUserLEDChange = 0xFF;
-
-      nUserLEDValue += nUserLEDChange;
-      analogWrite(USER_LED_PIN, nUserLEDValue);
-      nLastUserLEDUpdateTime = millis();
-    }
-  }
-  else
-  {
-    if ((millis() - nLastUserLEDUpdateTime) > LED_HEARTBEAT_PERIOD)
-    {
-      if (!nUserLEDValue)
-        nUserLEDValue = 0xFF;
-      else if (nUserLEDValue == 0xFF)
-        nUserLEDValue = 0;
-        
-      analogWrite(USER_LED_PIN, nUserLEDValue);
-      nLastUserLEDUpdateTime = millis();
-    }
   }
 }
 
