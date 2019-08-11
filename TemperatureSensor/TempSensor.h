@@ -4,7 +4,7 @@
 #include <RemoteSensor.h>
 #include <Arduino.h>
 
-#define SERIAL_DEBUG
+//#define SERIAL_DEBUG
 
 #include "nRF24L01.h"
 #include "RF24.h"
@@ -68,6 +68,8 @@ class TempSensor : public RemoteSensor
 
     void handleTemperatureQueryMsg(const void* buffer, uint16_t len);
     void handleSetPollingRateMsg(const void* buffer, uint16_t len);
+    void handleSetTemperatureMsg(const void* buffer, uint16_t len);
+    void hoandleSetModeMsg(const void* buffer, uint16_t len);
 
   private:
     const uint64_t DISCOVERY_PIPE = 0x444953434F; //DISCO

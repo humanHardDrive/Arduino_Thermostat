@@ -273,4 +273,3 @@ void TempSensor::printArr(void* buf, uint8_t len)
   }
   Serial.println();
 }
-
