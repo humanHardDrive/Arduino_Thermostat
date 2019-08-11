@@ -20,10 +20,12 @@
 #define APP_NAME  F("REMOTE TEMPERATURE SENSOR")
 #define VERSION   F("v0.0")
 
+#define DEBOUNCE_TIME   10
+
 //#define SERIAL_DEBUG
 
 #define LCD_WIDTH  128
-#define LCD_HEIGHT 64
+#define LCD_HEIGHT 32
 
 #define TEMP_SENSE_PIN  A0
 #define BATT_MON_PIN    A1
@@ -51,6 +53,8 @@ Sleep sleep;
 volatile uint32_t nTimeAwake = 0;
 bool bAwake = false;
 
+uint8_t btnStateArray[DEBOUNCE_TIME];
+
 void setup()
 {
 #ifdef SERIAL_DEBUG
@@ -71,6 +75,8 @@ void setup()
     while (1);
   }
 
+  memset(btnStateArray, 0, sizeof(btnStateArray));
+
   //Start the sensor object
   temperatureSensor.addRadio(&radio);
   temperatureSensor.begin();
@@ -80,7 +86,9 @@ void setup()
   pinMode(DOWN_BTN_PIN, INPUT_PULLUP);
   pinMode(LEFT_BTN_PIN, INPUT_PULLUP);
   pinMode(RIGHT_BTN_PIN, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(CENTER_BTN_PIN), UserBtnHandler, FALLING);
+  attachInterrupt(digitalPinToInterrupt(CENTER_BTN_PIN), CenterBtnHandler, FALLING);
+
+  lcd.clearDisplay();
 
   sleep.pwrDownMode();
 
@@ -88,6 +96,26 @@ void setup()
   radio.printDetails();
   Serial.println();
 #endif
+}
+
+void UpdateBtnState()
+{  
+  for (uint8_t i = 0; i < DEBOUNCE_TIME - 1; i++)
+    btnStateArray[i + 1] = btnStateArray[i];
+
+  btnStateArray[0] = (PIND & 0x7C) >> 2;
+  uint8_t mixedBits = btnStateArray[0];
+
+  for(uint8_t i = 1; i < DEBOUNCE_TIME; i++)
+  {
+    mixedBits ^= btnStateArray[i];
+    mixedBits = ~mixedBits; 
+  }
+}
+
+void CenterBtnHandler()
+{
+
 }
 
 void updateSleepState()
@@ -113,8 +141,6 @@ void updateSleepState()
 void loop()
 {
   updateSleepState();
-  updateUserBtn();
-  updateUserLED();
   temperatureSensor.background();
 
 #ifdef SERIAL_DEBUG

@@ -17,6 +17,8 @@
 #define QUERY_TEMPERATURE   (USER_MSG_BASE + 0x00)
 #define SET_POLLING_RATE    (USER_MSG_BASE + 0x01)
 #define SET_REMOTE_RQST     (USER_MSG_BASE + 0x02)
+#define SET_TEMP_RQST       (USER_MSG_BASE + 0x03)
+#define SET_MODE_RQST       (USER_MSG_BASE + 0x04)
 
 class TempSensor : public RemoteSensor
 {
@@ -29,6 +31,11 @@ class TempSensor : public RemoteSensor
 
     virtual bool recover();
     virtual void reset(bool nv);
+
+    uint8_t GetTemperature();
+    uint8_t GetMode();
+    void SetTemperature(uint8_t temp);
+    void SetMode(uint8_t mode);
     
     void begin();
 
