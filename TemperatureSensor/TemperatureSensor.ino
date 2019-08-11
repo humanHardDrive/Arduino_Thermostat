@@ -11,6 +11,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+//#define NO_SLEEP
 #define SLEEP_TIME  (30*1000UL)
 //#define SLEEP_TIME  (2*60*1000UL)
 #define AWAKE_TIME  (10*1000UL)
@@ -147,6 +148,9 @@ void sysWake(bool bUser)
   radio.powerUp();
   bAwake = true;
 
+  lcd.clearDisplay();
+  UpdateTemperatureDisplay();
+
   if (bUser)
     lcd.ssd1306_command(SSD1306_DISPLAYON);
 }
@@ -155,6 +159,14 @@ void CenterBtnHandler()
 {
   bAwake = true;
   bUser = true;
+}
+
+void UpdateTemperatureDisplay()
+{
+  lcd.setTextSize(3);
+  lcd.setCursor(0, 0);
+  lcd.print(temperatureSensor.GetTemperature());
+  lcd.write(223);
 }
 
 void updateSleepState()
@@ -182,7 +194,9 @@ void updateSleepState()
 
 void loop()
 {
+#ifndef NO_SLEEP
   updateSleepState();
+#endif
   temperatureSensor.background();
   lcd.display();
 

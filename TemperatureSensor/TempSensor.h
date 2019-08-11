@@ -19,6 +19,7 @@
 #define SET_REMOTE_RQST     (USER_MSG_BASE + 0x02)
 #define SET_TEMP_RQST       (USER_MSG_BASE + 0x03)
 #define SET_MODE_RQST       (USER_MSG_BASE + 0x04)
+#define GET_MODE_MSG        (USER_MSG_BASE + 0x05)
 
 class TempSensor : public RemoteSensor
 {
@@ -93,6 +94,8 @@ class TempSensor : public RemoteSensor
     uint32_t m_nLastSampleTime;
     uint16_t m_SampleWindow[SAMPLE_AVERAGE_WINDOW];
     uint8_t m_nCurrentTemp;
+
+    uint8_t m_nCoolMode, m_nFanMode;
 
     RF24* m_pRadio;
     FM25V10* m_pMemoryDev;

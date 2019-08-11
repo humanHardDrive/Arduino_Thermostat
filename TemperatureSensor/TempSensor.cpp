@@ -5,6 +5,7 @@ TempSensor::TempSensor(byte tempSensePin) :
   m_nCurrentTemp(72)
 {
   seedRnd(analogRead(0));
+  analogReference(DEFAULT);
 
   m_nLastSampleTime = millis();
   m_nPostPeriod = DEFAULT_POST_PERIOD;
@@ -53,6 +54,27 @@ void TempSensor::begin()
   m_pRadio->begin();
   m_pRadio->enableDynamicPayloads();
   m_pRadio->startListening();
+}
+
+
+uint8_t TempSensor::GetTemperature()
+{
+  return m_nCurrentTemp;
+}
+
+uint8_t TempSensor::GetMode()
+{
+  return m_nCoolMode;
+}
+
+void TempSensor::SetTemperature(uint8_t temp)
+{
+
+}
+
+void TempSensor::SetMode(uint8_t mode)
+{
+
 }
 
 void TempSensor::background()
@@ -179,6 +201,18 @@ void TempSensor::handleCommand(uint8_t cmd, const void* buffer, uint16_t len)
     case SET_POLLING_RATE:
       handleSetPollingRateMsg(buffer, len);
       break;
+
+    case SET_REMOTE_RQST:
+      break;
+
+    case SET_TEMP_RQST:
+      break;
+
+    case SET_MODE_RQST:
+      break;
+
+    case GET_MODE_MSG:
+      break;
   }
 
   //Need to call this so that the discovery messages are handled by base class
@@ -210,15 +244,16 @@ void TempSensor::takeTemperatureReading()
     m_SampleWindow[0] = analogRead(m_nTempSensePin);
 
     float average = 0;
-    for(uint8_t i = 0; i < SAMPLE_AVERAGE_WINDOW; i++)
+    for (uint8_t i = 0; i < SAMPLE_AVERAGE_WINDOW; i++)
       average += m_SampleWindow[i];
     average /= SAMPLE_AVERAGE_WINDOW;
-
+    
     average = (average / 1023.0) * ANALOG_VREF; //Convert to voltage
-    average *= VOLT_PER_C; //Convert to degrees Celsius
+    average -= 0.5;
+    average /= VOLT_PER_C; //Convert to degrees Celsius
     average = ((average * 9) / 5) + 32; //Convert to fahrenheit
     average += 0.5; //Round
-    
+
     m_nCurrentTemp = (uint8_t)average;
   }
 }
