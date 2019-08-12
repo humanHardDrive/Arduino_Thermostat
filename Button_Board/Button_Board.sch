@@ -1,4 +1,186 @@
-EESchema Schematic File Version 2
-EELAYER 25 0
+EESchema Schematic File Version 4
+EELAYER 29 0
 EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Switch:SW_Push SW1
+U 1 1 5D505C5D
+P 3850 2250
+F 0 "SW1" H 3850 2535 50  0000 C CNN
+F 1 "SW_Push" H 3850 2444 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 3850 2450 50  0001 C CNN
+F 3 "~" H 3850 2450 50  0001 C CNN
+	1    3850 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW2
+U 1 1 5D506E8C
+P 3850 2600
+F 0 "SW2" H 3850 2885 50  0000 C CNN
+F 1 "SW_Push" H 3850 2794 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 3850 2800 50  0001 C CNN
+F 3 "~" H 3850 2800 50  0001 C CNN
+	1    3850 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW3
+U 1 1 5D507591
+P 3850 2950
+F 0 "SW3" H 3850 3235 50  0000 C CNN
+F 1 "SW_Push" H 3850 3144 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 3850 3150 50  0001 C CNN
+F 3 "~" H 3850 3150 50  0001 C CNN
+	1    3850 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW4
+U 1 1 5D507D40
+P 3850 3300
+F 0 "SW4" H 3850 3585 50  0000 C CNN
+F 1 "SW_Push" H 3850 3494 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 3850 3500 50  0001 C CNN
+F 3 "~" H 3850 3500 50  0001 C CNN
+	1    3850 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW5
+U 1 1 5D5083C8
+P 3850 3650
+F 0 "SW5" H 3850 3935 50  0000 C CNN
+F 1 "SW_Push" H 3850 3844 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 3850 3850 50  0001 C CNN
+F 3 "~" H 3850 3850 50  0001 C CNN
+	1    3850 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW6
+U 1 1 5D508A49
+P 3850 4000
+F 0 "SW6" H 3850 4285 50  0000 C CNN
+F 1 "SW_Push" H 3850 4194 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 3850 4200 50  0001 C CNN
+F 3 "~" H 3850 4200 50  0001 C CNN
+	1    3850 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW7
+U 1 1 5D5090D9
+P 3850 4350
+F 0 "SW7" H 3850 4635 50  0000 C CNN
+F 1 "SW_Push" H 3850 4544 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 3850 4550 50  0001 C CNN
+F 3 "~" H 3850 4550 50  0001 C CNN
+	1    3850 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4050 2250 4050 2600
+Wire Wire Line
+	4050 2600 4050 2950
+Connection ~ 4050 2600
+Wire Wire Line
+	4050 2950 4050 3300
+Connection ~ 4050 2950
+Wire Wire Line
+	4050 3300 4050 3650
+Connection ~ 4050 3300
+Wire Wire Line
+	4050 3650 4050 4000
+Connection ~ 4050 3650
+Wire Wire Line
+	4050 4000 4050 4350
+Connection ~ 4050 4000
+$Comp
+L SparkFun-PowerSymbols:GND #GND0101
+U 1 1 5D509D4A
+P 4050 4450
+F 0 "#GND0101" H 4100 4400 45  0001 L BNN
+F 1 "GND" H 4050 4280 45  0000 C CNN
+F 2 "" H 4050 4350 60  0001 C CNN
+F 3 "" H 4050 4350 60  0001 C CNN
+	1    4050 4450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4050 4350 4050 4450
+Connection ~ 4050 4350
+Wire Wire Line
+	2750 2250 3650 2250
+Wire Wire Line
+	2750 2350 3550 2350
+Wire Wire Line
+	3550 2350 3550 2600
+Wire Wire Line
+	3550 2600 3650 2600
+Wire Wire Line
+	2750 2450 3500 2450
+Wire Wire Line
+	3500 2450 3500 2950
+Wire Wire Line
+	3500 2950 3650 2950
+Wire Wire Line
+	2750 2550 3450 2550
+Wire Wire Line
+	3450 2550 3450 3300
+Wire Wire Line
+	3450 3300 3650 3300
+Wire Wire Line
+	2750 2650 3400 2650
+Wire Wire Line
+	3400 3650 3650 3650
+Wire Wire Line
+	3400 2650 3400 3650
+Wire Wire Line
+	2750 2750 3350 2750
+Wire Wire Line
+	3350 2750 3350 4000
+Wire Wire Line
+	3350 4000 3650 4000
+Wire Wire Line
+	2750 2850 3300 2850
+Wire Wire Line
+	3300 2850 3300 4350
+Wire Wire Line
+	3300 4350 3650 4350
+$Comp
+L Connector_Generic:Conn_01x10 J1
+U 1 1 5D50EF2F
+P 2550 2650
+F 0 "J1" H 2468 3267 50  0000 C CNN
+F 1 "Conn_01x10" H 2468 3176 50  0000 C CNN
+F 2 "Connector_JST:JST_PH_S10B-PH-SM4-TB_1x10-1MP_P2.00mm_Horizontal" H 2550 2650 50  0001 C CNN
+F 3 "~" H 2550 2650 50  0001 C CNN
+	1    2550 2650
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2750 3150 2750 3650
+$Comp
+L SparkFun-PowerSymbols:GND #GND0102
+U 1 1 5D510A11
+P 2750 3650
+F 0 "#GND0102" H 2800 3600 45  0001 L BNN
+F 1 "GND" H 2750 3480 45  0000 C CNN
+F 2 "" H 2750 3550 60  0001 C CNN
+F 3 "" H 2750 3550 60  0001 C CNN
+	1    2750 3650
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
