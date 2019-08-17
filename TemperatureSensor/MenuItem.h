@@ -19,9 +19,18 @@ class MenuItem
 
   virtual void onFocusGained();
   virtual void onFocusLost();
-  virtual void onBtnPressed();
+
+  virtual void handleButtonPress(unsigned char btn);
+
+  virtual void draw();
+
+  protected:
+  MenuItem* connectedItems[ALL_BTNS];
+  unsigned char focusLevel;
 
   private:
+  void handleSoftFocusBtnPress(unsigned char btn);
+  void handleHardFocusBtnPress(unsigned char btn); 
 };
 
 #endif
