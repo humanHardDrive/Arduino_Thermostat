@@ -1,9 +1,5 @@
 #include "TempSensor.h"
 
-#include "nRF24L01.h"
-#include "RF24.h"
-#include "printf.h"
-#include "FM25V10.h"
 #include <Sleep_n0m1.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -16,16 +12,12 @@
 //#define SLEEP_TIME  (2*60*1000UL)
 #define AWAKE_TIME  (10*1000UL)
 
-#define REMOTE_REQUEST_TIME   500
-#define UNPAIR_TIME           2000
-
 #define APP_NAME  F("REMOTE TEMPERATURE SENSOR")
 #define VERSION   F("v0.0")
 
 #define DEBOUNCE_TIME   10
 
 #define NO_RADIO
-#define NO_MEMORY
 #define NO_LCD
 #define SERIAL_DEBUG
 
@@ -35,22 +27,12 @@
 #define TEMP_SENSE_PIN  A0
 #define BATT_MON_PIN    A1
 
-#define SCK             13
-#define MISO            12
-#define MOSI            11
-
-#define RF24_CE_PIN     10
-#define RF24_CS_PIN     9
-#define MEM_CS_PIN      8
-
 #define RIGHT_BTN_PIN   6
 #define LEFT_BTN_PIN    5
 #define DOWN_BTN_PIN    4
 #define UP_BTN_PIN      3
 #define CENTER_BTN_PIN  2
 
-RF24 radio(RF24_CE_PIN, RF24_CS_PIN);
-FM25V10 memoryDevice(MEM_CS_PIN);
 TempSensor temperatureSensor(TEMP_SENSE_PIN);
 Adafruit_SSD1306 lcd(LCD_WIDTH, LCD_HEIGHT, &Wire, -1);
 Sleep sleep;
@@ -62,31 +44,15 @@ uint8_t btnStateArray[DEBOUNCE_TIME];
 
 void setup()
 {
-#ifdef SERIAL_DEBUG
   Serial.begin(115200);
-  printf_begin();
+  
+#ifdef SERIAL_DEBUG
   Serial.println(APP_NAME);
   Serial.println(VERSION);
   Serial.println();
 #endif
 
-  SPI.begin();
-
-#ifndef NO_RADIO
-  if (!radio.isChipConnected())
-  {
-#ifdef SERIAL_DEBUG
-    Serial.println(F("Failed to connect to radio..."));
-#endif
-    while (1);
-  }
-#endif
-
   memset(btnStateArray, 0, sizeof(btnStateArray));
-
-  //Start the sensor object
-  temperatureSensor.addRadio(&radio);
-  temperatureSensor.begin();
 
   pinMode(CENTER_BTN_PIN, INPUT_PULLUP);
   pinMode(UP_BTN_PIN, INPUT_PULLUP);
@@ -109,11 +75,6 @@ void setup()
   lcd.cp437(true);         // Use full 256 char 'Code Page 437' font
 
   sleep.pwrDownMode();
-
-#ifdef SERIAL_DEBUG
-  radio.printDetails();
-  Serial.println();
-#endif
 }
 
 void UpdateBtnState()
@@ -134,7 +95,6 @@ void UpdateBtnState()
 void sysSleep()
 {
   bAwake = false;
-  radio.powerDown(); //Put the radio to sleep
   lcd.ssd1306_command(SSD1306_DISPLAYOFF);
 
   //Sleep for the alotted time
@@ -145,7 +105,6 @@ void sysWake(bool bUser)
 {
   //Wake everything back up
   nTimeAwake = millis();
-  radio.powerUp();
   bAwake = true;
 
   lcd.clearDisplay();
@@ -171,10 +130,6 @@ void UpdateTemperatureDisplay()
 
 void updateSleepState()
 {
-  //Stay awake while pairing
-  if (temperatureSensor.isPairing())
-    nTimeAwake = millis();
-
   if ((millis() - nTimeAwake) > AWAKE_TIME)
   {
 #ifdef SERIAL_DEBUG
@@ -206,16 +161,6 @@ void loop()
     char c = Serial.read();
     switch (c)
     {
-      case 'p':
-      case 'P':
-        temperatureSensor.reset(false);
-        temperatureSensor.pair(300);
-        break;
-
-      case 'x':
-      case 'X':
-        radio.printDetails();
-        break;
     }
   }
 #endif
