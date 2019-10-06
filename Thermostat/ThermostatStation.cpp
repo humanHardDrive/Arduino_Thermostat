@@ -6,12 +6,8 @@ ThermoStation::ThermoStation(byte analogTempPin) :
   m_bUseSchedule(true),
   m_HeatOn(false),
   m_CoolOn(false),
-  m_pRadio(NULL),
-  m_pMemoryDev(NULL),
   m_LocalTemp(72),
-  m_analogTempPin(analogTempPin),
-  m_nRemoteDevice(-1),
-  m_nMemoryOffset(0)
+  m_analogTempPin(analogTempPin)
 {
   randomSeed(analogRead(analogTempPin));
 
@@ -25,45 +21,11 @@ ThermoStation::ThermoStation(byte analogTempPin) :
     }
   }
 
-  memset(m_RemoteTemp, 72, MAX_PAIRED_COUNT);
-
   m_pActiveRule = &m_TempRules[0][0][0];
-
-  reset(false);
 }
 
 ThermoStation::~ThermoStation()
 {
-}
-
-void ThermoStation::addRadio(RF24* pRadio)
-{
-  m_pRadio = pRadio;
-}
-
-void ThermoStation::addMemoryDevice(FM25V10* pMemDevice, uint32_t offset)
-{
-  m_pMemoryDev = pMemDevice;
-  m_nMemoryOffset = offset;
-}
-
-void ThermoStation::begin()
-{
-#ifdef SERIAL_DEBUG
-  Serial.println(__PRETTY_FUNCTION__);
-#endif
-
-  if (m_pRadio)
-  {
-    m_pRadio->begin();
-    m_pRadio->enableDynamicPayloads();
-
-    m_pRadio->openWritingPipe(m_SavedData.networkID);
-    m_pRadio->openReadingPipe(1, m_SavedData.networkID);
-    m_pRadio->setCRCLength(RF24_CRC_16);
-
-    m_pRadio->startListening();
-  }
 }
 
 void ThermoStation::setHeatMode(byte mode)
@@ -105,56 +67,7 @@ byte ThermoStation::getTargetTemp()
 
 byte ThermoStation::getCurrentTemp()
 {
-  if (m_nRemoteDevice == -1)
     return m_LocalTemp;
-  else
-    return m_RemoteTemp[m_nRemoteDevice];
-}
-
-void ThermoStation::selectNextRemoteDevice()
-{
-  uint8_t i = m_nRemoteDevice;
-
-  if (m_nRemoteDevice < 0)
-    m_nRemoteDevice = 0;
-
-  for (i; i < MAX_PAIRED_COUNT; i++)
-  {
-    if (m_SavedData.pairedDevice[i].UID)
-    {
-      m_nRemoteDevice = i;
-      return;
-    }
-  }
-
-  m_nRemoteDevice = -1;
-}
-
-void ThermoStation::selectPrevRemoteDevice()
-{
-  uint8_t i = m_nRemoteDevice;
-
-  if (m_nRemoteDevice < 0)
-    m_nRemoteDevice = MAX_PAIRED_COUNT - 1;
-
-  for (i; i >= 0; i--)
-  {
-    if (m_SavedData.pairedDevice[i].UID)
-    {
-      m_nRemoteDevice = i;
-      return;
-    }
-  }
-
-  m_nRemoteDevice = -1;
-}
-
-void ThermoStation::getSelectedDeviceName(char* name)
-{
-  if (m_nRemoteDevice != -1)
-    memcpy(name, m_SavedData.pairedDevice[m_nRemoteDevice].name, REMOTE_NAME_LENGTH);
-  else
-    strcpy(name, "Local");
 }
 
 bool ThermoStation::isFanOn()
@@ -172,97 +85,8 @@ bool ThermoStation::isCoolOn()
   return m_CoolOn;
 }
 
-void ThermoStation::startDiscovery(uint32_t timeout)
-{
-#ifdef SERIAL_DEBUG
-  Serial.println(__PRETTY_FUNCTION__);
-#endif
-
-  if (m_pRadio)
-  {
-    m_pRadio->stopListening();
-    m_pRadio->openWritingPipe(DISCOVERY_PIPE);
-    m_pRadio->closeReadingPipe(1);
-    m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
-
-    BaseStation::startDiscovery(timeout);
-  }
-}
-
-void ThermoStation::stopDiscovery()
-{
-#ifdef SERIAL_DEBUG
-  Serial.println(__PRETTY_FUNCTION__);
-#endif
-
-  if (m_pRadio)
-  {
-    m_pRadio->stopListening();
-    m_pRadio->openWritingPipe(m_SavedData.networkID);
-    m_pRadio->closeReadingPipe(1);
-    m_pRadio->openReadingPipe(1, m_SavedData.networkID);
-    m_pRadio->startListening();
-
-#ifdef SERIAL_DEBUG
-    for (uint8_t i = 0; i < MAX_DISCOVERY; i++)
-    {
-      if (m_DiscoveredDevice[i].UID)
-      {
-        Serial.print(i);
-        Serial.print(" ");
-        Serial.print(F("Discovered 0x"));
-        Serial.print(m_DiscoveredDevice[i].UID, HEX);
-        Serial.print(" ");
-        Serial.println(m_DiscoveredDevice[i].name);
-      }
-    }
-#endif
-  }
-}
-
-void ThermoStation::getDiscoveredDevice(uint8_t index, uint32_t* UID, char* name)
-{
-  if (index < MAX_DISCOVERY)
-  {
-    if (UID)
-      *UID = m_DiscoveredDevice[index].UID;
-
-    if (name)
-      name = m_DiscoveredDevice[index].name;
-  }
-}
-
-//This call is blocking until the timeout
-bool ThermoStation::pair(uint32_t UID, char* sName, uint32_t timeout)
-{
-#ifdef SERIAL_DEBUG
-  Serial.println(__PRETTY_FUNCTION__);
-#endif
-
-  bool bRetVal = false;
-
-  if (m_pRadio)
-  {
-    m_pRadio->openWritingPipe(DISCOVERY_PIPE);
-    m_pRadio->closeReadingPipe(1);
-    m_pRadio->openReadingPipe(1, DISCOVERY_PIPE);
-    m_pRadio->stopListening();
-
-    //This call is blocking until the timeout
-    bRetVal = BaseStation::pair(UID, sName, timeout);
-
-    m_pRadio->openWritingPipe(m_SavedData.networkID);
-    m_pRadio->closeReadingPipe(1);
-    m_pRadio->openReadingPipe(1, m_SavedData.networkID);
-    m_pRadio->startListening();
-  }
-  return bRetVal;
-}
-
 void ThermoStation::background(const uint8_t& nDayOfWeek, const uint8_t& nHour, const uint8_t& nMinute)
 {
-  BaseStation::background();
-
   if (m_bUseSchedule)
     updateSchedule(nDayOfWeek, nHour, nMinute);
 
@@ -360,198 +184,3 @@ void ThermoStation::updateLocalTemp()
     m_nLastTempSampleTime = millis();
   }
 }
-int ThermoStation::write(const void* buf, uint16_t len)
-{
-  uint16_t i = 0;
-
-  if (m_pRadio)
-  {
-    m_pRadio->stopListening();
-
-    while (i < len)
-    {
-      uint8_t size = 0;
-      if (len > MAX_PAYLOAD_SIZE)
-        size = MAX_PAYLOAD_SIZE;
-      else
-        size = len;
-
-      m_pRadio->write(buf + i, size);
-      i += size;
-    }
-
-    m_pRadio->startListening();
-
-#ifdef SERIAL_DEBUG
-    Serial.println(__PRETTY_FUNCTION__);
-    Serial.print(F("SENT: "));
-    printArr(buf, (uint8_t)len);
-    Serial.println();
-#endif
-
-    return len;
-  }
-
-  return 0;
-}
-
-int ThermoStation::available()
-{
-  if (m_pRadio)
-  {
-    //Handle corrupt dynamic payloads
-    if (!m_pRadio->getDynamicPayloadSize())
-      return 0;
-
-    return m_pRadio->available();
-  }
-  return 0;
-}
-
-int ThermoStation::read(const void* buf, uint16_t len)
-{
-  if (m_pRadio)
-  {
-    if (m_pRadio->available())
-    {
-      uint8_t size = m_pRadio->getDynamicPayloadSize();
-      if (size > len)
-        size = len;
-
-      if (size)
-      {
-        m_pRadio->read(buf, size);
-
-#ifdef SERIAL_DEBUG
-        Serial.println(__PRETTY_FUNCTION__);
-        Serial.print("RECV: ");
-        printArr(buf, (uint8_t)size);
-        Serial.println();
-#endif
-      }
-      return size;
-    }
-  }
-  return 0;
-}
-
-bool ThermoStation::recover()
-{
-  if (m_pMemoryDev)
-  {
-    m_pMemoryDev->read(BASE_STATION_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_SavedData, sizeof(m_SavedData));
-    uint16_t calcChkSum = calcChecksum((uint8_t*)&m_SavedData, sizeof(m_SavedData) - 2); //Don't include the checksum in the calculation
-
-    if (m_SavedData.checksum == calcChkSum)
-    {
-      if (!m_SavedData.UID)
-        return false;
-
-      return true;
-    }
-  }
-
-  return false;
-}
-
-void ThermoStation::reset(bool nv)
-{
-  memset(&m_SavedData, 0, sizeof(m_SavedData));
-
-  m_SavedData.UID = random(65535) + 1;
-  m_SavedData.UID *= random(65535) + 1;
-
-  for (uint8_t i = 0; i < NETWORK_LEGNTH; i++)
-    m_SavedData.networkID[i] = random(256);
-
-  if (nv)
-    save();
-}
-
-void ThermoStation::save()
-{
-  if (m_pMemoryDev)
-  {
-    m_SavedData.checksum = calcChecksum((uint8_t*)&m_SavedData, sizeof(m_SavedData) - 2); //Don't include the checksum in the calculation
-
-    m_pMemoryDev->write(BASE_STATION_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_SavedData, sizeof(m_SavedData));
-    m_pMemoryDev->write(SCHEDULE_DATA_OFFSET + m_nMemoryOffset, (uint8_t*)&m_TempRules, sizeof(m_TempRules));
-  }
-}
-
-void ThermoStation::handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len)
-{
-  uint8_t PID = UIDtoPID(src);
-
-  if (PID != MAX_PAIRED_COUNT)
-  {
-    switch (cmd)
-    {
-      case QUERY_TEMPERATURE:
-        handleTempQuery(PID, buffer, len);
-        break;
-
-      case SET_REMOTE_RQST:
-        handleRemoteRequest(PID, buffer, len);
-        break;
-    }
-  }
-
-  BaseStation::handleCommand(cmd, src, buffer, len);
-}
-
-void ThermoStation::handleTempQuery(uint8_t PID, const void* buffer, uint16_t len)
-{
-#ifdef SERIAL_DEBUG
-  Serial.println(__PRETTY_FUNCTION__);
-#endif
-
-  m_RemoteTemp[PID] = *((uint8_t*)buffer);
-
-#ifdef SERIAL_DEBUG
-  Serial.print(F("TEMP: "));
-  Serial.print((int)m_RemoteTemp[PID]);
-  Serial.println();
-#endif
-}
-
-void ThermoStation::handleRemoteRequest(uint8_t PID, const void* buffer, uint16_t len)
-{
-#ifdef SERIAL_DEBUG
-  Serial.println(__PRETTY_FUNCTION__);
-#endif
-
-  m_nRemoteDevice = PID;
-}
-
-uint32_t ThermoStation::clockms()
-{
-  return millis();
-}
-
-void ThermoStation::print(const char* str)
-{
-  Serial.println(str);
-}
-
-void ThermoStation::print(int32_t num)
-{
-  Serial.println(num);
-}
-
-void ThermoStation::printArr(void* buf, uint8_t len)
-{
-  for (uint8_t i = 0; i < len; i++)
-  {
-    byte b = ((byte*)buf)[i];
-
-    Serial.print("0x");
-    if (b <= 0x0F)
-      Serial.print('0');
-
-    Serial.print(b, HEX);
-    Serial.print(' ');
-  }
-  Serial.println();
-}
-

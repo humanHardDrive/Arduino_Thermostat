@@ -58,7 +58,7 @@ void TempSensor::takeTemperatureReading()
     for (uint8_t i = 0; i < SAMPLE_AVERAGE_WINDOW; i++)
       average += m_SampleWindow[i];
     average /= SAMPLE_AVERAGE_WINDOW;
-    
+
     average = (average / 1023.0) * ANALOG_VREF; //Convert to voltage
     average -= 0.5;
     average /= VOLT_PER_C; //Convert to degrees Celsius

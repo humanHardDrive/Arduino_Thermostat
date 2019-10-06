@@ -5,13 +5,8 @@
 
 //#define SERIAL_DEBUG
 
-#include "BaseStation.h"
-#include "FM25V10.h"
 #include <DS3231.h>
 #include <SPI.h>
-#include "nRF24L01.h"
-#include "RF24.h"
-#include "msgs.h"
 
 #define NUM_TIME_DIV    4
 
@@ -26,18 +21,11 @@
 #define SET_POLLING_RATE    (USER_MSG_BASE + 0x01)
 #define SET_REMOTE_RQST     (USER_MSG_BASE + 0x02)
 
-class ThermoStation : public BaseStation
+class ThermoStation
 {
   public:
     ThermoStation(byte analotTempPin);
     ~ThermoStation();
-
-    void addRadio(RF24* pRadio);
-    void addMemoryDevice(FM25V10* pMemDevice, uint32_t offset);
-    void begin();
-
-    virtual bool recover();
-    virtual void reset(bool nv);
 
     void setHeatMode(byte mode);
     void setFanMode(byte mode);
@@ -55,10 +43,6 @@ class ThermoStation : public BaseStation
 
     byte getCurrentTemp();
 
-    void selectNextRemoteDevice();
-    void selectPrevRemoteDevice();
-    void getSelectedDeviceName(char* name);
-
     void startDiscovery(uint32_t timeout);
     void stopDiscovery();
 
@@ -66,8 +50,6 @@ class ThermoStation : public BaseStation
     void getTemperatureDevice(uint8_t index, char* name, char* reading);
 
     void background(const uint8_t& nDayOfWeek, const uint8_t& nHour, const uint8_t& nMinute);
-
-    bool pair(uint32_t UID, char* sName, uint32_t timeout);
 
     bool isFanOn();
     bool isHeatOn();
@@ -102,36 +84,14 @@ class ThermoStation : public BaseStation
       SATURDAY
     };
 
-  protected:
-    uint32_t clockms();
-    void print(const char* str);
-    void print(int32_t num);
-    void printArr(void* buf, uint8_t len);
-
-    int write(const void* buf, uint16_t len);
-    int available();
-    int read(const void* buf, uint16_t len);
-
-    virtual void save();
-
-    void handleCommand(uint8_t cmd, uint32_t src, const void* buffer, uint16_t len);
-
   private:
-    void handleTempQuery(uint8_t PID, const void* buffer, uint16_t len);
-    void handleRemoteRequest(uint8_t PID, const void* buffer, uint16_t len);
-
     void updateLocalTemp();
     void updateSchedule(const uint8_t& nDayOfWeek, const uint8_t& nHour, const uint8_t& nMinute);
     void updateHeatState();
 
   private:
-    const uint64_t DISCOVERY_PIPE = 0x444953434F;
-    static const uint8_t MAX_PAYLOAD_SIZE = 32;
     const float VOLT_PER_C = 0.01;
     const float VREF = 3.3;
-
-    static const uint64_t BASE_STATION_DATA_OFFSET = 0;
-    static const uint64_t SCHEDULE_DATA_OFFSET = BASE_STATION_DATA_OFFSET + sizeof(m_SavedData);
 
     uint16_t m_LocalTempSample[NUM_SAMPLES];
     uint32_t m_nLastTempSampleTime = 0;
@@ -146,16 +106,11 @@ class ThermoStation : public BaseStation
     uint32_t m_nOnHysteresis = (uint32_t)(5*60*1000), m_nOffHysteresis = (uint32_t)(5*60*1000);
     uint32_t m_nTimeLastCrossedThresh;
 
-    byte m_HeatMode, m_FanMode, m_TargetTemp, m_LocalTemp, m_RemoteTemp[MAX_PAIRED_COUNT];
+    byte m_HeatMode, m_FanMode, m_TargetTemp, m_LocalTemp;
     TEMP_RULE m_TempRules[2][ALL_HEAT_MODES][NUM_TIME_DIV];
     TEMP_RULE *m_pActiveRule;
 
-    char m_nRemoteDevice;
     bool m_HeatOn, m_CoolOn, m_bUseSchedule;
-
-    RF24* m_pRadio;
-    FM25V10* m_pMemoryDev;
-    uint32_t m_nMemoryOffset;
 };
 
 #endif

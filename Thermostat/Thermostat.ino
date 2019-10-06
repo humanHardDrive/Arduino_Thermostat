@@ -1,9 +1,6 @@
-b#include "MCP23s17.h"
-#include "FM25V10.h"
+#include "MCP23s17.h"
 #include <DS3231.h>
 #include "ThermostatStation.h"
-#include "nRF24L01.h"
-#include "RF24.h"
 #include "Menu.h"
 #include <LiquidCrystal.h>
 #include <Sleep_n0m1.h>
@@ -74,8 +71,6 @@ enum IO_EXP_GPIOB
 };
 
 //Variables
-RF24            radio(RF24_CE_PIN, RF24_CS_PIN);
-FM25V10         memoryDevice(MEM_CS_PIN);
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 DS3231          rtc;
@@ -95,8 +90,6 @@ volatile uint32_t nTimeAwake = 0;
 
 bool ScheduleSettingsFn();
 bool DateTimeSettingsFn();
-bool DiscoverDeviceSettingsFn();
-bool UnpairDeviceSettingsFn();
 bool ResetDeviceSettingsFn();
 bool AboutSettingsFn();
 
@@ -104,15 +97,6 @@ char blankLine[LCD_COLS + 1]; //Array used to clear a specific line
 bool bInSettings = false, bForceLCDUpdate = true;
 bool (*settingsFn)(void) = NULL;
 uint8_t nSettingsCursorPos = 0;
-bool (*aSettingsFn[ALL_SETTINGS])(void) =
-{
-  ScheduleSettingsFn,
-  DateTimeSettingsFn,
-  DiscoverDeviceSettingsFn,
-  UnpairDeviceSettingsFn,
-  ResetDeviceSettingsFn,
-  AboutSettingsFn
-};
 
 uint8_t RTCHour()
 {
@@ -177,64 +161,6 @@ void InitIOExpander(bool post)
   attachInterrupt(digitalPinToInterrupt(IO_EXP_INT_PIN), IOExpanderIntHandler, FALLING);
 }
 
-void InitRadio()
-{
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print(F("Check radio"));
-  lcd.setCursor(0, 1);
-  if (!radio.isChipConnected())
-  {
-    lcd.print(F("FAILED"));
-#ifdef SERIAL_DEBUG
-    Serial.println(F("Failed to connect to radio..."));
-#endif
-    while (1);
-  }
-  delay(500);
-  lcd.print(F("SUCCESS"));
-  delay(1000);
-}
-
-void InitStorage()
-{
-  byte clearBuffer[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-  byte writeBuffer[8] = {0xDE, 0xAD, 0xBE, 0xEF, 0x11, 0x22, 0xAA, 0xBB};
-  byte readBuffer[8];
-
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print(F("Check storage"));
-  lcd.setCursor(0, 1);
-
-  memoryDevice.write(0, clearBuffer, 8);
-  memoryDevice.read(0, readBuffer, 8);
-
-  if (memcmp(clearBuffer, readBuffer, 8))
-  {
-    lcd.print(F("FAILED"));
-#ifdef SERIAL_DEBUG
-    Serial.println(F("Failed to verify storage device..."));
-#endif
-    while (1);
-  }
-
-  memoryDevice.write(0, writeBuffer, 8);
-  memoryDevice.read(0, readBuffer, 8);
-
-  if (memcmp(writeBuffer, readBuffer, 8))
-  {
-    lcd.print(F("FAILED"));
-#ifdef SERIAL_DEBUG
-    Serial.println(F("Failed to verify storage device..."));
-#endif
-    while (1);
-  }
-
-  lcd.print(F("SUCCESS"));
-  delay(1000);
-}
-
 void InitRTC()
 {
   lcd.clear();
@@ -264,28 +190,8 @@ void InitThermostat()
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(F("Start thermostat"));
-  thermostat.addRadio(&radio);
-  thermostat.addMemoryDevice(&memoryDevice, 256); //Allocate 256 bytes for non-basestation uses
 
-#ifdef FIRST_BOOT
-  thermostat.reset(true);
-#endif
-
-  if (!thermostat.recover())
-  {
-    lcd.setCursor(0, 1);
-    lcd.print(F("FAILED"));
-#ifdef SERIAL_DEBUG
-    Serial.println(F("Failed to see RTC time change..."));
-#endif
-    while (1);
-  }
-
-  thermostat.begin();
   thermostat.background(rtc.getDoW(), RTCHour(), rtc.getMinute()); //Call one iteration of the backround loop to get the target temp
-  lcd.setCursor(0, 1);
-  lcd.print(thermostat.getPairedCount());
-  lcd.print(F(" paired"));
   delay(2000);
 }
 
@@ -325,14 +231,6 @@ void setup()
 #endif
 
   InitLCD();
-
-#ifndef NO_RADIO
-  InitRadio();
-#endif
-
-#ifndef NO_STORAGE
-  InitStorage();
-#endif
 
 #ifndef NO_RTC
   InitRTC();
@@ -573,31 +471,6 @@ void HandleThermostatControlInput()
   }
 }
 
-void UpdateSensorMenuItem(bool force)
-{
-  static char sOldRemoteName[REMOTE_NAME_LENGTH];
-  static uint8_t nOldRemoteTemp = 0;
-
-  char sCurrentRemoteName[REMOTE_NAME_LENGTH];
-
-  thermostat.getSelectedDeviceName(sCurrentRemoteName);
-  if (force || strcmp(sCurrentRemoteName, sOldRemoteName) != 0 || nOldRemoteTemp != thermostat.getCurrentTemp())
-  {
-    lcd.setCursor(0, 0);
-    lcd.print(blankLine);
-
-    lcd.setCursor(0, 0);
-    lcd.print(sCurrentRemoteName);
-    lcd.print(": ");
-
-    lcd.print(thermostat.getCurrentTemp());
-    lcd.write(223); //Degree symbol
-
-    strcpy(sOldRemoteName, sCurrentRemoteName);
-    nOldRemoteTemp = thermostat.getCurrentTemp();
-  }
-}
-
 void UpdateScheduleMenuItem(bool force)
 {
   static bool bOldScheduleSetting = false;
@@ -700,7 +573,6 @@ void UpdateThermostatMenu(bool force)
   HandleThermostatControlInput();
 
   //Draw the menu items
-  UpdateSensorMenuItem(force);
   UpdateScheduleMenuItem(force);
   UpdateModeandFanMenuItem(force);
   UpdateTimeMenuItem(force);
@@ -871,69 +743,6 @@ bool DateTimeSettingsFn()
   return false;
 }
 
-bool DiscoverDeviceSettingsFn()
-{
-  static bool bFirstCall = true;
-  static bool bOldDiscoveryState = false;
-  static uint8_t nDiscoveredDevices = 0;
-
-  if (bFirstCall)
-  {
-    lcd.clear();
-
-    lcd.setCursor(0, 0);
-    lcd.print(DISCOVERING_STRING);
-
-    lcd.setCursor(0, 1);
-    lcd.print(FOUND_STRING);
-    lcd.print(0);
-
-    Serial.print("A");
-    thermostat.startDiscovery(5000);
-    Serial.print("B");
-    bOldDiscoveryState = true;
-
-    bFirstCall = false;
-  }
-
-  if (nDiscoveredDevices != thermostat.getDiscoveryCount())
-  {
-    lcd.setCursor(0, 1);
-    lcd.print(blankLine);
-
-    lcd.setCursor(0, 1);
-    lcd.print(FOUND_STRING);
-    lcd.print(thermostat.getDiscoveryCount());
-
-    nDiscoveredDevices = thermostat.getDiscoveryCount();
-  }
-
-  if (bOldDiscoveryState && !thermostat.inDiscovery())
-  {
-    lcd.setCursor(0, 3);
-    lcd.print("DONE");
-    bOldDiscoveryState = false;
-  }
-
-  for (uint8_t i = 0; i < ALL_BTNS; i++)
-  {
-    if (btnEdge[i] == 1)
-    {
-      Serial.println("C");
-      thermostat.stopDiscovery();
-      bFirstCall = true;
-      return true;
-    }
-  }
-
-  return false;
-}
-
-bool UnpairDeviceSettingsFn()
-{
-  return true;
-}
-
 bool ResetDeviceSettingsFn()
 {
   return true;
@@ -985,7 +794,6 @@ void HandleSettingsInput()
 
   if (btnEdge[TOGGLE_MODE_BTN] == 1)
   {
-    settingsFn = aSettingsFn[nSettingsCursorPos];
   }
 
   if (btnEdge[TOGGLE_FAN_BTN] == 1)
