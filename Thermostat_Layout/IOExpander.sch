@@ -14,17 +14,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L Interface_Expansion:MCP23S17_SO U6
-U 1 1 5D3F3897
-P 3750 2800
-F 0 "U6" H 3750 4081 50  0000 C CNN
-F 1 "MCP23S17_SO" H 3750 3990 50  0000 C CNN
-F 2 "Package_SO:SOIC-28W_7.5x17.9mm_P1.27mm" H 3950 1800 50  0001 L CNN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/20001952C.pdf" H 3950 1700 50  0001 L CNN
-	1    3750 2800
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3050 3400 3000 3400
 Wire Wire Line
@@ -56,7 +45,6 @@ F 3 "" H 3750 3800 60  0001 C CNN
 	1    3750 3900
 	1    0    0    -1  
 $EndComp
-Connection ~ 3750 3900
 $Comp
 L SparkFun-PowerSymbols:3.3V #SUPPLY07
 U 1 1 5D3F4F5E
@@ -72,22 +60,14 @@ Wire Wire Line
 	3050 2000 2550 2000
 Wire Wire Line
 	3050 2100 2550 2100
-Wire Wire Line
-	3050 2200 2550 2200
-Wire Wire Line
-	3050 2300 2550 2300
 Text GLabel 2550 2700 0    50   Input ~ 0
 EXP_INT
 Text GLabel 2550 2900 0    50   Input ~ 0
 EXP_RST
-Text GLabel 2550 2300 0    50   Input ~ 0
-MISO
-Text GLabel 2550 2200 0    50   Input ~ 0
-MOSI
 Text GLabel 2550 2100 0    50   Input ~ 0
 SCK
 Text GLabel 2550 2000 0    50   Input ~ 0
-EXP_CS
+SDA
 Wire Wire Line
 	4450 2900 5000 2900
 Wire Wire Line
@@ -364,4 +344,16 @@ Text GLabel 8100 4150 0    50   Output ~ 0
 FAN_HOT
 Text GLabel 8100 4250 0    50   Input ~ 0
 COMMON
+$Comp
+L Interface_Expansion:MCP23017_SO U?
+U 1 1 5DA26DAE
+P 3750 2800
+F 0 "U?" H 3750 4081 50  0000 C CNN
+F 1 "MCP23017_SO" H 3750 3990 50  0000 C CNN
+F 2 "Package_SO:SOIC-28W_7.5x17.9mm_P1.27mm" H 3950 1800 50  0001 L CNN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/20001952C.pdf" H 3950 1700 50  0001 L CNN
+	1    3750 2800
+	1    0    0    -1  
+$EndComp
+Connection ~ 3750 3900
 $EndSCHEMATC

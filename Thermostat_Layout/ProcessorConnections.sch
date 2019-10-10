@@ -196,37 +196,9 @@ LCD_EN
 Text GLabel 5000 2450 0    50   Output ~ 0
 LCD_RS
 Wire Wire Line
-	5800 2550 5000 2550
-Text GLabel 5000 2550 0    50   Output ~ 0
-MEM_CS
-Wire Wire Line
-	5800 2650 5000 2650
-Wire Wire Line
-	5800 2750 5000 2750
-Wire Wire Line
-	5800 2850 5000 2850
-Text GLabel 5000 2650 0    50   Output ~ 0
-MOSI
-Text GLabel 5000 2750 0    50   Input ~ 0
-MISO
-Text GLabel 5000 2850 0    50   Output ~ 0
-SCK
-Wire Wire Line
-	5800 2950 5000 2950
-Wire Wire Line
 	5800 3050 5000 3050
-Text GLabel 5000 2950 0    50   Output ~ 0
-EXP_CS
 Text GLabel 5000 3050 0    50   Output ~ 0
 EXP_RST
-Wire Wire Line
-	5800 3150 5000 3150
-Wire Wire Line
-	5800 3250 5000 3250
-Text GLabel 5000 3150 0    50   Output ~ 0
-RF_CE
-Text GLabel 5000 3250 0    50   Output ~ 0
-RF_CS
 Wire Wire Line
 	5800 3350 5000 3350
 Wire Wire Line
