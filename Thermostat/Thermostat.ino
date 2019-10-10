@@ -4,15 +4,13 @@
 #include "Menu.h"
 #include <LiquidCrystal.h>
 #include <Sleep_n0m1.h>
+#include <SoftwareSerial.h>
 
 //#define SERIAL_DEBUG
 
-#define NO_RADIO
 #define STAY_AWAKE
 //#define NO_IO_EXP
 //#define NO_RTC
-//#define NO_STORAGE
-//#define FIRST_BOOT
 
 #define SLEEP_TIME     (30*1000UL)
 #define AWAKE_TIME     (10*1000UL)
@@ -30,7 +28,6 @@
 #define SPI_SCK_PIN     13
 #define SPI_MISO_PIN    12
 #define SPI_MOSI_PIN    11
-#define MEM_CS_PIN      10
 #define LCD_RS_PIN      9
 #define LCD_EN_PIN      8
 #define LCD_D4_PIN      7
@@ -41,8 +38,6 @@
 
 #define IO_EXP_CS_PIN   A0
 #define IO_EXP_RST_PIN  A1
-#define RF24_CE_PIN     A2
-#define RF24_CS_PIN     A3
 #define I2C_SDA         A4
 #define I2C_SCL         A5
 #define LOCAL_TEMP_PIN  A6
