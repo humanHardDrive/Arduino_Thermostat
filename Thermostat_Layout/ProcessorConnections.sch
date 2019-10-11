@@ -15,10 +15,10 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L dk_Embedded-Microcontrollers:ATMEGA328P-AU U3
+L dk_Embedded-Microcontrollers:ATMEGA328P-AU U2
 U 1 1 5D3DFFF8
 P 6300 2950
-F 0 "U3" H 6628 3053 60  0000 L CNN
+F 0 "U2" H 6628 3053 60  0000 L CNN
 F 1 "ATMEGA328P-AU" H 6628 2947 60  0000 L CNN
 F 2 "digikey-footprints:TQFP-32_7x7mm" H 6500 3150 60  0001 L CNN
 F 3 "http://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en608326" H 6500 3250 60  0001 L CNN
@@ -40,10 +40,10 @@ Wire Wire Line
 	6400 4450 6500 4450
 Connection ~ 6400 4450
 $Comp
-L SparkFun-PowerSymbols:GND #GND05
+L SparkFun-PowerSymbols:GND #GND04
 U 1 1 5D3E1674
 P 6400 4450
-F 0 "#GND05" H 6450 4400 45  0001 L BNN
+F 0 "#GND04" H 6450 4400 45  0001 L BNN
 F 1 "GND" H 6400 4280 45  0000 C CNN
 F 2 "" H 6400 4350 60  0001 C CNN
 F 3 "" H 6400 4350 60  0001 C CNN
@@ -56,10 +56,10 @@ Wire Wire Line
 	6400 1350 6500 1350
 Connection ~ 6400 1350
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY04
+L SparkFun-PowerSymbols:3.3V #SUPPLY03
 U 1 1 5D3E1EE5
 P 6400 1250
-F 0 "#SUPPLY04" H 6450 1250 45  0001 L BNN
+F 0 "#SUPPLY03" H 6450 1250 45  0001 L BNN
 F 1 "3.3V" H 6400 1526 45  0000 C CNN
 F 2 "XXX-00000" H 6400 1431 60  0000 C CNN
 F 3 "" H 6400 1250 60  0001 C CNN
@@ -80,10 +80,10 @@ F 3 "~" H 5200 4250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND04
+L SparkFun-PowerSymbols:GND #GND03
 U 1 1 5D3E37E7
 P 5200 4400
-F 0 "#GND04" H 5250 4350 45  0001 L BNN
+F 0 "#GND03" H 5250 4350 45  0001 L BNN
 F 1 "GND" H 5200 4230 45  0000 C CNN
 F 2 "" H 5200 4300 60  0001 C CNN
 F 3 "" H 5200 4300 60  0001 C CNN
@@ -196,10 +196,6 @@ LCD_EN
 Text GLabel 5000 2450 0    50   Output ~ 0
 LCD_RS
 Wire Wire Line
-	5800 3050 5000 3050
-Text GLabel 5000 3050 0    50   Output ~ 0
-EXP_RST
-Wire Wire Line
 	5800 3350 5000 3350
 Wire Wire Line
 	5800 3450 5000 3450
@@ -287,21 +283,8 @@ F 3 "~" H 9400 1600 50  0001 C CNN
 	1    9400 1600
 	1    0    0    -1  
 $EndComp
-$Comp
-L SparkFun-PowerSymbols:GND #GND07
-U 1 1 5D4748F4
-P 9050 1850
-F 0 "#GND07" H 9100 1800 45  0001 L BNN
-F 1 "GND" H 9050 1680 45  0000 C CNN
-F 2 "" H 9050 1750 60  0001 C CNN
-F 3 "" H 9050 1750 60  0001 C CNN
-	1    9050 1850
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	9200 1600 9050 1600
-Wire Wire Line
-	9050 1600 9050 1850
 Wire Wire Line
 	8800 1700 9200 1700
 Wire Wire Line
@@ -352,10 +335,10 @@ Wire Wire Line
 Text GLabel 7500 5000 0    50   Input ~ 0
 UC_RST
 $Comp
-L SparkFun-PowerSymbols:GND #GND06
+L SparkFun-PowerSymbols:GND #GND05
 U 1 1 5D527C49
 P 8500 5000
-F 0 "#GND06" H 8550 4950 45  0001 L BNN
+F 0 "#GND05" H 8550 4950 45  0001 L BNN
 F 1 "GND" H 8500 4830 45  0000 C CNN
 F 2 "" H 8500 4900 60  0001 C CNN
 F 3 "" H 8500 4900 60  0001 C CNN
@@ -377,10 +360,10 @@ Connection ~ 7800 5000
 Wire Wire Line
 	7800 5000 7500 5000
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY05
+L SparkFun-PowerSymbols:3.3V #SUPPLY04
 U 1 1 5D528D3B
 P 7800 4700
-F 0 "#SUPPLY05" H 7850 4700 45  0001 L BNN
+F 0 "#SUPPLY04" H 7850 4700 45  0001 L BNN
 F 1 "3.3V" H 7800 4976 45  0000 C CNN
 F 2 "XXX-00000" H 7800 4881 60  0000 C CNN
 F 3 "" H 7800 4700 60  0001 C CNN
@@ -435,4 +418,95 @@ F 3 "~" H 2000 2650 50  0001 C CNN
 	1    2000 2650
 	1    0    0    -1  
 $EndComp
+Text GLabel 5000 2550 0    50   Input ~ 0
+RADIO_STATUS
+Wire Wire Line
+	5000 2550 5800 2550
+Text GLabel 5000 2650 0    50   Output ~ 0
+RADIO_EN
+Text GLabel 5000 2750 0    50   Output ~ 0
+RADIO_RST
+Wire Wire Line
+	5000 2650 5800 2650
+Wire Wire Line
+	5000 2750 5800 2750
+Text GLabel 5000 2850 0    50   Output ~ 0
+EXP_RST
+Wire Wire Line
+	5000 2850 5800 2850
+Text GLabel 5000 2950 0    50   3State ~ 0
+BATT_MON_SW
+Wire Wire Line
+	5000 2950 5800 2950
+Text Label 5050 3050 0    50   ~ 0
+DBG_TX
+Text Label 5050 3150 0    50   ~ 0
+DBG_RX
+Wire Wire Line
+	5800 3050 5050 3050
+Wire Wire Line
+	5050 3150 5800 3150
+$Comp
+L Connector_Generic:Conn_01x03 J2
+U 1 1 5DA149FD
+P 9400 2450
+F 0 "J2" H 9480 2492 50  0000 L CNN
+F 1 "Conn_01x03" H 9480 2401 50  0000 L CNN
+F 2 "Connector_JST:JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal" H 9400 2450 50  0001 C CNN
+F 3 "~" H 9400 2450 50  0001 C CNN
+	1    9400 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND06
+U 1 1 5DA14A03
+P 9050 2700
+F 0 "#GND06" H 9100 2650 45  0001 L BNN
+F 1 "GND" H 9050 2530 45  0000 C CNN
+F 2 "" H 9050 2600 60  0001 C CNN
+F 3 "" H 9050 2600 60  0001 C CNN
+	1    9050 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 2450 9050 2450
+Wire Wire Line
+	9050 2450 9050 2700
+Wire Wire Line
+	8800 2550 9200 2550
+Wire Wire Line
+	9200 2350 8800 2350
+$Comp
+L Device:R_US R6
+U 1 1 5DA14A0D
+P 8650 2350
+F 0 "R6" V 8445 2350 50  0000 C CNN
+F 1 "1kΩ" V 8536 2350 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 8690 2340 50  0001 C CNN
+F 3 "~" H 8650 2350 50  0001 C CNN
+	1    8650 2350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R7
+U 1 1 5DA14A13
+P 8650 2550
+F 0 "R7" V 8445 2550 50  0000 C CNN
+F 1 "1kΩ" V 8536 2550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 8690 2540 50  0001 C CNN
+F 3 "~" H 8650 2550 50  0001 C CNN
+	1    8650 2550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9050 1600 9050 2450
+Connection ~ 9050 2450
+Wire Wire Line
+	8500 2350 8150 2350
+Wire Wire Line
+	8500 2550 8150 2550
+Text Label 8150 2350 0    50   ~ 0
+DBG_TX
+Text Label 8150 2550 0    50   ~ 0
+DBG_RX
 $EndSCHEMATC

@@ -181,17 +181,6 @@ F 3 "" H 5350 4000 50  0001 C CNN
 	1    5350 4000
 	1    0    0    -1  
 $EndComp
-$Comp
-L SparkFun-PowerSymbols:GND #GND08
-U 1 1 5D3F23F7
-P 5350 4700
-F 0 "#GND08" H 5400 4650 45  0001 L BNN
-F 1 "GND" H 5350 4530 45  0000 C CNN
-F 2 "" H 5350 4600 60  0001 C CNN
-F 3 "" H 5350 4600 60  0001 C CNN
-	1    5350 4700
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	5350 4000 5350 4050
 Wire Wire Line
@@ -201,4 +190,8 @@ Wire Wire Line
 Connection ~ 5350 4350
 Text HLabel 6050 4350 2    50   Input ~ 0
 BATT_MON
+Text HLabel 6050 4700 2    50   3State ~ 0
+BATT_MON_SW
+Wire Wire Line
+	6050 4700 5350 4700
 $EndSCHEMATC
