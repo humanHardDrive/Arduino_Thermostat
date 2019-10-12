@@ -32,6 +32,7 @@ class SerialInterface
 
     char m_CurrentCommand[2];
     uint8_t m_CurrentCommandLen;
+    uint8_t m_CommandDataCount;
     uint8_t m_CurrentCommandBuf[COMMAND_BUFFER_LEN];
 
     void WaitingForSTXState(uint8_t);
@@ -42,7 +43,7 @@ class SerialInterface
 
     //Function handlers for each of the 2 letter commands
     //These are configured by the caller
-    std::map<std::pair<char, char>, std::function<void(uint8_t*)>> m_CmdHandler;
+    std::map<std::pair<char, char>, std::function<void(uint8_t*, uint8_t)>> m_CmdHandler;
 
     //Function handlers for all of the serial parse states
     std::function<void(uint8_t)> m_StateFn[ALL_PARSE_STATES] =
