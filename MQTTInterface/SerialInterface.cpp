@@ -47,13 +47,21 @@ void SerialInterface::WaitingForDataState(uint8_t c)
 {
   m_CurrentCommandBuf[COMMAND_BUFFER_LEN - m_CurrentCommandLen] = c;
   m_CurrentCommandLen--;
-  
-  if(!m_CurrentCommandLen)
+
+  if (!m_CurrentCommandLen)
     m_ParseState = WAITING_FOR_ETX;
 }
 
 void SerialInterface::WaitingForETXState(uint8_t c)
 {
   if (c == SERIAL_ETX)
+  {
+    std::pair<char, char> cmd(m_CurrentCommand[0], m_CurrentCommand[1]);
+
     m_ParseState = WAITING_FOR_STX;
+
+    if (m_CmdHandler.find(cmd) != m_CmdHandler.end())
+      m_CmdHandler[cmd](m_CurrentCommandBuf);
+
+  }
 }

@@ -42,7 +42,7 @@ class SerialInterface
 
     //Function handlers for each of the 2 letter commands
     //These are configured by the caller
-    std::map<std::pair<char, char>, std::function<void()>> m_CmdHandler;
+    std::map<std::pair<char, char>, std::function<void(uint8_t*)>> m_CmdHandler;
 
     //Function handlers for all of the serial parse states
     std::function<void(uint8_t)> m_StateFn[ALL_PARSE_STATES] =
