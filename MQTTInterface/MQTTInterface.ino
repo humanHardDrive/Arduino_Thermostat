@@ -1,9 +1,10 @@
 #include <PubSubClient.h>
 
-#define SERIAL_STX  0x55
-#define SERIAL_ATX  0xAA
+#include "SerialInterface.h"
 
 #define MAX_NAME_LENGTH 32
+
+void* MemBlock[16];
 
 struct SAVE_INFO
 {
@@ -17,6 +18,7 @@ struct SAVE_INFO
 };
 
 SAVE_INFO SavedInfo;
+SerialInterface serInterface;
 
 void setup() 
 {
@@ -25,4 +27,6 @@ void setup()
 
 void loop() 
 {
+  if(Serial.available())
+    serInterface.update(Serial.read());
 }
