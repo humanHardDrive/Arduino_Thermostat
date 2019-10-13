@@ -23,6 +23,13 @@ void SerialInterface::update(uint8_t c)
   m_StateFn[m_ParseState](c);
 }
 
+void SerialInterface::setCommandHandler(char c1, char c2, std::function<void(uint8_t*, uint8_t)> fn)
+{
+  std::pair<char, char> cmd(c1, c2);
+
+  m_CmdHandler[cmd] = fn;
+}
+
 void SerialInterface::WaitingForSTXState(uint8_t c)
 {
   if (c == SERIAL_STX)
