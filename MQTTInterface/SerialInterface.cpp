@@ -25,7 +25,7 @@ void SerialInterface::update(uint8_t c)
 
 void SerialInterface::setCommandHandler(char c1, char c2, std::function<void(uint8_t*, uint8_t)> fn)
 {
-  std::pair<char, char> cmd(c1, c2);
+  std::pair<char, char> cmd(toupper(c1), toupper(c2));
 
   m_CmdHandler[cmd] = fn;
 }
@@ -50,10 +50,10 @@ void SerialInterface::WaitingForSTXState(uint8_t c)
 void SerialInterface::WaitingForCMDState(uint8_t c)
 {
   if (!m_CurrentCommand[0]) //Have we gotten the first character?
-    m_CurrentCommand[0] = (char)c;
+    m_CurrentCommand[0] = toupper((char)c);
   else if (!m_CurrentCommand[1]) //What about the second?
   {
-    m_CurrentCommand[1] = (char)c;
+    m_CurrentCommand[1] = toupper((char)c);
     m_ParseState = WAITING_FOR_LEN;
   }
 }
