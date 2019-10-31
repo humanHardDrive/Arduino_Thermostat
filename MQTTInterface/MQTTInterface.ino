@@ -33,6 +33,8 @@ void* MemBlock[4] =
 
 void writeHandler(uint8_t* buf, uint8_t len)
 { 
+  uint8_t index = buf[0];
+  memcpy(MemBlock[index], &buf[1], (len - 1));
 }
 
 void readHandler(uint8_t* buf, uint8_t len)

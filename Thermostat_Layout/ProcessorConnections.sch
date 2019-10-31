@@ -95,17 +95,6 @@ Wire Wire Line
 Wire Wire Line
 	5200 4050 5200 4100
 $Comp
-L Device:R_US R1
-U 1 1 5D431858
-P 1950 1350
-F 0 "R1" H 2018 1396 50  0000 L CNN
-F 1 "4.7K" H 2018 1305 50  0000 L CNN
-F 2 "Resistor_SMD:R_0402_1005Metric" V 1990 1340 50  0001 C CNN
-F 3 "~" H 1950 1350 50  0001 C CNN
-	1    1950 1350
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R_US R2
 U 1 1 5D4319D2
 P 2350 1350
@@ -277,8 +266,8 @@ L Connector_Generic:Conn_01x03 J1
 U 1 1 5D47414E
 P 9400 1600
 F 0 "J1" H 9480 1642 50  0000 L CNN
-F 1 "Conn_01x03" H 9480 1551 50  0000 L CNN
-F 2 "Connector_JST:JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal" H 9400 1600 50  0001 C CNN
+F 1 "UC_PRG" H 9480 1551 50  0000 L CNN
+F 2 "Connector_JST:JST_EH_B3B-EH-A_1x03_P2.50mm_Vertical" H 9400 1600 50  0001 C CNN
 F 3 "~" H 9400 1600 50  0001 C CNN
 	1    9400 1600
 	1    0    0    -1  
@@ -407,17 +396,6 @@ F 3 "~" H 1800 2950 50  0001 C CNN
 	1    1800 2950
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:Crystal Y1
-U 1 1 5D476A0F
-P 2000 2650
-F 0 "Y1" H 2000 2918 50  0000 C CNN
-F 1 "Crystal" H 2000 2827 50  0000 C CNN
-F 2 "Crystal:Crystal_SMD_SeikoEpson_MC405-2Pin_9.6x4.1mm" H 2000 2650 50  0001 C CNN
-F 3 "~" H 2000 2650 50  0001 C CNN
-	1    2000 2650
-	1    0    0    -1  
-$EndComp
 Text GLabel 5000 2550 0    50   Input ~ 0
 RADIO_STATUS
 Wire Wire Line
@@ -451,8 +429,8 @@ L Connector_Generic:Conn_01x03 J2
 U 1 1 5DA149FD
 P 9400 2450
 F 0 "J2" H 9480 2492 50  0000 L CNN
-F 1 "Conn_01x03" H 9480 2401 50  0000 L CNN
-F 2 "Connector_JST:JST_PH_S3B-PH-SM4-TB_1x03-1MP_P2.00mm_Horizontal" H 9400 2450 50  0001 C CNN
+F 1 "UC_DBG" H 9480 2401 50  0000 L CNN
+F 2 "Connector_JST:JST_EH_B3B-EH-A_1x03_P2.50mm_Vertical" H 9400 2450 50  0001 C CNN
 F 3 "~" H 9400 2450 50  0001 C CNN
 	1    9400 2450
 	1    0    0    -1  
@@ -509,4 +487,26 @@ Text Label 8150 2350 0    50   ~ 0
 DBG_TX
 Text Label 8150 2550 0    50   ~ 0
 DBG_RX
+$Comp
+L Device:R_US R1
+U 1 1 5D431858
+P 1950 1350
+F 0 "R1" H 2018 1396 50  0000 L CNN
+F 1 "4.7K" H 2018 1305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 1990 1340 50  0001 C CNN
+F 3 "~" H 1950 1350 50  0001 C CNN
+	1    1950 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Crystal Y1
+U 1 1 5D476A0F
+P 2000 2650
+F 0 "Y1" H 2000 2918 50  0000 C CNN
+F 1 "Crystal" H 2000 2827 50  0000 C CNN
+F 2 "Crystal:Crystal_SMD_0603-2Pin_6.0x3.5mm_HandSoldering" H 2000 2650 50  0001 C CNN
+F 3 "~" H 2000 2650 50  0001 C CNN
+	1    2000 2650
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
