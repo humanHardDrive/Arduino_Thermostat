@@ -36,6 +36,21 @@ X Pin_9 9 -200 -400 150 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
+# Mechanical_MountingHole
+#
+DEF Mechanical_MountingHole H 0 40 Y Y 1 F N
+F0 "H" 0 200 50 H V C CNN
+F1 "Mechanical_MountingHole" 0 125 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ MountingHole*
+$ENDFPLIST
+DRAW
+C 0 0 50 0 1 50 N
+ENDDRAW
+ENDDEF
+#
 # SparkFun-PowerSymbols_GND
 #
 DEF SparkFun-PowerSymbols_GND #GND 0 40 N N 1 L P
@@ -50,20 +65,47 @@ X GND ~ 0 0 0 D 40 40 1 1 W N
 ENDDRAW
 ENDDEF
 #
-# Switch_SW_Push
+# SparkFun-Switches_JOYSTICK_MINI
 #
-DEF Switch_SW_Push SW 0 40 N N 1 F N
-F0 "SW" 50 100 50 H V L CNN
-F1 "Switch_SW_Push" 0 -60 50 H V C CNN
-F2 "" 0 200 50 H I C CNN
-F3 "" 0 200 50 H I C CNN
+DEF SparkFun-Switches_JOYSTICK_MINI S 0 40 Y Y 1 L N
+F0 "S" -400 250 45 H V L BNN
+F1 "SparkFun-Switches_JOYSTICK_MINI" -400 -300 45 H V L BNN
+F2 "JOYSTICK_MINI" 0 300 20 H I C CNN
+F3 "" 0 0 50 H I C CNN
+F4 "SWCH-09905" 0 350 60 H V C CNN
+$FPLIST
+ *JOYSTICK_MINI*
+$ENDFPLIST
 DRAW
-C -80 0 20 0 1 0 N
-C 80 0 20 0 1 0 N
-P 2 0 1 0 0 50 0 120 N
-P 2 0 1 0 100 50 -100 50 N
-X 1 1 -200 0 100 R 50 50 0 1 P
-X 2 2 200 0 100 L 50 50 0 1 P
+P 5 1 1 0 -400 200 400 200 400 -200 -400 -200 -400 200 f
+X UP A -500 100 100 R 40 40 1 1 B
+X RIGHT B 500 0 100 L 40 40 1 1 B
+X LEFT C 500 100 100 L 40 40 1 1 B
+X CENT CTR 500 -100 100 L 40 40 1 1 B
+X DOWN D -500 0 100 R 40 40 1 1 B
+X GND GND -500 -100 100 R 40 40 1 1 B
+ENDDRAW
+ENDDEF
+#
+# dk_Test-Points_RCT-0C
+#
+DEF dk_Test-Points_RCT-0C TP 0 40 Y Y 1 F N
+F0 "TP" -100 50 50 H V R CNN
+F1 "dk_Test-Points_RCT-0C" 0 -100 50 H V C CNN
+F2 "digikey-footprints:PROBE_PAD_0805" 200 200 60 H I L CNN
+F3 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1773266&DocType=DS&DocLang=English" 200 300 60 H I L CNN
+F4 "A106144CT-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "RCT-0C" 200 500 60 H I L CNN "MPN"
+F6 "Test and Measurement" 200 600 60 H I L CNN "Category"
+F7 "Test Points" 200 700 60 H I L CNN "Family"
+F8 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1773266&DocType=DS&DocLang=English" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/te-connectivity-amp-connectors/RCT-0C/A106144CT-ND/3477801" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "PC TEST POINT NATURAL" 200 1000 60 H I L CNN "Description"
+F11 "TE Connectivity AMP Connectors" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+C 0 0 22 0 1 0 N
+X ~ 1 0 100 75 D 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
