@@ -1,10 +1,11 @@
-#include "MCP23s17.h"
+#include <Wire.h>
 #include <DS3231.h>
-#include "ThermostatStation.h"
-#include "Menu.h"
 #include <LiquidCrystal.h>
 #include <Sleep_n0m1.h>
 #include <SoftwareSerial.h>
+
+#include "ThermostatStation.h"
+#include "Menu.h"
 
 //#define SERIAL_DEBUG
 
@@ -15,9 +16,6 @@
 #define SLEEP_TIME     (30*1000UL)
 #define AWAKE_TIME     (10*1000UL)
 
-#include <Wire.h>
-#include <SPI.h>
-
 #define LCD_ROWS    4
 #define LCD_COLS    20
 
@@ -25,9 +23,6 @@
 #define VERSION     F("v0.0")
 
 //Arduino Pins
-#define SPI_SCK_PIN     13
-#define SPI_MISO_PIN    12
-#define SPI_MOSI_PIN    11
 #define LCD_RS_PIN      9
 #define LCD_EN_PIN      8
 #define LCD_D4_PIN      7
