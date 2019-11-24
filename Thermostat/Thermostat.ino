@@ -5,6 +5,7 @@
 #include <SoftwareSerial.h>
 
 #include "MCP23017.h"
+#include "ESPInterface.h"
 #include "ThermostatStation.h"
 #include "Menu.h"
 
@@ -62,6 +63,7 @@ enum IO_EXP_GPIOB
 };
 
 //Variables
+ESPInterface    espInterface;
 LiquidCrystal   lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN);
 MCP23s17        IOExpander(IO_EXP_CS_PIN, IO_EXP_RST_PIN, 0);
 DS3231          rtc;
@@ -888,6 +890,9 @@ void loop()
 
   //Update the thermostat with the current time
   thermostat.background(rtc.getDoW(), rtc.getHour(b1, b2), rtc.getMinute());
+
+  if(Serial.available())
+    espInterface.background(Serial.read());
 
   //Clear button inputs
   memset(btnEdge, 0, sizeof(btnEdge));
