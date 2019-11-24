@@ -4,6 +4,7 @@
 #include <Sleep_n0m1.h>
 #include <SoftwareSerial.h>
 
+#include "MCP23017.h"
 #include "ThermostatStation.h"
 #include "Menu.h"
 
