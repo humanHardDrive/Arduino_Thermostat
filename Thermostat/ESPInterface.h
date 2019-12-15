@@ -37,6 +37,7 @@ class ESPInterface
 
     uint32_t m_LastRXTime = 0;
 
+    bool m_bMessageReady;
     uint8_t m_CurrentCommand = NO_CMD;
     uint8_t m_CurrentCommandLen;
     uint8_t m_CommandDataCount;

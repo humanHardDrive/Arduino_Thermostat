@@ -43,6 +43,15 @@ void ESPInterface::sendCommand(uint8_t cmd, void* buf, uint8_t len)
 
 bool ESPInterface::messageReady(uint8_t* pCmd, void** buf)
 {
+  if (m_bMessageReady)
+  {
+    *pCmd = m_CurrentCommand;
+    *buf = m_CurrentCommandBuf;
+    
+    m_bMessageReady = false;
+    return true;
+  }
+
   return false;
 }
 
@@ -93,21 +102,11 @@ void ESPInterface::WaitingForETXState(uint8_t c)
   if (c == SERIAL_ETX)
   {
     m_ParseState = WAITING_FOR_STX;
-
-    /*//If a handler exists for this command code, call it
-      if (m_CmdHandler.find(m_CurrentCommand) != m_CmdHandler.end())
-      m_CmdHandler[m_CurrentCommand](m_CurrentCommandBuf);
-      else if (m_CmdHandler.find(INVALID_CMD) != m_CmdHandler.end())
-      m_CmdHandler[INVALID_CMD](m_CurrentCommandBuf);*/
+    m_bMessageReady = true;
   }
   else if (c == SERIAL_STX)
   {
     WaitingForSTXState(c);
-
-    /*//If a handler exists for this command code, call it
-      if (m_CmdHandler.find(m_CurrentCommand) != m_CmdHandler.end())
-      m_CmdHandler[m_CurrentCommand](m_CurrentCommandBuf);
-      else if (m_CmdHandler.find(INVALID_CMD) != m_CmdHandler.end())
-      m_CmdHandler[INVALID_CMD](m_CurrentCommandBuf);*/
+    m_bMessageReady = true;
   }
 }
