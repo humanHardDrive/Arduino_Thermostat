@@ -188,6 +188,30 @@ void InitThermostat()
   delay(2000);
 }
 
+bool InitESPInterface()
+{
+  uint8_t* buf;
+  uint8_t cmd;
+  bool bMsgReady = false;;
+
+  espInterface.sendCommand(VERSION, NULL, 0);
+  uint32_t nStartTime = millis();
+
+  /*Wait for a response*/
+  while ((millis() - nStartTime < 10) && !bMsgReady)
+  {
+    bMsgReady = espInterface.messageReady(&cmd, &buf);
+    
+    if (Serial.available())
+      espInterface.background(Serial.read());
+  }
+
+  if(!bMsgReady || cmd != VERSION)
+    return false;
+
+  return true;
+}
+
 void IOExpanderIntHandler()
 {
 #ifdef SERIAL_DEBUG
@@ -590,7 +614,7 @@ bool DateTimeSettingsFn()
 
     nHour = RTCHour();
     nMinute = rtc.getMinute();
-    
+
     lcd.clear();
 
     lcd.setCursor(2, 0);
@@ -717,7 +741,7 @@ bool DateTimeSettingsFn()
         lcd.setCursor(13, 0);
         PrintTimeOfDay(nHour, nMinute, true);
         lcd.setCursor(17, 0);
-        break;        
+        break;
     }
   }
 
@@ -727,7 +751,7 @@ bool DateTimeSettingsFn()
     rtc.setHour(nHour);
     rtc.setMinute(nMinute);
     rtc.setSecond(0);
-    
+
     lcd.noBlink();
     bFirstCall = true;
     return true;
@@ -879,7 +903,7 @@ void UpdateSettingsMenu(bool force)
 void loop()
 {
   bool b1, b2;
-  
+
   UpdateSleepState();
   UpdateIOExpander();
 
@@ -891,7 +915,7 @@ void loop()
   //Update the thermostat with the current time
   thermostat.background(rtc.getDoW(), rtc.getHour(b1, b2), rtc.getMinute());
 
-  if(Serial.available())
+  if (Serial.available())
     espInterface.background(Serial.read());
 
   //Clear button inputs

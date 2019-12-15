@@ -21,6 +21,29 @@ void ESPInterface::background(uint8_t c)
 
 void ESPInterface::sendCommand(uint8_t cmd, void* buf, uint8_t len)
 {
+  MSG_BODY msg;
+
+  if (len > MAX_PAYLOAD_SIZE)
+    len = MAX_PAYLOAD_SIZE;
+
+  if (buf && len)
+    memcpy(msg.payload, buf, len);
+  else
+    len = 0;
+
+  msg.cmd = cmd;
+  msg.len = len;
+
+  Serial.write(SERIAL_STX);
+  Serial.write(msg.cmd);
+  Serial.write(msg.len);
+  Serial.write(msg.payload, msg.len);
+  Serial.write(SERIAL_ETX);
+}
+
+bool ESPInterface::messageReady(uint8_t* pCmd, void** buf)
+{
+  return false;
 }
 
 void ESPInterface::WaitingForSTXState(uint8_t c)

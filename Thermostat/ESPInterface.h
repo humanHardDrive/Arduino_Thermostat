@@ -20,6 +20,8 @@ class ESPInterface
 
     void sendCommand(uint8_t cmd, void* buf, uint8_t len);
 
+    bool messageReady(uint8_t* pCmd, void** buf);
+
   private:
     enum PARSE_STATE
     {
