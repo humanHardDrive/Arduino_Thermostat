@@ -15,7 +15,6 @@ void ESPInterface::background(uint8_t c)
     m_ParseState = WAITING_FOR_STX;
 
   m_LastRXTime = millis();
-
   (this->*m_StateFn[m_ParseState])(c);
 }
 
