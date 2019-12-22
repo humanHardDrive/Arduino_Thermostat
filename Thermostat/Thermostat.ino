@@ -94,7 +94,7 @@ bool InitESPInterface()
 
   if (bRetVal && waitForESPResponse(VERSION, NULL, 0, &buf, 10))
     LOG << F("v") << ((uint16_t*)buf)[0] << '.' << ((uint16_t*)buf)[1];
-  else
+  else if(bRetVal)
   {
     LOG << F("Failed to get device version");
     bRetVal = false;
@@ -119,7 +119,7 @@ bool InitESPInterface()
       espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
     }
   }
-  else
+  else if(bRetVal)
   {
     LOG << F("Failed to get network info");
     bRetVal = false;
@@ -161,7 +161,7 @@ void setup()
 
   /*Initialize components*/
   LOG << F("Wait for ESP interface to boot");
-  delay(5000);
+  delay(10000);
 
   if (!InitESPInterface())
   {
@@ -236,6 +236,7 @@ void loop()
     {
       if (*pCurrentTime)
       {
+        LOG << F("Got current time");
         bNeedRealTime = false;
       }
     }
