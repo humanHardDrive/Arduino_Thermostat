@@ -40,7 +40,10 @@
 SoftwareSerial dbg(DBG_RX_PIN, DBG_TX_PIN);
 Stream& logger(dbg);
 ESPInterface    espInterface;
+DS3231 Clock;
 RTClib RTC;
+bool bNeedRealTime = true;
+uint32_t nLastTimePoll = 0;
 
 bool waitForESPResponse(uint8_t cmd, void* outBuf, uint8_t outLen, void** inBuf, uint32_t timeout)
 {
@@ -135,7 +138,7 @@ bool InitRTC()
   DateTime then = RTC.now();
   delay(1500);
 
-  if(RTC.now().unixtime() == then.unixtime())
+  if (RTC.now().unixtime() == then.unixtime())
   {
     LOG << F("Failed to see clock change");
     return false;
@@ -143,7 +146,7 @@ bool InitRTC()
 
   LOG << F("Date ") << then.day() << '/' << then.month() << '/' << then.year();
   LOG << F("Time ") << then.hour() << ':' << then.minute();
-  
+
   return true;
 }
 
@@ -157,27 +160,56 @@ void setup()
   /*Setup pin directions*/
 
   /*Initialize components*/
+  LOG << F("Wait for ESP interface to boot");
+  delay(5000);
+
   if (!InitESPInterface())
   {
     LOG << F("Failed to init ESP interface");
     while (1);
   }
 
-  if(!InitRTC())
+  if (!InitRTC())
   {
     LOG << F("Failed to init RTC");
-    while(1);
+    while (1);
+  }
+}
+
+void HandleNetworkStateChange(uint8_t state)
+{
+  LOG << F("Changed to ") << (int)state;
+  /*Handle edge specific cases*/
+  switch (state)
+  {
+    default:
+      break;
+  }
+}
+
+void HandleNetworkState(uint8_t state)
+{
+  switch (state)
+  {
+
   }
 }
 
 void procESPNotify(uint8_t cmd, void* buf)
 {
   LOG << F("Recived notification ") << (int)cmd;
-}
 
-void procESPRsp(uint8_t cmd, void* buf)
-{
-  LOG << F("Received rsp for cmd ") << (int)cmd;
+  switch (cmd)
+  {
+    case NETWORK_STATE_CHANGE:
+      uint8_t state = ((uint8_t*)buf)[0];
+      HandleNetworkStateChange(state);
+      break;
+
+    case NETWORK_CHANGE:
+      espInterface.sendCommand(SAVE, NULL, 0);
+      break;
+  }
 }
 
 void loop()
@@ -193,7 +225,23 @@ void loop()
       if (cmd > NO_NOTIFY)
         procESPNotify(cmd, buf);
       else
-        procESPRsp(cmd, buf);
+        LOG << F("Unhandled message rsp from command ") << cmd;
     }
+  }
+
+  if (bNeedRealTime && (millis() - nLastTimePoll) > 30000)
+  {
+    uint32_t* pCurrentTime;
+    if (waitForESPResponse(TIME, NULL, 0, &pCurrentTime, 10))
+    {
+      if (*pCurrentTime)
+      {
+        bNeedRealTime = false;
+      }
+    }
+
+    nLastTimePoll = millis();
+    if (bNeedRealTime)
+      LOG << F("Couldn't get time from ESP interface");
   }
 }
