@@ -1,6 +1,9 @@
 #include "ESPInterface.h"
 
-ESPInterface::ESPInterface()
+ESPInterface::ESPInterface() :
+  m_CommandBufQIn(0),
+  m_CommandBufQOut(0),
+  m_CommandBufQCount(0)
 {
 }
 
@@ -42,12 +45,16 @@ void ESPInterface::sendCommand(uint8_t cmd, void* buf, uint8_t len)
 
 bool ESPInterface::messageReady(uint8_t* pCmd, void** buf)
 {
-  if (m_bMessageReady)
+  if (m_CommandBufQCount)
   {
     *pCmd = m_CurrentCommand;
-    *buf = m_CurrentCommandBuf;
+    *buf = m_CommandBufQ[m_CommandBufQOut];
+
+    m_CommandBufQOut++;
+    if(m_CommandBufQOut >= COMMAND_QUEUE_SIZE)
+      m_CommandBufQOut = 0;
     
-    m_bMessageReady = false;
+    m_CommandBufQCount--;
     return true;
   }
 
@@ -64,7 +71,7 @@ void ESPInterface::WaitingForSTXState(uint8_t c)
     //bytes received
     m_CurrentCommand =
       m_CommandDataCount = 0;
-    memset(m_CurrentCommandBuf, 0, sizeof(m_CurrentCommandBuf));
+    memset(m_CommandBufQ[m_CommandBufQIn], 0, COMMAND_BUFFER_LEN);
   }
 }
 
@@ -89,7 +96,7 @@ void ESPInterface::WaitingForLenState(uint8_t c)
 void ESPInterface::WaitingForDataState(uint8_t c)
 {
   //Add data to the buffer
-  m_CurrentCommandBuf[m_CommandDataCount] = c;
+  m_CommandBufQ[m_CommandBufQIn][m_CommandDataCount] = c;
   m_CommandDataCount++;
 
   if (m_CommandDataCount >= m_CurrentCommandLen)
@@ -98,14 +105,25 @@ void ESPInterface::WaitingForDataState(uint8_t c)
 
 void ESPInterface::WaitingForETXState(uint8_t c)
 {
+  bool incQ = false;
+  
   if (c == SERIAL_ETX)
   {
     m_ParseState = WAITING_FOR_STX;
-    m_bMessageReady = true;
+    incQ = true;
   }
   else if (c == SERIAL_STX)
   {
     WaitingForSTXState(c);
-    m_bMessageReady = true;
+    incQ = true;
+  }
+
+  if(incQ)
+  {
+    m_CommandBufQCount++;
+    
+    m_CommandBufQIn++;
+    if(m_CommandBufQIn >= COMMAND_QUEUE_SIZE)
+      m_CommandBufQIn = 0;
   }
 }

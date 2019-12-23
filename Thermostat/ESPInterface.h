@@ -9,6 +9,7 @@
 #define SERIAL_ETX  0xAA
 
 #define COMMAND_BUFFER_LEN    128
+#define COMMAND_QUEUE_SIZE    4
 
 class ESPInterface
 {
@@ -37,11 +38,11 @@ class ESPInterface
 
     uint32_t m_LastRXTime = 0;
 
-    bool m_bMessageReady;
     uint8_t m_CurrentCommand = NO_CMD;
     uint8_t m_CurrentCommandLen;
     uint8_t m_CommandDataCount;
-    uint8_t m_CurrentCommandBuf[COMMAND_BUFFER_LEN];
+    uint8_t m_CommandBufQIn, m_CommandBufQOut, m_CommandBufQCount;
+    uint8_t m_CommandBufQ[COMMAND_QUEUE_SIZE][COMMAND_BUFFER_LEN];
 
     void WaitingForSTXState(uint8_t);
     void WaitingForCMDState(uint8_t);

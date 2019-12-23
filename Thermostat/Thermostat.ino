@@ -45,137 +45,6 @@ RTClib RTC;
 bool bNeedRealTime = true;
 uint32_t nLastTimePoll = 0;
 
-bool waitForESPResponse(uint8_t cmd, void* outBuf, uint8_t outLen, void** inBuf, uint32_t timeout)
-{
-  bool bMsgReady = false;
-  uint32_t nStartTime;
-  uint8_t inCmd;
-
-  espInterface.sendCommand(cmd, outBuf, outLen);
-  delay(1);
-  nStartTime = millis();
-
-  while ((millis() - nStartTime) < timeout && !bMsgReady)
-  {
-    if (Serial.available())
-    {
-      espInterface.background(Serial.read());
-      bMsgReady = espInterface.messageReady(&inCmd, inBuf);
-    }
-  }
-
-  if (!bMsgReady)
-  {
-    LOG << F("No message returned");
-    return false;
-  }
-
-  if (inCmd != cmd)
-  {
-    LOG << F("Wrong type returned");
-    return false;
-  }
-
-  return true;
-}
-
-bool InitESPInterface()
-{
-  uint8_t *buf;
-  bool bRetVal = true;
-
-  if (bRetVal && waitForESPResponse(GET_DEVICE_NAME, NULL, 0, &buf, 10))
-    LOG << F("Interface ") << (char*)buf;
-  else
-  {
-    LOG << F("Failed to get device name");
-    bRetVal = false;
-  }
-
-  if (bRetVal && waitForESPResponse(VERSION, NULL, 0, &buf, 10))
-    LOG << F("v") << ((uint16_t*)buf)[0] << '.' << ((uint16_t*)buf)[1];
-  else if(bRetVal)
-  {
-    LOG << F("Failed to get device version");
-    bRetVal = false;
-  }
-
-  if (bRetVal && waitForESPResponse(GET_NETWORK_NAME, NULL, 0, &buf, 10))
-  {
-    if (strlen(buf))
-    {
-      LOG << F("Connecting to saved network ") << (char*)buf;
-
-      espInterface.sendCommand(CONNECT_TO_AP, NULL, 0);
-    }
-    else
-    {
-      LOG << F("No saved network. Start network helper");
-
-      /*Start the AP first*/
-      espInterface.sendCommand(START_AP, NULL, 0);
-      delay(5);
-      /*Then start the network helper*/
-      espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
-    }
-  }
-  else if(bRetVal)
-  {
-    LOG << F("Failed to get network info");
-    bRetVal = false;
-  }
-
-  return bRetVal;
-}
-
-bool InitIOExpander()
-{
-  return false;
-}
-
-bool InitRTC()
-{
-  DateTime then = RTC.now();
-  delay(1500);
-
-  if (RTC.now().unixtime() == then.unixtime())
-  {
-    LOG << F("Failed to see clock change");
-    return false;
-  }
-
-  LOG << F("Date ") << then.day() << '/' << then.month() << '/' << then.year();
-  LOG << F("Time ") << then.hour() << ':' << then.minute();
-
-  return true;
-}
-
-void setup()
-{
-  /*Setup serial*/
-  Serial.begin(57600);
-  dbg.begin(4800);
-  Wire.begin();
-
-  /*Setup pin directions*/
-
-  /*Initialize components*/
-  LOG << F("Wait for ESP interface to boot");
-  delay(10000);
-
-  if (!InitESPInterface())
-  {
-    LOG << F("Failed to init ESP interface");
-    while (1);
-  }
-
-  if (!InitRTC())
-  {
-    LOG << F("Failed to init RTC");
-    while (1);
-  }
-}
-
 void HandleNetworkStateChange(uint8_t state)
 {
   LOG << F("Changed to ") << (int)state;
@@ -209,6 +78,167 @@ void procESPNotify(uint8_t cmd, void* buf)
     case NETWORK_CHANGE:
       espInterface.sendCommand(SAVE, NULL, 0);
       break;
+  }
+}
+
+bool waitForESPResponse(uint8_t cmd, void* outBuf, uint8_t outLen, void** inBuf, uint32_t timeout)
+{
+  bool bMsgReady = false;
+  uint32_t nStartTime;
+  uint8_t inCmd;
+
+  espInterface.sendCommand(cmd, outBuf, outLen);
+  delay(1);
+  nStartTime = millis();
+
+  while ((millis() - nStartTime) < timeout && !bMsgReady)
+  {
+    if (Serial.available())
+    {
+      espInterface.background(Serial.read());
+      bMsgReady = espInterface.messageReady(&inCmd, inBuf);
+
+      /*Continue processing messages while waiting for the response*/
+      if (bMsgReady)
+      {
+        if (inCmd >= NO_NOTIFY)
+        {
+          procESPNotify(inCmd, *inBuf);
+          bMsgReady = false;
+        }
+        else if (inCmd != cmd)
+        {
+          LOG << F("Unexpected response for cmd type ") << inCmd;
+          bMsgReady = false;
+        }
+        /*Reset timer*/
+        nStartTime = millis();
+      }
+    }
+  }
+
+  if (!bMsgReady)
+  {
+    LOG << F("No message returned");
+    return false;
+  }
+
+  return true;
+}
+
+bool InitESPInterface()
+{
+  uint8_t *buf;
+
+  LOG << F("Resetting ESP interface");
+  digitalWrite(ESP_RST_PIN, LOW);
+  delay(1);
+  digitalWrite(ESP_RST_PIN, HIGH);
+
+  /*Wait at most 10 seconds for the interface to show ready status*/
+  uint32_t nStatusStartTime = millis();
+  while ((millis() - nStatusStartTime) < 10000 &&
+         digitalRead(ESP_ST_PIN))
+  {
+  }
+
+  if (digitalRead(ESP_ST_PIN))
+  {
+    LOG << F("Interface didn't show ready status in time");
+    return false;
+  }
+
+  LOG << F("Query for device name");
+  if (waitForESPResponse(GET_DEVICE_NAME, NULL, 0, &buf, 10))
+    LOG << F("Interface ") << (char*)buf;
+  else
+  {
+    LOG << F("Failed to get device name");
+    return false;
+  }
+
+  LOG << F("Query for device version");
+  if (waitForESPResponse(VERSION, NULL, 0, &buf, 10))
+    LOG << F("v") << ((uint16_t*)buf)[0] << '.' << ((uint16_t*)buf)[1];
+  else
+  {
+    LOG << F("Failed to get device version");
+    return false;
+  }
+
+  LOG << F("Query for network name");
+  if (waitForESPResponse(GET_NETWORK_NAME, NULL, 0, &buf, 10))
+  {
+    if (strlen(buf))
+    {
+      LOG << F("Connecting to saved network ") << (char*)buf;
+
+      espInterface.sendCommand(CONNECT_TO_AP, NULL, 0);
+    }
+    else
+    {
+      LOG << F("No saved network. Start network helper");
+
+      /*Start the AP first*/
+      espInterface.sendCommand(START_AP, NULL, 0);
+      delay(5);
+      /*Then start the network helper*/
+      espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
+    }
+  }
+  else
+  {
+    LOG << F("Failed to get network info");
+    return false;
+  }
+
+  return true;
+}
+
+bool InitIOExpander()
+{
+  return false;
+}
+
+bool InitRTC()
+{
+  DateTime then = RTC.now();
+  delay(1500);
+
+  if (RTC.now().unixtime() == then.unixtime())
+  {
+    LOG << F("Failed to see clock change");
+    return false;
+  }
+
+  LOG << F("Date ") << then.day() << '/' << then.month() << '/' << then.year();
+  LOG << F("Time ") << then.hour() << ':' << then.minute();
+
+  return true;
+}
+
+void setup()
+{
+  /*Setup serial*/
+  Serial.begin(57600);
+  dbg.begin(4800);
+  Wire.begin();
+
+  /*Setup pin directions*/
+  pinMode(ESP_RST_PIN, OUTPUT);
+  pinMode(ESP_ST_PIN, INPUT_PULLUP);
+
+  /*Initialize components*/
+  if (!InitESPInterface())
+  {
+    LOG << F("Failed to init ESP interface");
+    while (1);
+  }
+
+  if (!InitRTC())
+  {
+    LOG << F("Failed to init RTC");
+    while (1);
   }
 }
 
