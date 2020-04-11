@@ -45,6 +45,20 @@ RTClib RTC;
 bool bNeedRealTime = true;
 uint32_t nLastTimePoll = 0;
 
+char* sPubAliasList[] =
+{
+  "CurrentTemp",
+  "CurrentMode",
+  "" /*The empty string is the end of the array*/
+};
+
+char* sSubAliasList[] =
+{
+  "TargetTemp",
+  "TargetMode",
+  ""
+};
+
 void HandleNetworkStateChange(uint8_t state)
 {
   LOG << F("Changed to ") << (int)state;
@@ -181,15 +195,44 @@ bool InitESPInterface()
 
       /*Start the AP first*/
       espInterface.sendCommand(START_AP, NULL, 0);
-      delay(5);
-      /*Then start the network helper*/
-      espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
     }
   }
   else
   {
     LOG << F("Failed to get network info");
     return false;
+  }
+
+  delay(5);
+  /*Then start the network helper*/
+  espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
+
+  delay(5);
+  espInterface.sendCommand(CLEAR_PUB_LIST, NULL, 0);
+  espInterface.sendCommand(CLEAR_SUB_LIST, NULL, 0);
+
+  uint8_t nCount = 0;
+  while (*sPubAliasList[nCount])
+  {
+    PubSubInfo info;
+    info.nIndex = nCount;
+    memset(info.alias, 0, sizeof(info.alias));
+    strcpy(info.alias, sPubAliasList[nCount]);
+
+    espInterface.sendCommand(SET_PUB_ALIAS, &info, sizeof(PubSubInfo));
+    nCount++;
+  }
+
+  nCount = 0;
+  while (*sSubAliasList[nCount])
+  {
+    PubSubInfo info;
+    info.nIndex = nCount;
+    memset(info.alias, 0, sizeof(info.alias));
+    strcpy(info.alias, sSubAliasList[nCount]);
+
+    espInterface.sendCommand(SET_SUB_ALIAS, &info, sizeof(PubSubInfo));
+    nCount++;
   }
 
   return true;
