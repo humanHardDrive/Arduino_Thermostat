@@ -180,6 +180,9 @@ bool InitESPInterface()
     return false;
   }
 
+  LOG << F("Start network helper");
+  espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
+
   LOG << F("Query for network name");
   if (waitForESPResponse(GET_NETWORK_NAME, NULL, 0, &buf, 10))
   {
@@ -202,10 +205,6 @@ bool InitESPInterface()
     LOG << F("Failed to get network info");
     return false;
   }
-
-  delay(5);
-  /*Then start the network helper*/
-  espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
 
   delay(5);
   espInterface.sendCommand(CLEAR_PUB_LIST, NULL, 0);
