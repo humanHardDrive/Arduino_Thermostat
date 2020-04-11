@@ -269,6 +269,8 @@ void loop()
         LOG << F("Got current time");
         bNeedRealTime = false;
       }
+      else
+        LOG << F("ESP isn't connected to internet. Can't get time");
     }
 
     nLastTimePoll = millis();
