@@ -5,6 +5,7 @@ ESPInterface::ESPInterface() :
   m_CommandBufQOut(0),
   m_CommandBufQCount(0)
 {
+  m_nSize = 2048;
 }
 
 ESPInterface::~ESPInterface()
@@ -51,9 +52,9 @@ bool ESPInterface::messageReady(uint8_t* pCmd, void** buf)
     *buf = m_CommandBufQ[m_CommandBufQOut];
 
     m_CommandBufQOut++;
-    if(m_CommandBufQOut >= COMMAND_QUEUE_SIZE)
+    if (m_CommandBufQOut >= COMMAND_QUEUE_SIZE)
       m_CommandBufQOut = 0;
-    
+
     m_CommandBufQCount--;
     return true;
   }
@@ -106,7 +107,7 @@ void ESPInterface::WaitingForDataState(uint8_t c)
 void ESPInterface::WaitingForETXState(uint8_t c)
 {
   bool incQ = false;
-  
+
   if (c == SERIAL_ETX)
   {
     m_ParseState = WAITING_FOR_STX;
@@ -118,12 +119,32 @@ void ESPInterface::WaitingForETXState(uint8_t c)
     incQ = true;
   }
 
-  if(incQ)
+  if (incQ)
   {
     m_CommandBufQCount++;
-    
+
     m_CommandBufQIn++;
-    if(m_CommandBufQIn >= COMMAND_QUEUE_SIZE)
+    if (m_CommandBufQIn >= COMMAND_QUEUE_SIZE)
       m_CommandBufQIn = 0;
   }
+}
+
+uint8_t ESPInterface::read(uint32_t addr)
+{
+  
+}
+
+uint32_t ESPInterface::read(uint32_t addr, void* pBuf, uint32_t len)
+{
+  
+}
+
+void ESPInterface::write(uint32_t addr, uint8_t v)
+{
+  
+}
+
+uint32_t ESPInterface::write(uint32_t addr, void* pBuf, uint32_t len)
+{
+  
 }

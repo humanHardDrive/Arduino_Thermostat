@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "Msgs.h"
+#include "MemDevice.h"
 
 #define SERIAL_STX  0x55
 #define SERIAL_ETX  0xAA
@@ -11,7 +12,7 @@
 #define COMMAND_BUFFER_LEN    128
 #define COMMAND_QUEUE_SIZE    1
 
-class ESPInterface
+class ESPInterface : public MemDevice
 {
   public:
     ESPInterface();
@@ -22,6 +23,12 @@ class ESPInterface
     void sendCommand(uint8_t cmd, void* buf, uint8_t len);
 
     bool messageReady(uint8_t* pCmd, void** buf);
+
+    uint8_t read(uint32_t addr);
+    uint32_t read(uint32_t addr, void* pBuf, uint32_t len);
+
+    void write(uint32_t addr, uint8_t v);
+    uint32_t write(uint32_t addr, void* pBuf, uint32_t len);
 
   private:
     enum PARSE_STATE

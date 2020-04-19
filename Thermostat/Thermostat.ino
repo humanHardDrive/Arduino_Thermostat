@@ -5,6 +5,7 @@
 #include <SoftwareSerial.h>
 #include <Streaming.h>
 
+#include "ThermostatDevice.h"
 #include "ESPInterface.h"
 
 #define APP_NAME    F("REMOTE THERMOSTAT")

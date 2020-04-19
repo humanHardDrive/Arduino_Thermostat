@@ -16,40 +16,33 @@ enum CMD_TYPE
 {
   /*COMMANDS*/
   NO_CMD = 0,
-  SET_NETWORK_NAME,
-  SET_NETWORK_PASS,
-  GET_NETWORK_NAME,
-  GET_NETWORK_PASS,
   GET_DEVICE_NAME,
+  VERSION,
+  MEM_READ,
+  MEM_WRITE,
+  SAVE,
+  REBOOT,
+  SET_AP_INFO,
+  GET_AP_INFO,
   CONNECT_TO_AP,
   DISCONNECT_FROM_AP,
   START_AP,
   STOP_AP,
   START_NETWORK_HELPER,
   STOP_NETWORK_HELPER,
-  ADD_SUBSCRIPTION,
-  REMOVE_SUBSCRIPTION,
-  SAVE,
-  GET_CONNECTION_STATE,
-  REBOOT,
-  SET_SERVER_ADDR,
-  SET_SERVER_PORT,
-  SET_USER_NAME,
-  SET_USER_PASS,
-  GET_SERVER_ADDR,
-  GET_SERVER_PORT,
-  GET_USER_NAME,
-  GET_USER_PASS,
+  GET_IP,
+  SET_SERVER_INFO,
+  GET_SERVER_INFO,
   CONNECT_TO_SERVER,
   DISCONNECT_FROM_SERVER,
-  VERSION,
-  TIME,
-  SET_TIME_OFFSET,
-  GET_IP,
   SET_PUB_ALIAS,
   SET_SUB_ALIAS,
-  CLEAR_PUB_LIST,
-  CLEAR_SUB_LIST,
+  ADD_SUBSCRIPTION,
+  REMOVE_SUBSCRIPTION,
+  GET_CONNECTION_INFO,
+  PUBLISH_INFO,
+  TIME,
+  SET_TIME_OFFSET,
   INVALID_CMD,
 
   /*NOTIFY*/
@@ -71,10 +64,50 @@ enum NETWORK_STATE_CHANGE_TYPE
   UNKNOWN_STATE
 };
 
-struct PubSubInfo
+#define MEM_PAGE_SIZE   64
+
+struct MemPage
+{
+  uint16_t addr;
+  uint8_t nCount;
+  uint8_t block[MEM_PAGE_SIZE];
+};
+
+#define MAX_NETWORK_NAME_LENGTH   32
+#define MAX_NETWORK_PASS_LENGTH   16
+
+struct APInfo
+{
+  char sSSID[MAX_NETWORK_NAME_LENGTH];
+  char password[MAX_NETWORK_PASS_LENGTH];
+};
+
+struct IPInfo
+{
+  uint8_t IP[4];
+};
+
+struct ServerInfo
+{
+  char sServerAddr[MAX_NETWORK_NAME_LENGTH];
+  uint16_t nServerPort;
+
+  char sUserName[MAX_NETWORK_NAME_LENGTH];
+  char sUserPass[MAX_NETWORK_PASS_LENGTH];
+};
+
+#define MAX_ALIAS_NAME_LENGTH 16
+
+struct AliasInfo
 {
   uint8_t nIndex;
-  char alias[16];
+  char sAlias[MAX_ALIAS_NAME_LENGTH];
+};
+
+struct ConnectionInfo
+{
+  uint8_t nAPConnectionInfo;
+  uint8_t nServerConnectionInfo;
 };
 
 #endif
