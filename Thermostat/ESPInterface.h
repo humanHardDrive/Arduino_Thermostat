@@ -9,7 +9,7 @@
 #define SERIAL_ETX  0xAA
 
 #define COMMAND_BUFFER_LEN    128
-#define COMMAND_QUEUE_SIZE    4
+#define COMMAND_QUEUE_SIZE    1
 
 class ESPInterface
 {
