@@ -37,12 +37,26 @@
 #define LOCAL_TEMP_PIN  A6
 #define BATT_MON_PIN    A7
 
+struct SaveInfo
+{
+  APInfo apInfo;
+  ServerInfo serverInfo;
+
+  uint16_t checksum;
+};
+
 //Variables
 SoftwareSerial dbg(DBG_RX_PIN, DBG_TX_PIN);
 Stream& logger(dbg);
+
+SaveInfo saveInfo;
+
 ESPInterface    espInterface;
+ThermostatDevice thermostatDevice(espInterface);
+
 DS3231 Clock;
 RTClib RTC;
+
 bool bNeedRealTime = true;
 uint32_t nLastTimePoll = 0;
 
@@ -163,79 +177,12 @@ bool InitESPInterface()
     return false;
   }
 
-  LOG << F("Query for device name");
-  if (waitForESPResponse(GET_DEVICE_NAME, NULL, 0, &buf, 10))
-    LOG << F("Interface ") << (char*)buf;
-  else
-  {
-    LOG << F("Failed to get device name");
-    return false;
-  }
-
-  LOG << F("Query for device version");
-  if (waitForESPResponse(VERSION, NULL, 0, &buf, 10))
-    LOG << F("v") << ((uint16_t*)buf)[0] << '.' << ((uint16_t*)buf)[1];
-  else
-  {
-    LOG << F("Failed to get device version");
-    return false;
-  }
-
-  LOG << F("Start network helper");
-  espInterface.sendCommand(START_NETWORK_HELPER, NULL, 0);
-
-  LOG << F("Query for network name");
-  if (waitForESPResponse(GET_NETWORK_NAME, NULL, 0, &buf, 10))
-  {
-    if (strlen(buf))
-    {
-      LOG << F("Connecting to saved network ") << (char*)buf;
-
-      espInterface.sendCommand(CONNECT_TO_AP, NULL, 0);
-    }
-    else
-    {
-      LOG << F("No saved network. Start network helper");
-
-      /*Start the AP first*/
-      espInterface.sendCommand(START_AP, NULL, 0);
-    }
-  }
-  else
-  {
-    LOG << F("Failed to get network info");
-    return false;
-  }
-
-  delay(5);
-  espInterface.sendCommand(CLEAR_PUB_LIST, NULL, 0);
-  espInterface.sendCommand(CLEAR_SUB_LIST, NULL, 0);
-
-  uint8_t nCount = 0;
-  while (*sPubAliasList[nCount])
-  {
-    PubSubInfo info;
-    info.nIndex = nCount;
-    memset(info.alias, 0, sizeof(info.alias));
-    strcpy(info.alias, sPubAliasList[nCount]);
-
-    espInterface.sendCommand(SET_PUB_ALIAS, &info, sizeof(PubSubInfo));
-    nCount++;
-  }
-
-  nCount = 0;
-  while (*sSubAliasList[nCount])
-  {
-    PubSubInfo info;
-    info.nIndex = nCount;
-    memset(info.alias, 0, sizeof(info.alias));
-    strcpy(info.alias, sSubAliasList[nCount]);
-
-    espInterface.sendCommand(SET_SUB_ALIAS, &info, sizeof(PubSubInfo));
-    nCount++;
-  }
-
   return true;
+}
+
+void RecoverInfo()
+{
+  memset(&saveInfo, 0, sizeof(SaveInfo));
 }
 
 bool InitIOExpander()

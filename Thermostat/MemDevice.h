@@ -1,6 +1,8 @@
 #ifndef __MEM_DEVICE_H__
 #define __MEM_DEVICE_H__
 
+#include <stdint.h>
+
 class MemDevice
 {
   public:

@@ -131,7 +131,6 @@ void ESPInterface::WaitingForETXState(uint8_t c)
 
 uint8_t ESPInterface::read(uint32_t addr)
 {
-  
 }
 
 uint32_t ESPInterface::read(uint32_t addr, void* pBuf, uint32_t len)
