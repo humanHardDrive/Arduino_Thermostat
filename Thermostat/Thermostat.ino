@@ -183,6 +183,9 @@ bool InitESPInterface()
 void RecoverInfo()
 {
   memset(&saveInfo, 0, sizeof(SaveInfo));
+
+  thermostatDevice.setOffset(sizeof(SaveInfo));
+  thermostatDevice.recover();
 }
 
 bool InitIOExpander()

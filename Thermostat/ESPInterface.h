@@ -64,8 +64,6 @@ class ESPInterface : public MemDevice
       &ESPInterface::WaitingForDataState,
       &ESPInterface::WaitingForETXState
     };
-
-    
 };
 
 #endif
