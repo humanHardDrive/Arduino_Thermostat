@@ -6,6 +6,7 @@
 #include <Streaming.h>
 
 #include "ThermostatDevice.h"
+#include "SensorDevice.h"
 #include "ESPInterface.h"
 
 #define APP_NAME    F("REMOTE THERMOSTAT")
