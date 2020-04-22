@@ -8,7 +8,7 @@ SensorDevice::SensorDevice(uint8_t tempSensePin, uint32_t nSamplePeriod, uint32_
   m_nLastPublishTime(0),
   m_bShouldPublish(false),
   m_fCurrentTempC(25.0),
-  m_fCurrentTempF(77)
+  m_fCurrentTempF(CtoF(m_fCurrentTempC))
 {
   /*Set filter to an average of 25°C*/
   for (uint8_t i = 0; i < SAMPLE_WINDOW; i++)

@@ -46,14 +46,11 @@ struct SaveInfo
   uint16_t checksum;
 };
 
-//Variables
-SoftwareSerial dbg(DBG_RX_PIN, DBG_TX_PIN);
-Stream& logger(dbg);
-
 SaveInfo saveInfo;
 
-ESPInterface    espInterface;
-ThermostatDevice thermostatDevice(espInterface);
+ESPInterface      espInterface;
+SensorDevice      sensorDevice(LOCAL_TEMP_PIN, 1000, 1000);
+ThermostatDevice  thermostatDevice(espInterface);
 
 DS3231 Clock;
 RTClib RTC;

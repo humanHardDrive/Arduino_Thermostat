@@ -6,8 +6,8 @@
 #include "Msgs.h"
 #include "MemDevice.h"
 
-#define SERIAL_STX  0x55
-#define SERIAL_ETX  0xAA
+#define SERIAL_STX  0xAA /*Non-ASCII character*/
+#define SERIAL_ETX  0x55
 
 #define COMMAND_BUFFER_LEN    128
 #define COMMAND_QUEUE_SIZE    1
