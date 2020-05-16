@@ -16,7 +16,10 @@ void ESPInterface::background(uint8_t c)
 {
   if ((millis() - m_LastRXTime) > 10 &&
       m_ParseState != WAITING_FOR_STX)
+  {
+    Serial.println(F("Response timeout"));
     m_ParseState = WAITING_FOR_STX;
+  }
 
   m_LastRXTime = millis();
   (this->*m_StateFn[m_ParseState])(c);
@@ -37,10 +40,17 @@ void ESPInterface::sendCommand(uint8_t cmd, void* buf, uint8_t len)
   msg.cmd = cmd;
   msg.len = len;
 
+  //Send an empty line before sending data, for debugging purposes
+  Serial.println();
+  //Start transmission character
   Serial.write(SERIAL_STX);
+  //Command
   Serial.write(msg.cmd);
+  //Data length
   Serial.write(msg.len);
+  //Data
   Serial.write(msg.payload, msg.len);
+  //End transmission character
   Serial.write(SERIAL_ETX);
 }
 
@@ -135,15 +145,15 @@ uint8_t ESPInterface::read(uint32_t addr)
 
 uint32_t ESPInterface::read(uint32_t addr, void* pBuf, uint32_t len)
 {
-  
+
 }
 
 void ESPInterface::write(uint32_t addr, uint8_t v)
 {
-  
+
 }
 
 uint32_t ESPInterface::write(uint32_t addr, void* pBuf, uint32_t len)
 {
-  
+
 }

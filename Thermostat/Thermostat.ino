@@ -2,7 +2,6 @@
 #include <DS3231.h>
 #include <LiquidCrystal.h>
 #include <Sleep_n0m1.h>
-#include <SoftwareSerial.h>
 #include <Streaming.h>
 
 #include "ThermostatDevice.h"
@@ -14,7 +13,7 @@
 #define VERSION_MINOR   0
 
 /*Basic logging macro*/
-#define LOG logger << "\n\r" << millis() << '\t' << __FUNCTION__ << '\t'
+#define LOG Serial << "\n\r" << millis() << '\t' << __FUNCTION__ << '\t'
 
 //Arduino Pins
 #define IO_EXP_RST_PIN  13
@@ -72,42 +71,6 @@ char* sSubAliasList[] =
   ""
 };
 
-void HandleNetworkStateChange(uint8_t state)
-{
-  LOG << F("Changed to ") << (int)state;
-  /*Handle edge specific cases*/
-  switch (state)
-  {
-    default:
-      break;
-  }
-}
-
-void HandleNetworkState(uint8_t state)
-{
-  switch (state)
-  {
-
-  }
-}
-
-void procESPNotify(uint8_t cmd, void* buf)
-{
-  LOG << F("Recived notification ") << (int)cmd;
-
-  switch (cmd)
-  {
-    case NETWORK_STATE_CHANGE:
-      uint8_t state = ((uint8_t*)buf)[0];
-      HandleNetworkStateChange(state);
-      break;
-
-    case NETWORK_CHANGE:
-      espInterface.sendCommand(SAVE, NULL, 0);
-      break;
-  }
-}
-
 bool waitForESPResponse(uint8_t cmd, void* outBuf, uint8_t outLen, void** inBuf, uint32_t timeout)
 {
   bool bMsgReady = false;
@@ -128,12 +91,7 @@ bool waitForESPResponse(uint8_t cmd, void* outBuf, uint8_t outLen, void** inBuf,
       /*Continue processing messages while waiting for the response*/
       if (bMsgReady)
       {
-        if (inCmd >= NO_NOTIFY)
-        {
-          procESPNotify(inCmd, *inBuf);
-          bMsgReady = false;
-        }
-        else if (inCmd != cmd)
+        if (inCmd != cmd)
         {
           LOG << F("Unexpected response for cmd type ") << inCmd;
           bMsgReady = false;
@@ -212,7 +170,6 @@ void setup()
 {
   /*Setup serial*/
   Serial.begin(57600);
-  dbg.begin(4800);
   Wire.begin();
 
   /*Setup pin directions*/
@@ -235,21 +192,6 @@ void setup()
 
 void loop()
 {
-  uint8_t cmd, *buf;
-
-  if (Serial.available())
-  {
-    espInterface.background(Serial.read());
-
-    if (espInterface.messageReady(&cmd, &buf))
-    {
-      if (cmd > NO_NOTIFY)
-        procESPNotify(cmd, buf);
-      else
-        LOG << F("Unhandled message rsp from command ") << cmd;
-    }
-  }
-
   if (bNeedRealTime && (millis() - nLastTimePoll) > 30000)
   {
     uint32_t* pCurrentTime;
