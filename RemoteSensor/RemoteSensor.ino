@@ -14,8 +14,10 @@
 #define DOWN_BTN_PIN    1
 #define LEFT_BTN_PIN    2
 #define RIGHT_BTN_PIN   3
-#define SLEEP_PIN       4
-#define WAKE_PIN        5
+#define CENTER_BTN_PIN  4
+//These control the center button reset latch
+#define SLEEP_PIN       5
+#define WAKE_PIN        6
 
 #define TEMP_SENSE_PIN  A0
 
@@ -30,6 +32,7 @@ void setup()
   pinMode(DOWN_BTN_PIN, INPUT_PULLUP);
   pinMode(LEFT_BTN_PIN, INPUT_PULLUP);
   pinMode(RIGHT_BTN_PIN, INPUT_PULLUP);
+  pinMode(CENTER_BTN_PIN, INPUT_PULLUP);
 
   pinMode(SLEEP_PIN, OUTPUT);
   pinMode(WAKE_PIN, OUTPUT);
@@ -43,9 +46,18 @@ void setup()
 void goToSleep()
 {
   //Sleep
+  //Setup the reset latch
+  digitalWrite(WAKE_PIN, LOW); //Off
+  digitalWrite(SLEEP_PIN, HIGH); //Before on
+  //Turn off WiFi
   WiFi.mode(WIFI_OFF);
+  //Deep sleep
   ESP.deepSleep(10, WAKE_RF_DISABLED); 
+  
   //Wakeup
+  //Clear the reset latch
+  digitalWrite(SLEEP_PIN, LOW); //Off
+  digitalWrite(WAKE_PIN, HIGH); //Before on
   ulWakeTimeStart = millis();
 }
 
