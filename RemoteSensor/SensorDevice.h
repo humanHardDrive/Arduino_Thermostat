@@ -7,12 +7,9 @@
 class SensorDevice : public MemAccessor
 {
   public:
-    SensorDevice(uint8_t tempSensePin, uint32_t nSamplePeriod, uint32_t nPublishPeriod);
+    SensorDevice(uint8_t tempSensePin, uint32_t nSamplePeriod);
 
     void update();
-
-    bool isReadyToPublish() { return m_bReadyToPublish; }
-    void publish();
 
     float getCurrentTemp() { return (m_bUseFahrenheit ? m_fCurrentTempF : m_fCurrentTempC); }
 
@@ -21,9 +18,6 @@ class SensorDevice : public MemAccessor
     static const uint8_t SAMPLE_WINDOW = 8;
 
   private:
-    void checkAndUpdateSample();
-    void updateReadyToPublish();
-
     static float VtoC(float fV);
     static float CtoF(float fC);
   
@@ -32,9 +26,6 @@ class SensorDevice : public MemAccessor
     uint16_t m_nSampleFilter[SAMPLE_WINDOW];
     float m_fCurrentTempC, m_fCurrentTempF;
     bool m_bUseFahrenheit;
-
-    bool m_bShouldPublish, m_bReadyToPublish;
-    uint32_t m_nPublishPeriod, m_nLastPublishTime;
 };
 
 #endif

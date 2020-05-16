@@ -1,12 +1,9 @@
 #include "SensorDevice.h"
 
-SensorDevice::SensorDevice(uint8_t tempSensePin, uint32_t nSamplePeriod, uint32_t nPublishPeriod) :
+SensorDevice::SensorDevice(uint8_t tempSensePin, uint32_t nSamplePeriod) :
   m_nAnalogPin(tempSensePin),
   m_nSamplePeriod(nSamplePeriod),
   m_nLastSampleTime(0),
-  m_nPublishPeriod(nPublishPeriod),
-  m_nLastPublishTime(0),
-  m_bShouldPublish(false),
   m_fCurrentTempC(25.0),
   m_fCurrentTempF(CtoF(m_fCurrentTempC))
 {
@@ -16,13 +13,6 @@ SensorDevice::SensorDevice(uint8_t tempSensePin, uint32_t nSamplePeriod, uint32_
 }
 
 void SensorDevice::update()
-{
-  checkAndUpdateSample();
-  updateReadyToPublish();
-}
-
-
-void SensorDevice::checkAndUpdateSample()
 {
   if ((millis() - m_nLastSampleTime) > m_nSamplePeriod)
   {
@@ -42,15 +32,6 @@ void SensorDevice::checkAndUpdateSample()
     m_fCurrentTempF = CtoF(m_fCurrentTempC);
   }
 }
-
-void SensorDevice::updateReadyToPublish()
-{
-  if (m_bShouldPublish && (millis() - m_nLastPublishTime) > m_nPublishPeriod)
-  {
-
-  }
-}
-
 
 float SensorDevice::VtoC(float fV)
 {
