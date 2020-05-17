@@ -52,7 +52,7 @@ void goToSleep()
   //Turn off WiFi
   WiFi.mode(WIFI_OFF);
   //Deep sleep
-  ESP.deepSleep(10, WAKE_RF_DISABLED); 
+  ESP.deepSleep(ulSleepTime, WAKE_RF_DISABLED); 
   
   //Wakeup
   //Clear the reset latch
@@ -61,8 +61,9 @@ void goToSleep()
   ulWakeTimeStart = millis();
 }
 
-void loop() 
+void loop()
 {
+  sensor.update();
   if((millis() - ulWakeTimeStart) > WAKE_TIME_MS)
     goToSleep();
 }
