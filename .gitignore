@@ -9,3 +9,5 @@ BaseStation/.vs/BaseStation/v14/.atsuo
 *.job
 *.pro
 *.s#*
+fp-info-cache
+*.bak

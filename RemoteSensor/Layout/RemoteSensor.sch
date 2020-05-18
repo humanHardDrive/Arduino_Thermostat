@@ -1,0 +1,678 @@
+EESchema Schematic File Version 4
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:R_US R1
+U 1 1 5EC194C6
+P 4450 1350
+F 0 "R1" H 4518 1396 50  0000 L CNN
+F 1 "10k" H 4518 1305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 4490 1340 50  0001 C CNN
+F 3 "~" H 4450 1350 50  0001 C CNN
+	1    4450 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R3
+U 1 1 5EC1E6F1
+P 2100 6050
+F 0 "R3" H 2168 6096 50  0000 L CNN
+F 1 "10k" H 2168 6005 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2140 6040 50  0001 C CNN
+F 3 "~" H 2100 6050 50  0001 C CNN
+	1    2100 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R2
+U 1 1 5EC1F0EE
+P 1100 6050
+F 0 "R2" H 1168 6096 50  0000 L CNN
+F 1 "10k" H 1168 6005 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 1140 6040 50  0001 C CNN
+F 3 "~" H 1100 6050 50  0001 C CNN
+	1    1100 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND0101
+U 1 1 5EC1FEEF
+P 5400 2950
+F 0 "#GND0101" H 5450 2900 45  0001 L BNN
+F 1 "GND" H 5400 2780 45  0000 C CNN
+F 2 "" H 5400 2850 60  0001 C CNN
+F 3 "" H 5400 2850 60  0001 C CNN
+	1    5400 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L RF_Module:ESP-12F U1
+U 1 1 5EC1798E
+P 5400 2250
+F 0 "U1" H 5400 3231 50  0000 C CNN
+F 1 "ESP-12F" H 5400 3140 50  0000 C CNN
+F 2 "RF_Module:ESP-12E" H 5400 2250 50  0001 C CNN
+F 3 "http://wiki.ai-thinker.com/_media/esp8266/esp8266_series_modules_user_manual_v1.1.pdf" H 5050 2350 50  0001 C CNN
+	1    5400 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND0102
+U 1 1 5EC21293
+P 2400 5450
+F 0 "#GND0102" H 2450 5400 45  0001 L BNN
+F 1 "GND" H 2400 5280 45  0000 C CNN
+F 2 "" H 2400 5350 60  0001 C CNN
+F 3 "" H 2400 5350 60  0001 C CNN
+	1    2400 5450
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xGxx:74LVC2G02 U2
+U 2 1 5EC1D0E4
+P 2400 5350
+F 0 "U2" H 2375 5617 50  0000 C CNN
+F 1 "74LVC2G02" H 2375 5526 50  0000 C CNN
+F 2 "Package_SO:VSSOP-8_2.3x2mm_P0.5mm" H 2400 5350 50  0001 C CNN
+F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 2400 5350 50  0001 C CNN
+	2    2400 5350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2400 5250 2400 5000
+Wire Wire Line
+	1550 5200 1550 4950
+$Comp
+L 74xGxx:74LVC2G02 U2
+U 1 1 5EC1A8CB
+P 1550 5300
+F 0 "U2" H 1525 5567 50  0000 C CNN
+F 1 "74LVC2G02" H 1525 5476 50  0000 C CNN
+F 2 "Package_SO:VSSOP-8_2.3x2mm_P0.5mm" H 1550 5300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 1550 5300 50  0001 C CNN
+	1    1550 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND0103
+U 1 1 5EC2182D
+P 1550 5400
+F 0 "#GND0103" H 1600 5350 45  0001 L BNN
+F 1 "GND" H 1550 5230 45  0000 C CNN
+F 2 "" H 1550 5300 60  0001 C CNN
+F 3 "" H 1550 5300 60  0001 C CNN
+	1    1550 5400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 5300 2100 5300
+Wire Wire Line
+	2650 5350 2650 5700
+Wire Wire Line
+	2650 5700 1250 5700
+Wire Wire Line
+	1250 5700 1250 5350
+Wire Wire Line
+	2100 5400 2100 5900
+Wire Wire Line
+	1250 5250 1100 5250
+Wire Wire Line
+	1100 5250 1100 5900
+Wire Wire Line
+	1100 6200 1100 6250
+Wire Wire Line
+	1100 6250 1600 6250
+Wire Wire Line
+	2100 6250 2100 6200
+$Comp
+L SparkFun-PowerSymbols:GND #GND0104
+U 1 1 5EC35D52
+P 1600 6250
+F 0 "#GND0104" H 1650 6200 45  0001 L BNN
+F 1 "GND" H 1600 6080 45  0000 C CNN
+F 2 "" H 1600 6150 60  0001 C CNN
+F 3 "" H 1600 6150 60  0001 C CNN
+	1    1600 6250
+	1    0    0    -1  
+$EndComp
+Connection ~ 1600 6250
+Wire Wire Line
+	1600 6250 2100 6250
+$Comp
+L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q1
+U 1 1 5EC3684B
+P 3250 5250
+F 0 "Q1" H 3358 5303 60  0000 L CNN
+F 1 "2N7002" H 3358 5197 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 3450 5450 60  0001 L CNN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 3450 5550 60  0001 L CNN
+F 4 "2N7002NCT-ND" H 3450 5650 60  0001 L CNN "Digi-Key_PN"
+F 5 "2N7002" H 3450 5750 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 3450 5850 60  0001 L CNN "Category"
+F 7 "Transistors - FETs, MOSFETs - Single" H 3450 5950 60  0001 L CNN "Family"
+F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 3450 6050 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 3450 6150 60  0001 L CNN "DK_Detail_Page"
+F 10 "MOSFET N-CH 60V 115MA SOT-23" H 3450 6250 60  0001 L CNN "Description"
+F 11 "ON Semiconductor" H 3450 6350 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 3450 6450 60  0001 L CNN "Status"
+	1    3250 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R4
+U 1 1 5EC38680
+P 2950 6050
+F 0 "R4" H 3018 6096 50  0000 L CNN
+F 1 "10k" H 3018 6005 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2990 6040 50  0001 C CNN
+F 3 "~" H 2950 6050 50  0001 C CNN
+	1    2950 6050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2950 5900 2950 5350
+Wire Wire Line
+	2100 6250 2950 6250
+Wire Wire Line
+	2950 6250 2950 6200
+Connection ~ 2100 6250
+Wire Wire Line
+	2650 5350 2950 5350
+Connection ~ 2650 5350
+Connection ~ 2950 5350
+Text Label 3600 1650 0    50   ~ 0
+RST
+Wire Wire Line
+	3250 5050 3250 4750
+Wire Wire Line
+	3250 4750 3950 4750
+Text Label 3950 4750 2    50   ~ 0
+RST
+$Comp
+L Device:R_US R?
+U 1 1 5EC49015
+P 3950 1350
+F 0 "R?" H 4018 1396 50  0000 L CNN
+F 1 "10k" H 4018 1305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 3990 1340 50  0001 C CNN
+F 3 "~" H 3950 1350 50  0001 C CNN
+	1    3950 1350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3950 1200 4450 1200
+Wire Wire Line
+	4450 1500 4450 1650
+Wire Wire Line
+	4450 1650 4800 1650
+Wire Wire Line
+	3950 1500 3950 1850
+Wire Wire Line
+	3950 1850 4800 1850
+Wire Wire Line
+	5400 1200 4450 1200
+Wire Wire Line
+	5400 1200 5400 1450
+Connection ~ 4450 1200
+Wire Wire Line
+	3600 1650 4450 1650
+Connection ~ 4450 1650
+Wire Wire Line
+	6000 2650 6300 2650
+Text Label 6300 2650 2    50   ~ 0
+RST
+Wire Wire Line
+	6000 1650 6200 1650
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EC4FE8E
+P 7100 1650
+F 0 "#GND?" H 7150 1600 45  0001 L BNN
+F 1 "GND" H 7100 1480 45  0000 C CNN
+F 2 "" H 7100 1550 60  0001 C CNN
+F 3 "" H 7100 1550 60  0001 C CNN
+	1    7100 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY?
+U 1 1 5EC5052D
+P 5400 1200
+F 0 "#SUPPLY?" H 5450 1200 45  0001 L BNN
+F 1 "3.3V" H 5400 1476 45  0000 C CNN
+F 2 "XXX-00000" H 5400 1381 60  0000 C CNN
+F 3 "" H 5400 1200 60  0001 C CNN
+	1    5400 1200
+	1    0    0    -1  
+$EndComp
+Connection ~ 5400 1200
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY?
+U 1 1 5EC50A55
+P 1550 4950
+F 0 "#SUPPLY?" H 1600 4950 45  0001 L BNN
+F 1 "3.3V" H 1550 5226 45  0000 C CNN
+F 2 "XXX-00000" H 1550 5131 60  0000 C CNN
+F 3 "" H 1550 4950 60  0001 C CNN
+	1    1550 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY?
+U 1 1 5EC511B1
+P 2400 5000
+F 0 "#SUPPLY?" H 2450 5000 45  0001 L BNN
+F 1 "3.3V" H 2400 5276 45  0000 C CNN
+F 2 "XXX-00000" H 2400 5181 60  0000 C CNN
+F 3 "" H 2400 5000 60  0001 C CNN
+	1    2400 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 5EC51804
+P 1550 3950
+F 0 "SW?" H 1550 4235 50  0000 C CNN
+F 1 "SW_RST" H 1550 4144 50  0000 C CNN
+F 2 "" H 1550 4150 50  0001 C CNN
+F 3 "~" H 1550 4150 50  0001 C CNN
+	1    1550 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EC52D7A
+P 1900 3950
+F 0 "#GND?" H 1950 3900 45  0001 L BNN
+F 1 "GND" H 1900 3780 45  0000 C CNN
+F 2 "" H 1900 3850 60  0001 C CNN
+F 3 "" H 1900 3850 60  0001 C CNN
+	1    1900 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 3950 1900 3950
+Wire Wire Line
+	1350 3950 1100 3950
+Text Label 1100 3950 0    50   ~ 0
+RST
+$Comp
+L SparkFun-Switches:JOYSTICK_MINI S?
+U 1 1 5EC542DA
+P 1750 1800
+F 0 "S?" H 1750 2260 45  0000 C CNN
+F 1 "JOYSTICK_MINI" H 1750 2176 45  0000 C CNN
+F 2 "JOYSTICK_MINI" H 1750 2100 20  0001 C CNN
+F 3 "" H 1750 1800 50  0001 C CNN
+F 4 "SWCH-09905" H 1750 2081 60  0000 C CNN "Field4"
+	1    1750 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EC56B92
+P 1250 1900
+F 0 "#GND?" H 1300 1850 45  0001 L BNN
+F 1 "GND" H 1250 1730 45  0000 C CNN
+F 2 "" H 1250 1800 60  0001 C CNN
+F 3 "" H 1250 1800 60  0001 C CNN
+	1    1250 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1250 1700 700  1700
+Wire Wire Line
+	1250 1800 700  1800
+Text Label 700  1700 0    50   ~ 0
+BTN_UP
+Text Label 700  1800 0    50   ~ 0
+BTN_DOWN
+Text Label 2750 1700 2    50   ~ 0
+BTN_LEFT
+Text Label 2750 1800 2    50   ~ 0
+BTN_RIGHT
+Text Label 2750 1900 2    50   ~ 0
+BTN_CENTER
+Wire Wire Line
+	2250 1900 2750 1900
+Wire Wire Line
+	2250 1700 2750 1700
+Wire Wire Line
+	2250 1800 2750 1800
+Wire Wire Line
+	3250 5450 3250 5600
+Wire Wire Line
+	3250 5600 3950 5600
+Text Label 3950 5600 2    50   ~ 0
+BTN_CENTER
+Wire Wire Line
+	1100 5250 750  5250
+Connection ~ 1100 5250
+Wire Wire Line
+	2100 5400 1750 5400
+Connection ~ 2100 5400
+Text Label 750  5250 0    50   ~ 0
+SLEEP_PIN
+Text Label 1750 5400 0    50   ~ 0
+WAKE_PIN
+$Comp
+L Device:LED D?
+U 1 1 5EC5DA10
+P 9500 1100
+F 0 "D?" H 9493 845 50  0000 C CNN
+F 1 "HB_LED" H 9493 936 50  0000 C CNN
+F 2 "" H 9500 1100 50  0001 C CNN
+F 3 "~" H 9500 1100 50  0001 C CNN
+	1    9500 1100
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:LED D?
+U 1 1 5EC5EDC9
+P 9500 1500
+F 0 "D?" H 9493 1245 50  0000 C CNN
+F 1 "BATT_LED" H 9493 1336 50  0000 C CNN
+F 2 "" H 9500 1500 50  0001 C CNN
+F 3 "~" H 9500 1500 50  0001 C CNN
+	1    9500 1500
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	9650 1100 9850 1100
+Wire Wire Line
+	9850 1100 9850 1500
+Wire Wire Line
+	9850 1500 9650 1500
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EC60307
+P 9850 1600
+F 0 "#GND?" H 9900 1550 45  0001 L BNN
+F 1 "GND" H 9850 1430 45  0000 C CNN
+F 2 "" H 9850 1500 60  0001 C CNN
+F 3 "" H 9850 1500 60  0001 C CNN
+	1    9850 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9850 1600 9850 1500
+Connection ~ 9850 1500
+$Comp
+L Device:R_US R?
+U 1 1 5EC612D6
+P 9050 1100
+F 0 "R?" V 9255 1100 50  0000 C CNN
+F 1 "220" V 9164 1100 50  0000 C CNN
+F 2 "" V 9090 1090 50  0001 C CNN
+F 3 "~" H 9050 1100 50  0001 C CNN
+	1    9050 1100
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5EC61E65
+P 9050 1500
+F 0 "R?" V 8845 1500 50  0000 C CNN
+F 1 "220" V 8936 1500 50  0000 C CNN
+F 2 "" V 9090 1490 50  0001 C CNN
+F 3 "~" H 9050 1500 50  0001 C CNN
+	1    9050 1500
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9200 1500 9350 1500
+Wire Wire Line
+	9200 1100 9350 1100
+Wire Wire Line
+	8900 1100 8500 1100
+Wire Wire Line
+	8900 1500 8500 1500
+Text Label 8500 1100 0    50   ~ 0
+HB_PIN
+Text Label 8500 1500 0    50   ~ 0
+BATT_PIN
+$Comp
+L LM50CIM3:LM50CIM3 U?
+U 1 1 5EC66F21
+P 9200 2700
+F 0 "U?" H 9200 3065 50  0000 C CNN
+F 1 "LM50CIM3" H 9200 2974 50  0000 C CNN
+F 2 "SOT95P260X110-3N" H 9200 2700 50  0001 L BNN
+F 3 "" H 9200 2700 50  0001 L BNN
+F 4 "LM50CIM3/NOPBCT-ND" H 9200 2700 50  0001 L BNN "Field4"
+F 5 "Texas Instruments" H 9200 2700 50  0001 L BNN "Field5"
+F 6 "https://www.digikey.com/product-detail/en/texas-instruments/LM50CIM3-NOPB/LM50CIM3-NOPBCT-ND/120169?utm_source=snapeda&utm_medium=aggregator&utm_campaign=symbol" H 9200 2700 50  0001 L BNN "Field6"
+F 7 "LM50CIM3/NOPB" H 9200 2700 50  0001 L BNN "Field7"
+F 8 "SOT-23 Texas Instruments" H 9200 2700 50  0001 L BNN "Field8"
+	1    9200 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY?
+U 1 1 5EC68479
+P 8500 2500
+F 0 "#SUPPLY?" H 8550 2500 45  0001 L BNN
+F 1 "3.3V" H 8500 2776 45  0000 C CNN
+F 2 "XXX-00000" H 8500 2681 60  0000 C CNN
+F 3 "" H 8500 2500 60  0001 C CNN
+	1    8500 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EC68E1B
+P 8500 3150
+F 0 "#GND?" H 8550 3100 45  0001 L BNN
+F 1 "GND" H 8500 2980 45  0000 C CNN
+F 2 "" H 8500 3050 60  0001 C CNN
+F 3 "" H 8500 3050 60  0001 C CNN
+	1    8500 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8500 2700 8500 2500
+Wire Wire Line
+	8500 2900 8500 3150
+Wire Wire Line
+	9900 2700 10300 2700
+Text Label 10300 2700 2    50   ~ 0
+TEMP_PIN
+$Comp
+L Switch:SW_Push SW?
+U 1 1 5EC4F01D
+P 6400 1650
+F 0 "SW?" H 6400 1935 50  0000 C CNN
+F 1 "SW_Push" H 6400 1844 50  0000 C CNN
+F 2 "" H 6400 1850 50  0001 C CNN
+F 3 "~" H 6400 1850 50  0001 C CNN
+	1    6400 1650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4800 2050 4250 2050
+Text Label 4250 2050 0    50   ~ 0
+TEMP_PIN
+Wire Wire Line
+	6600 1650 7100 1650
+Wire Wire Line
+	6000 1850 6850 1850
+Wire Wire Line
+	6000 1750 6850 1750
+Wire Wire Line
+	6000 1950 6850 1950
+Text Label 6850 1750 2    50   ~ 0
+PRG_TX
+Text Label 6850 1950 2    50   ~ 0
+PRG_RX
+Text Label 6850 1850 2    50   ~ 0
+HB_PIN
+Wire Wire Line
+	6000 2050 6850 2050
+Text Label 6850 2050 2    50   ~ 0
+BATT_PIN
+Wire Wire Line
+	4800 2450 4050 2450
+Wire Wire Line
+	4800 2550 4050 2550
+Text Label 4050 2450 0    50   ~ 0
+SCL
+Text Label 4050 2550 0    50   ~ 0
+SDA
+$Comp
+L Device:R_US R?
+U 1 1 5EC79D57
+P 1600 2950
+F 0 "R?" H 1668 2996 50  0000 L CNN
+F 1 "R_US" H 1668 2905 50  0000 L CNN
+F 2 "" V 1640 2940 50  0001 C CNN
+F 3 "~" H 1600 2950 50  0001 C CNN
+	1    1600 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5EC7ACBE
+P 2200 2950
+F 0 "R?" H 2268 2996 50  0000 L CNN
+F 1 "R_US" H 2268 2905 50  0000 L CNN
+F 2 "" V 2240 2940 50  0001 C CNN
+F 3 "~" H 2200 2950 50  0001 C CNN
+	1    2200 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY?
+U 1 1 5EC7BEB9
+P 1600 2600
+F 0 "#SUPPLY?" H 1650 2600 45  0001 L BNN
+F 1 "3.3V" H 1600 2876 45  0000 C CNN
+F 2 "XXX-00000" H 1600 2781 60  0000 C CNN
+F 3 "" H 1600 2600 60  0001 C CNN
+	1    1600 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1600 2600 1600 2750
+Wire Wire Line
+	1600 2750 2200 2750
+Wire Wire Line
+	2200 2750 2200 2800
+Connection ~ 1600 2750
+Wire Wire Line
+	1600 2750 1600 2800
+Wire Wire Line
+	1600 3100 1150 3100
+Wire Wire Line
+	2200 3100 2200 3250
+Wire Wire Line
+	2200 3250 1150 3250
+Text Label 1150 3100 0    50   ~ 0
+SCL
+Text Label 1150 3250 0    50   ~ 0
+SDA
+$Comp
+L Connector_Generic:Conn_01x03 J?
+U 1 1 5EC846D3
+P 5800 3950
+F 0 "J?" H 5880 3992 50  0000 L CNN
+F 1 "Conn_01x03" H 5880 3901 50  0000 L CNN
+F 2 "" H 5800 3950 50  0001 C CNN
+F 3 "~" H 5800 3950 50  0001 C CNN
+	1    5800 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x04 J?
+U 1 1 5EC85496
+P 5800 4850
+F 0 "J?" H 5880 4842 50  0000 L CNN
+F 1 "Conn_01x04" H 5880 4751 50  0000 L CNN
+F 2 "" H 5800 4850 50  0001 C CNN
+F 3 "~" H 5800 4850 50  0001 C CNN
+	1    5800 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5600 3850 4900 3850
+Wire Wire Line
+	5600 4050 4900 4050
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EC8A2EB
+P 5450 4150
+F 0 "#GND?" H 5500 4100 45  0001 L BNN
+F 1 "GND" H 5450 3980 45  0000 C CNN
+F 2 "" H 5450 4050 60  0001 C CNN
+F 3 "" H 5450 4050 60  0001 C CNN
+	1    5450 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5600 3950 5450 3950
+Wire Wire Line
+	5450 3950 5450 4150
+Text Label 4900 3850 0    50   ~ 0
+PRG_TX
+Text Label 4900 4050 0    50   ~ 0
+PRG_RX
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY?
+U 1 1 5EC8C9A2
+P 5450 4750
+F 0 "#SUPPLY?" H 5500 4750 45  0001 L BNN
+F 1 "3.3V" H 5450 5026 45  0000 C CNN
+F 2 "XXX-00000" H 5450 4931 60  0000 C CNN
+F 3 "" H 5450 4750 60  0001 C CNN
+	1    5450 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EC8D0C1
+P 5450 5150
+F 0 "#GND?" H 5500 5100 45  0001 L BNN
+F 1 "GND" H 5450 4980 45  0000 C CNN
+F 2 "" H 5450 5050 60  0001 C CNN
+F 3 "" H 5450 5050 60  0001 C CNN
+	1    5450 5150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5450 4750 5600 4750
+Wire Wire Line
+	5600 4850 5450 4850
+Wire Wire Line
+	5450 4850 5450 5150
+Wire Wire Line
+	5600 4950 5000 4950
+Wire Wire Line
+	5000 5050 5600 5050
+Text Label 5000 4950 0    50   ~ 0
+SCL
+Text Label 5000 5050 0    50   ~ 0
+SDA
+Wire Wire Line
+	6000 2150 6850 2150
+Wire Wire Line
+	6000 2250 6850 2250
+Wire Wire Line
+	6000 2350 6850 2350
+Wire Wire Line
+	6000 2450 6850 2450
+Wire Wire Line
+	6000 2550 6850 2550
+Text Label 6850 2150 2    50   ~ 0
+UP_BTN
+$EndSCHEMATC
