@@ -10,14 +10,16 @@
 #define WAKE_TIME_S           (10)
 #define WAKE_TIME_MS          (WAKE_TIME_S*1000)
 
-#define UP_BTN_PIN      0
-#define DOWN_BTN_PIN    1
-#define LEFT_BTN_PIN    2
-#define RIGHT_BTN_PIN   3
-#define CENTER_BTN_PIN  4
-//These control the center button reset latch
-#define SLEEP_PIN       5
-#define WAKE_PIN        6
+#define CHARGE_SATUS_PIN    1
+#define HB_LED_PIN          2
+#define CHARGER_STATUS_PIN  3
+#define BATT_LED_PIN        4
+#define UP_BTN_PIN          5
+#define SCL_PIN             9
+#define SDA_PIN             10
+#define DOWN_BTN_PIN        12
+#define CENTER_BTN_PIN      13
+#define BATTERY_STATUS_PIN  14
 
 #define TEMP_SENSE_PIN  A0
 
