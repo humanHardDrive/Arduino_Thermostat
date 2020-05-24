@@ -58,6 +58,8 @@ void goToSleep()
   //Setup the reset latch
   digitalWrite(HB_LED_PIN, LOW); //Off
   digitalWrite(SLEEP_PIN, HIGH); //Before on
+  //Turn off the battery status LED
+  digitalWrite(BATT_LED_PIN, LOW);
   //Turn off WiFi
   WiFi.mode(WIFI_OFF);
   //Deep sleep
@@ -71,16 +73,52 @@ void goToSleep()
 }
 
 unsigned long ulLastHBUpdate = 0;
+unsigned long ulLastBattUpdate = 0;
 void updateStatusLED()
 {
-  if ((millis() - ulLastHBUpdate) > 1000)
+  //Charger is on
+  if (digitalRead(CHARGER_STATUS_PIN))
   {
-    if (digitalRead(HB_LED_PIN))
-      digitalWrite(HB_LED_PIN, LOW);
-    else
-      digitalWrite(HB_LED_PIN, HIGH);
-
+    //HB led is always active
+    digitalWrite(HB_LED_PIN, HIGH);
     ulLastHBUpdate = millis();
+
+    //Toggle the battery indication LED until charged
+    //Battery is charging
+    if (!digitalRead(CHARGE_STATUS_PIN))
+    {
+      //Toggle the battery status LED every 0.5 second while charging
+      if ((millis() - ulLastBattUpdate) > 500)
+      {
+        if (digitalRead(BATT_LED_PIN))
+          digitalWrite(BATT_LED_PIN, LOW);
+        else
+          digitalWrite(BATT_LED_PIN, HIGH);
+
+        ulLastBattUpdate = millis();
+      }
+    }
+    else //Charged
+    {
+      digitalWrite(BATT_LED_PIN, HIGH);
+      ulLastBattUpdate = millis();
+    }
+  }
+  else
+  {
+    //Toggle the heartbeat LED every 1 second
+    if ((millis() - ulLastHBUpdate) > 1000)
+    {
+      if (digitalRead(HB_LED_PIN))
+        digitalWrite(HB_LED_PIN, LOW);
+      else
+        digitalWrite(HB_LED_PIN, HIGH);
+
+      ulLastHBUpdate = millis();
+    }
+
+    //Update the battery indicator LED to show low voltage
+    digitalWrite(BATT_LED_PIN, !digitalRead(BATTERY_STATUS_PIN));
   }
 }
 
