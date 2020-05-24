@@ -122,11 +122,69 @@ void updateStatusLED()
   }
 }
 
+bool bUpBtnState = false, bDownBtnState = false, bCenterBtnState = false;
+unsigned long ulUpBtnTimer = 0, ulDownBtnTimer = 0, ulCenterBtnTimer = 0;
+void onUpBtnStateChanged()
+{
+  ulWakeTimeStart = millis();
+}
+
+void onDownBtnStateChanged()
+{
+  ulWakeTimeStart = millis();
+}
+
+void onCenterBtnStateChanged()
+{
+  ulWakeTimeStart = millis();
+}
+
+void updateButtonStates()
+{
+  bool bCurUpBtnState = !digitalRead(UP_BTN_PIN);
+  bool bCurDownBtnState = !digitalRead(DOWN_BTN_PIN);
+  bool bCurCenterBtnState = !digitalRead(CENTER_BTN_PIN);
+
+  if (bCurUpBtnState != bUpBtnState)
+  {
+    if ((millis() - ulUpBtnTimer) > DEBOUNCE_TIME)
+    {
+      bUpBtnState = bCurUpBtnState;
+      onUpBtnStateChanged();
+    }
+  }
+  else
+    ulUpBtnTimer = millis();
+
+  if (bCurDownBtnState != bDownBtnState)
+  {
+    if ((millis() - ulDownBtnTimer) > DEBOUNCE_TIME)
+    {
+      bDownBtnState = bCurDownBtnState;
+      onDownBtnStateChanged();
+    }
+  }
+  else
+    ulDownBtnTimer = millis();
+
+  if (bCurCenterBtnState != bCenterBtnState)
+  {
+    if ((millis() - ulCenterBtnTimer) > DEBOUNCE_TIME)
+    {
+      bCenterBtnState = bCurCenterBtnState;
+      onCenterBtnStateChanged();
+    }
+  }
+  else
+    ulCenterBtnTimer = millis();
+}
+
 void loop()
 {
   sensor.update();
 
   updateStatusLED();
+  updateButtonStates();
 
   if ((millis() - ulWakeTimeStart) > WAKE_TIME_MS)
     goToSleep();
