@@ -21,30 +21,30 @@
       )
     )
     (boundary
-      (path pcb 0  196236 -90019  196668 -90076  197094 -90170.4  197510 -90301.5
-            197913 -90468.5  198300 -90669.9  198668 -90904.2  199014 -91169.8
-            199336 -91464.5  199630 -91786.1  199896 -92132.1  200130 -92500
-            200332 -92886.9  200498 -93289.9  200630 -93705.9  200724 -94131.8
-            200781 -94564.2  200800 -95000  200800 -135800  200781 -136236
-            200724 -136668  200630 -137094  200498 -137510  200332 -137913
-            200130 -138300  199896 -138668  199630 -139014  199336 -139336
-            199014 -139630  198668 -139896  198300 -140130  197913 -140332
-            197510 -140498  197094 -140630  196668 -140724  196236 -140781
-            195800 -140800  155000 -140800  154564 -140781  154132 -140724
-            153706 -140630  153290 -140498  152887 -140332  152500 -140130
-            152132 -139896  151786 -139630  151464 -139336  151170 -139014
-            150904 -138668  150670 -138300  150468 -137913  150302 -137510
-            150170 -137094  150076 -136668  150019 -136236  150000 -135800
-            150000 -95000  150019 -94564.2  150076 -94131.8  150170 -93705.9
-            150302 -93289.9  150468 -92886.9  150670 -92500  150904 -92132.1
-            151170 -91786.1  151464 -91464.5  151786 -91169.8  152132 -90904.2
-            152500 -90669.9  152887 -90468.5  153290 -90301.5  153706 -90170.4
-            154132 -90076  154564 -90019  155000 -90000  195800 -90000  196236 -90019)
+      (path pcb 0  160536 -64319  160968 -64376  161394 -64470.4  161810 -64601.5
+            162213 -64768.5  162600 -64969.9  162968 -65204.2  163314 -65469.8
+            163636 -65764.5  163930 -66086.1  164196 -66432.1  164430 -66800
+            164632 -67186.9  164798 -67589.9  164930 -68005.9  165024 -68431.8
+            165081 -68864.2  165100 -69300  165100 -110100  165081 -110536
+            165024 -110968  164930 -111394  164798 -111810  164632 -112213
+            164430 -112600  164196 -112968  163930 -113314  163636 -113636
+            163314 -113930  162968 -114196  162600 -114430  162213 -114632
+            161810 -114798  161394 -114930  160968 -115024  160536 -115081
+            160100 -115100  119300 -115100  118864 -115081  118432 -115024
+            118006 -114930  117590 -114798  117187 -114632  116800 -114430
+            116432 -114196  116086 -113930  115764 -113636  115470 -113314
+            115204 -112968  114970 -112600  114768 -112213  114602 -111810
+            114470 -111394  114376 -110968  114319 -110536  114300 -110100
+            114300 -69300  114319 -68864.2  114376 -68431.8  114470 -68005.9
+            114602 -67589.9  114768 -67186.9  114970 -66800  115204 -66432.1
+            115470 -66086.1  115764 -65764.5  116086 -65469.8  116432 -65204.2
+            116800 -64969.9  117187 -64768.5  117590 -64601.5  118006 -64470.4
+            118432 -64376  118864 -64319  119300 -64300  160100 -64300  160536 -64319)
     )
-    (keepout "" (polygon F.Cu 0  172700 -130200  188900 -130200  188900 -122500  172700 -122500
-            172700 -130200))
-    (keepout "" (polygon B.Cu 0  172700 -130200  188900 -130200  188900 -122500  172700 -122500
-            172700 -130200))
+    (keepout "" (polygon F.Cu 0  137000 -104500  153200 -104500  153200 -96800  137000 -96800
+            137000 -104500))
+    (keepout "" (polygon B.Cu 0  137000 -104500  153200 -104500  153200 -96800  137000 -96800
+            137000 -104500))
     (via "Via[0-1]_800:400_um")
     (rule
       (width 250)
@@ -55,83 +55,83 @@
   )
   (placement
     (component "LM50CIM3:SOT95P260X110-3N"
-      (place U3 176000 -137400 front 180 (PN LM50CIM3))
+      (place U3 140300 -111700 front 180 (PN LM50CIM3))
     )
     (component Switches:NAV_SWITCH
-      (place S1 198100 -115400 front 270 (PN NAV_SWITCH))
+      (place S1 162400 -89700 front 270 (PN NAV_SWITCH))
     )
     (component "Connector_USB:USB_Micro-B_Molex_47346-0001"
-      (place J3 175400 -93900 front 180 (PN USB_B_Micro))
+      (place J3 139700 -68200 front 180 (PN USB_B_Micro))
     )
     (component MountingHole:MountingHole_2.7mm_M2.5_DIN965_Pad
-      (place H4 195800 -95000 front 0 (PN MountingHole_Pad))
-      (place H3 195800 -135800 front 0 (PN MountingHole_Pad))
-      (place H2 155000 -135800 front 0 (PN MountingHole_Pad))
-      (place H1 155000 -95000 front 0 (PN MountingHole_Pad))
+      (place H4 160100 -69300 front 0 (PN MountingHole_Pad))
+      (place H3 160100 -110100 front 0 (PN MountingHole_Pad))
+      (place H2 119300 -110100 front 0 (PN MountingHole_Pad))
+      (place H1 119300 -69300 front 0 (PN MountingHole_Pad))
     )
     (component "Package_TO_SOT_SMD:SOT-23-5"
-      (place U7 164300 -117800 back 0 (PN BD48ExxG))
-      (place U6 164300 -127700 back 0 (PN BD48ExxG))
-      (place U4 183700 -92900 front 270 (PN "MCP73831-2-OT"))
+      (place U7 128600 -92100 back 0 (PN BD48ExxG))
+      (place U6 128600 -102000 back 0 (PN BD48ExxG))
+      (place U4 148000 -67200 front 270 (PN "MCP73831-2-OT"))
     )
     (component "Package_TO_SOT_SMD:TSOT-23-5"
-      (place U5 184000 -101800 front 0 (PN LM3670MF))
+      (place U5 148300 -76100 front 0 (PN LM3670MF))
     )
     (component "Package_SO:VSSOP-8_2.3x2mm_P0.5mm"
-      (place U2 180900 -116300 back 0 (PN 74LVC2G02))
+      (place U2 145200 -90600 back 0 (PN 74LVC2G02))
     )
     (component "RF_Module:ESP-12E"
-      (place U1 180800 -118000 front 180 (PN "ESP-12F"))
+      (place U1 145100 -92300 front 180 (PN "ESP-12F"))
     )
     (component Switches:SWITCH_DPDT_SMD_AYZ0202
-      (place SW3 163200 -107300 front 90 (PN SW_DPDT_x2))
+      (place SW3 127500 -81600 front 90 (PN SW_DPDT_x2))
     )
     (component Button_Switch_SMD:SW_SPST_TL3342
-      (place SW2 164300 -127700 front 0 (PN BTN_LOAD))
-      (place SW1 164300 -117800 front 0 (PN BTN_RST))
+      (place SW2 128600 -102000 front 0 (PN BTN_LOAD))
+      (place SW1 128600 -92100 front 0 (PN BTN_RST))
     )
     (component Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder
-      (place R16 188100 -92900 front 90 (PN 10k))
-      (place R15 167400 -117900 back 270 (PN 10k))
-      (place R14 167500 -127800 back 270 (PN 10k))
-      (place R13 177500 -114900 front 90 (PN 10k))
-      (place R12 183700 -96000 front 180 (PN 2k))
-      (place R11 158300 -108900 front 270 (PN 1k))
-      (place R10 168300 -108900 front 270 (PN 1k))
-      (place R9 166700 -136300 front 0 (PN 220))
-      (place R8 186700 -136300 front 0 (PN 220))
-      (place R7 191500 -108500 front 270 (PN 10k))
-      (place R6 179800 -107200 back 270 (PN 4.7k))
-      (place R5 181800 -107200 back 270 (PN 4.7k))
-      (place R4 184400 -114900 back 270 (PN 10k))
-      (place R3 174800 -111500 back 180 (PN 10k))
-      (place R2 174800 -109500 back 180 (PN 10k))
-      (place R1 184400 -119200 back 270 (PN 10k))
-      (place L1 187300 -101800 front 270 (PN 2.2u))
-      (place C6 188900 -96800 front 0 (PN 0.1u))
-      (place C5 191300 -101800 front 90 (PN 1u))
-      (place C4 189300 -101800 front 90 (PN 10u))
-      (place C3 177100 -100800 front 270 (PN 4.7u))
-      (place C2 175200 -100800 front 270 (PN 0.1u))
-      (place C1 173200 -100800 front 270 (PN 1u))
+      (place R16 152400 -67200 front 90 (PN 10k))
+      (place R15 131700 -92200 back 270 (PN 10k))
+      (place R14 131800 -102100 back 270 (PN 10k))
+      (place R13 141800 -89200 back 90 (PN 10k))
+      (place R12 148000 -70300 front 180 (PN 2k))
+      (place R11 122600 -83200 front 270 (PN 1k))
+      (place R10 132600 -83200 front 270 (PN 1k))
+      (place R9 131000 -110600 front 0 (PN 220))
+      (place R8 151000 -110600 front 0 (PN 220))
+      (place R7 155800 -82800 front 270 (PN 10k))
+      (place R6 144100 -81500 back 270 (PN 4.7k))
+      (place R5 146100 -81500 back 270 (PN 4.7k))
+      (place R4 148700 -89200 back 270 (PN 10k))
+      (place R3 139100 -85800 back 180 (PN 10k))
+      (place R2 139100 -83800 back 180 (PN 10k))
+      (place R1 148700 -93500 back 270 (PN 10k))
+      (place L1 151600 -76100 front 270 (PN 2.2u))
+      (place C6 153200 -71100 front 0 (PN 0.1u))
+      (place C5 155600 -76100 front 90 (PN 1u))
+      (place C4 153600 -76100 front 90 (PN 10u))
+      (place C3 141400 -75100 front 270 (PN 4.7u))
+      (place C2 139500 -75100 front 270 (PN 0.1u))
+      (place C1 137500 -75100 front 270 (PN 1u))
     )
     (component "digikey-footprints:SOT-23-3"
-      (place Q3 157700 -119400 back 0 (PN 2N7002))
-      (place Q2 176000 -137300 back 180 (PN 2N7002))
-      (place Q1 194300 -115300 back 0 (PN 2N7002))
+      (place Q3 122000 -93700 back 0 (PN 2N7002))
+      (place Q2 140300 -111600 back 180 (PN 2N7002))
+      (place Q1 158600 -89600 back 0 (PN 2N7002))
     )
     (component "Connector_JST:JST_PH_S2B-PH-SM4-TB_1x02-1MP_P2.00mm_Horizontal"
-      (place J4 163700 -94600 back 90 (PN BATT_CONN))
+      (place J4 128000 -68900 back 90 (PN BATT_CONN))
     )
     (component Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical
-      (place J2 153500 -115700 front 0 (PN LCD_HEADER))
+      (place J2 117800 -90000 front 0 (PN LCD_HEADER))
     )
     (component Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical
-      (place J1 153600 -103560 front 0 (PN PRG_HEADER))
+      (place J1 117900 -77860 front 0 (PN PRG_HEADER))
     )
     (component LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder
-      (place D2 166700 -138600 front 0 (PN BATT_LED))
-      (place D1 186700 -138600 front 0 (PN HB_LED))
+      (place D2 131000 -112900 front 0 (PN BATT_LED))
+      (place D1 151000 -112900 front 0 (PN HB_LED))
     )
   )
   (library
@@ -763,10 +763,8 @@
     (class kicad_default "" /BATT_PIN /BATT_STS /CENTER_PIN /CHARGER_STS /CHARGE_STS
       /DOWN_PIN /HB_PIN /PRG_RX /PRG_TX /RADIO_RX /RADIO_TX /RST /SCL /SDA
       /SLEEP_PIN /SLEEP_STS /TEMP_PIN /UP_PIN /WAKE_STS 3.3V GND "Net-(D1-Pad2)"
-      "Net-(D2-Pad2)" "Net-(J1-Pad1)" "Net-(J1-Pad3)" "Net-(J2-Pad2)" "Net-(J3-Pad2)"
-      "Net-(J3-Pad3)" "Net-(J3-Pad4)" "Net-(J3-Pad6)" "Net-(J4-Pad1)" "Net-(J4-Pad2)"
-      "Net-(L1-Pad1)" "Net-(Q2-Pad3)" "Net-(R12-Pad1)" "Net-(R7-Pad2)" "Net-(SW2-Pad1)"
-      "Net-(U1-Pad10)" "Net-(U1-Pad13)" "Net-(U1-Pad14)" "Net-(U1-Pad9)" V_BATT
+      "Net-(D2-Pad2)" "Net-(J1-Pad1)" "Net-(J1-Pad3)" "Net-(J2-Pad2)" "Net-(L1-Pad1)"
+      "Net-(Q2-Pad3)" "Net-(R12-Pad1)" "Net-(R7-Pad2)" "Net-(SW2-Pad1)" V_BATT
       V_USB
       (circuit
         (use_via Via[0-1]_800:400_um)
