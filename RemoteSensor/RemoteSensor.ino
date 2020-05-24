@@ -26,6 +26,8 @@
 
 #define TEMP_SENSE_PIN  A0
 
+WiFiClient wifiClient;
+PubSubClient mqttClient(wifiClient);
 SensorDevice sensor(TEMP_SENSE_PIN, 100);
 
 uint32_t ulSleepTime = DEFAULT_SLEEP_TIME_US;
@@ -182,6 +184,7 @@ void updateButtonStates()
 void loop()
 {
   sensor.update();
+  mqttClient.loop();
 
   updateStatusLED();
   updateButtonStates();
