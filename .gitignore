@@ -12,3 +12,6 @@ BaseStation/.vs/BaseStation/v14/.atsuo
 fp-info-cache
 *.bak
 *.kicad_pcb-bak
+*.drl
+*.gbr
+*.zip
