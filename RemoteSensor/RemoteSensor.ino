@@ -26,9 +26,55 @@
 
 #define TEMP_SENSE_PIN  A0
 
+struct SaveInfo
+{
+  public:
+    char sNetworkName[16];
+    char sNetworkPass[16];
+
+    char sServerURL[16];
+    char sServerUser[16];
+    char sServerPass[16];
+  
+    void makeChecksum()
+    {
+      //Set the current checksum to 0 to not interfere with the calculation
+      this->nChecksum = 0;
+      this->nChecksum = calcChecksum();
+    }
+  
+    bool isValid()
+    {
+      uint16_t cChecksum;
+      uint16_t nChecksum = this->nChecksum;
+      //Set the current checksum to 0 before validating
+      this->nChecksum = 0;
+      cChecksum = calcChecksum();
+      this->nChecksum = nChecksum;
+      return (cChecksum == nChecksum);
+    }
+
+  private:
+    uint16_t nChecksum;
+
+    uint16_t calcChecksum()
+    {
+      uint16_t checksum = 0;
+      for (size_t i = 0; i < sizeof(SaveInfo); i++)
+        checksum += ((uint8_t*)this)[i];
+
+      //Calculate the 2's complement so that an emtpy structure isn't valid
+      return ((~checksum) + 1);
+    }
+};
+
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 SensorDevice sensor(TEMP_SENSE_PIN, 100);
+
+//SavedInfo is what is currently in storage
+//WorkingInfo is what is modified during runtime
+SaveInfo savedInfo, workingInfo;
 
 uint32_t ulSleepTime = DEFAULT_SLEEP_TIME_US;
 uint32_t ulWakeTimeStart = 0;
