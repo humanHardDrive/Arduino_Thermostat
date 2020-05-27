@@ -1,0 +1,303 @@
+EESchema Schematic File Version 4
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 4 4
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Relay_SolidState:MOC3031M U?
+U 1 1 5ECE6542
+P 4100 3600
+F 0 "U?" H 4100 3925 50  0000 C CNN
+F 1 "MOC3031M" H 4100 3834 50  0000 C CNN
+F 2 "" H 3900 3400 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/MO/MOC3031M.pdf" H 4065 3600 50  0001 L CNN
+	1    4100 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Relay_SolidState:MOC3031M U?
+U 1 1 5ECE8EEF
+P 5550 3600
+F 0 "U?" H 5550 3925 50  0000 C CNN
+F 1 "MOC3031M" H 5550 3834 50  0000 C CNN
+F 2 "" H 5350 3400 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/MO/MOC3031M.pdf" H 5515 3600 50  0001 L CNN
+	1    5550 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Relay_SolidState:MOC3031M U?
+U 1 1 5ECEA42E
+P 7000 3600
+F 0 "U?" H 7000 3925 50  0000 C CNN
+F 1 "MOC3031M" H 7000 3834 50  0000 C CNN
+F 2 "" H 6800 3400 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/MO/MOC3031M.pdf" H 6965 3600 50  0001 L CNN
+	1    7000 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5ECEC467
+P 6700 3950
+F 0 "#PWR?" H 6700 3700 50  0001 C CNN
+F 1 "GND" H 6705 3777 50  0000 C CNN
+F 2 "" H 6700 3950 50  0001 C CNN
+F 3 "" H 6700 3950 50  0001 C CNN
+	1    6700 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5ECEC981
+P 5250 3950
+F 0 "#PWR?" H 5250 3700 50  0001 C CNN
+F 1 "GND" H 5255 3777 50  0000 C CNN
+F 2 "" H 5250 3950 50  0001 C CNN
+F 3 "" H 5250 3950 50  0001 C CNN
+	1    5250 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5ECED5A5
+P 3800 3950
+F 0 "#PWR?" H 3800 3700 50  0001 C CNN
+F 1 "GND" H 3805 3777 50  0000 C CNN
+F 2 "" H 3800 3950 50  0001 C CNN
+F 3 "" H 3800 3950 50  0001 C CNN
+	1    3800 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3800 3950 3800 3700
+Wire Wire Line
+	5250 3950 5250 3700
+Wire Wire Line
+	6700 3700 6700 3950
+$Comp
+L Device:R_US R?
+U 1 1 5ECEE2FA
+P 3800 3100
+F 0 "R?" H 3868 3146 50  0000 L CNN
+F 1 "R_US" H 3868 3055 50  0000 L CNN
+F 2 "" V 3840 3090 50  0001 C CNN
+F 3 "~" H 3800 3100 50  0001 C CNN
+	1    3800 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5ECEEB4E
+P 5250 3100
+F 0 "R?" H 5318 3146 50  0000 L CNN
+F 1 "R_US" H 5318 3055 50  0000 L CNN
+F 2 "" V 5290 3090 50  0001 C CNN
+F 3 "~" H 5250 3100 50  0001 C CNN
+	1    5250 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5ECEF93E
+P 6700 3100
+F 0 "R?" H 6768 3146 50  0000 L CNN
+F 1 "R_US" H 6768 3055 50  0000 L CNN
+F 2 "" V 6740 3090 50  0001 C CNN
+F 3 "~" H 6700 3100 50  0001 C CNN
+	1    6700 3100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3800 3250 3800 3500
+Wire Wire Line
+	5250 3250 5250 3500
+Wire Wire Line
+	6700 3250 6700 3500
+Text GLabel 4400 3700 2    50   Output ~ 0
+HVAC_COMMON
+Text GLabel 4400 3500 2    50   Input ~ 0
+HEAT_HOT
+Text GLabel 5850 3700 2    50   Output ~ 0
+HVAC_COMMON
+Text GLabel 5850 3500 2    50   Input ~ 0
+HEAT_HOT
+Text GLabel 7300 3700 2    50   Output ~ 0
+HVAC_COMMON
+Text GLabel 7300 3500 2    50   Input ~ 0
+HEAT_HOT
+$Comp
+L dk_Interface-I-O-Expanders:MCP23008-E_P U?
+U 1 1 5ED009DD
+P 9700 2150
+F 0 "U?" H 9600 3053 60  0000 C CNN
+F 1 "MCP23008-E_P" H 9600 2947 60  0000 C CNN
+F 2 "digikey-footprints:SOIC-18_W7.5mm" H 9900 2350 60  0001 L CNN
+F 3 "http://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en021920" H 9900 2450 60  0001 L CNN
+F 4 "MCP23008-E/P-ND" H 9900 2550 60  0001 L CNN "Digi-Key_PN"
+F 5 "MCP23008-E/P" H 9900 2650 60  0001 L CNN "MPN"
+F 6 "Integrated Circuits (ICs)" H 9900 2750 60  0001 L CNN "Category"
+F 7 "Interface - I/O Expanders" H 9900 2850 60  0001 L CNN "Family"
+F 8 "http://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en021920" H 9900 2950 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/microchip-technology/MCP23008-E-P/MCP23008-E-P-ND/735951" H 9900 3050 60  0001 L CNN "DK_Detail_Page"
+F 10 "IC I/O EXPANDER I2C 8B 18DIP" H 9900 3150 60  0001 L CNN "Description"
+F 11 "Microchip Technology" H 9900 3250 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 9900 3350 60  0001 L CNN "Status"
+	1    9700 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5ED01098
+P 9600 1100
+F 0 "#PWR?" H 9600 950 50  0001 C CNN
+F 1 "+3.3V" H 9615 1273 50  0000 C CNN
+F 2 "" H 9600 1100 50  0001 C CNN
+F 3 "" H 9600 1100 50  0001 C CNN
+	1    9600 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5ED01763
+P 9700 3300
+F 0 "#PWR?" H 9700 3050 50  0001 C CNN
+F 1 "GND" H 9705 3127 50  0000 C CNN
+F 2 "" H 9700 3300 50  0001 C CNN
+F 3 "" H 9700 3300 50  0001 C CNN
+	1    9700 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9700 3150 9700 3200
+Wire Wire Line
+	9600 1450 9600 1100
+Wire Wire Line
+	9200 2650 9100 2650
+Wire Wire Line
+	9100 2650 9100 2750
+Wire Wire Line
+	9100 2750 9200 2750
+Wire Wire Line
+	9100 2750 9100 2850
+Wire Wire Line
+	9100 2850 9200 2850
+Connection ~ 9100 2750
+Wire Wire Line
+	9200 2950 8550 2950
+Wire Wire Line
+	9100 2850 9100 3200
+Wire Wire Line
+	9100 3200 9700 3200
+Connection ~ 9100 2850
+Connection ~ 9700 3200
+Wire Wire Line
+	9700 3200 9700 3300
+Text GLabel 8800 2450 0    50   Input ~ 0
+SCL
+Text GLabel 8800 2550 0    50   BiDi ~ 0
+SDA
+Wire Wire Line
+	8800 2450 9200 2450
+Wire Wire Line
+	8800 2550 9200 2550
+$Comp
+L SparkFun-Switches:JOYSTICK_MINI S?
+U 1 1 5ED07BB8
+P 2550 1450
+F 0 "S?" H 2550 1910 45  0000 C CNN
+F 1 "JOYSTICK_MINI" H 2550 1826 45  0000 C CNN
+F 2 "JOYSTICK_MINI" H 2550 1750 20  0001 C CNN
+F 3 "" H 2550 1450 50  0001 C CNN
+F 4 "SWCH-09905" H 2550 1731 60  0000 C CNN "Field4"
+	1    2550 1450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 1650 8450 1650
+Wire Wire Line
+	8450 1750 9200 1750
+Wire Wire Line
+	8450 1850 9200 1850
+Wire Wire Line
+	9200 1950 8450 1950
+Wire Wire Line
+	9200 2050 8450 2050
+$Comp
+L power:GND #PWR?
+U 1 1 5ED0A354
+P 2050 1800
+F 0 "#PWR?" H 2050 1550 50  0001 C CNN
+F 1 "GND" H 2055 1627 50  0000 C CNN
+F 2 "" H 2050 1800 50  0001 C CNN
+F 3 "" H 2050 1800 50  0001 C CNN
+	1    2050 1800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 1800 2050 1550
+Wire Wire Line
+	3050 1350 3600 1350
+Wire Wire Line
+	3050 1450 3600 1450
+Wire Wire Line
+	3050 1550 3600 1550
+Wire Wire Line
+	2050 1350 1550 1350
+Wire Wire Line
+	2050 1450 1550 1450
+Text Label 1550 1350 0    50   ~ 0
+UP_BTN
+Text Label 1550 1450 0    50   ~ 0
+DOWN_BTN
+Text Label 3600 1350 2    50   ~ 0
+LEFT_BTN
+Text Label 3600 1450 2    50   ~ 0
+RIGHT_BTN
+Text Label 3600 1550 2    50   ~ 0
+CENTER_BTN
+Wire Wire Line
+	9200 2150 8450 2150
+Wire Wire Line
+	9200 2250 8450 2250
+Wire Wire Line
+	9200 2350 8450 2350
+Text Label 8450 1650 0    50   ~ 0
+UP_BTN
+Text Label 8450 1750 0    50   ~ 0
+DOWN_BTN
+Text Label 8450 1850 0    50   ~ 0
+LEFT_BTN
+Text Label 8450 1950 0    50   ~ 0
+RIGHT_BTN
+Text Label 8450 2050 0    50   ~ 0
+CENTER_BTN
+Text Label 8450 2150 0    50   ~ 0
+HEAT_CTRL
+Text Label 8450 2250 0    50   ~ 0
+COOL_CTRL
+Text Label 8450 2350 0    50   ~ 0
+FAN_CTRL
+Wire Wire Line
+	6700 2950 6700 2450
+Wire Wire Line
+	5250 2950 5250 2450
+Wire Wire Line
+	3800 2950 3800 2450
+Text Label 3800 2450 3    50   ~ 0
+HEAT_CTRL
+Text Label 5250 2450 3    50   ~ 0
+COOL_CTRL
+Text Label 6700 2450 3    50   ~ 0
+FAN_CTRL
+$EndSCHEMATC
