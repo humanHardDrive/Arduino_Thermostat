@@ -1,5 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include <EEPROM.h>
 
 #include "SensorDevice.h"
 
@@ -35,14 +36,14 @@ struct SaveInfo
     char sServerURL[16];
     char sServerUser[16];
     char sServerPass[16];
-  
+
     void makeChecksum()
     {
       //Set the current checksum to 0 to not interfere with the calculation
       this->nChecksum = 0;
       this->nChecksum = calcChecksum();
     }
-  
+
     bool isValid()
     {
       uint16_t cChecksum;
@@ -79,6 +80,21 @@ SaveInfo savedInfo, workingInfo;
 uint32_t ulSleepTime = DEFAULT_SLEEP_TIME_US;
 uint32_t ulWakeTimeStart = 0;
 
+void setupEEPROM()
+{
+  uint32_t eepromSize = 0;
+
+  eepromSize += sizeof(SaveInfo);
+  eepromSize += sensor.size();
+
+  EEPROM.begin(eepromSize);
+}
+
+bool recoverSaveInfo()
+{
+  
+}
+
 void setup()
 {
   pinMode(UP_BTN_PIN, INPUT_PULLUP);
@@ -96,6 +112,8 @@ void setup()
   digitalWrite(HB_LED_PIN, HIGH);
   digitalWrite(BATT_LED_PIN, LOW);
   digitalWrite(SLEEP_PIN, LOW);
+
+  setupEEPROM();
 
   ulWakeTimeStart = millis();
 }
@@ -231,6 +249,10 @@ void loop()
 {
   sensor.update();
   mqttClient.loop();
+
+  //Keep the sensor awake while charging
+  if (digitalRead(CHARGER_STATUS_PIN))
+    ulWakeTimeStart = millis();
 
   updateStatusLED();
   updateButtonStates();
