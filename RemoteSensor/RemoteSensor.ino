@@ -287,6 +287,22 @@ uint8_t WaitForWifiOnStateFn()
   return RUNNING_STATE::WAIT_FOR_WIFI_ON;
 }
 
+uint8_t ConnectToNetworkStateFn()
+{
+  WiFi.begin(workingInfo.sNetworkName, workingInfo.sNetworkPass);
+  ulConnectionTimer = millis();
+  
+  return RUNNING_STATE::WAIT_FOR_NETWORK;
+}
+
+uint8_t WaitForNetworkStateFn()
+{
+  if(WiFi.status() == WL_CONNECTED)
+    return RUNNING_STATE::MQTT_CONNECT;
+  
+  return RUNNING_STATE::WAIT_FOR_NETWORK;
+}
+
 uint8_t MQTTConnectStateFn()
 {
   if (workingInfo.sServerURL[0] && workingInfo.nServerPort)
@@ -352,6 +368,11 @@ uint8_t WaitForMQTTDisconnectStateFn()
   return RUNNING_STATE::TURN_WIFI_OFF;
 }
 
+uint8_t TurnWiFiOffStateFn()
+{
+  return RUNNING_STATE::WAIT_FOR_WIFI_OFF;
+}
+
 uint8_t WaitForWiFiOffStateFn()
 {
   return RUNNING_STATE::WAIT_FOR_WIFI_OFF;
@@ -384,7 +405,21 @@ uint8_t SleepStateFn()
 
 std::map<uint8_t, std::function<uint8_t(void)>> runningStateFnMap =
 {
-  {RUNNING_STATE::SAMPLE, SampleStateFn}
+  {RUNNING_STATE::SAMPLE, SampleStateFn},
+  {RUNNING_STATE::TURN_WIFI_ON, WifiOnStateFn},
+  {RUNNING_STATE::WAIT_FOR_WIFI_ON, WaitForWifiOnStateFn},
+  {RUNNING_STATE::CONNECT_TO_NETWORK, ConnectToNetworkStateFn},
+  {RUNNING_STATE::WAIT_FOR_NETWORK, WaitForNetworkStateFn},
+  {RUNNING_STATE::MQTT_CONNECT, MQTTConnectStateFn},
+  {RUNNING_STATE::WAIT_FOR_MQTT_CONNECT, WaitForMQTTConnectStateFn},
+  {RUNNING_STATE::UPDATE_LOCAL_VARIABLES, UpdateLocalVariablesStateFn},
+  {RUNNING_STATE::POST_VARIABLES, PostVariablesStateFn},
+  {RUNNING_STATE::SLEEP_START, StartSleepStateFn},
+  {RUNNING_STATE::MQTT_DISCONNECT, MQTTDisconnectStateFn},
+  {RUNNING_STATE::WAIT_FOR_MQTT_DISCONNECT, WaitForMQTTDisconnectStateFn},
+  {RUNNING_STATE::TURN_WIFI_OFF, TurnWiFiOffStateFn},
+  {RUNNING_STATE::WAIT_FOR_WIFI_OFF, WaitForWiFiOffStateFn},
+  {RUNNING_STATE::SLEEP, SleepStateFn}
 };
 
 void loop()
