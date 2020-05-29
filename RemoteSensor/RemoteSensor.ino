@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <EEPROM.h>
+#include <map>
 
 #include "SensorDevice.h"
 
@@ -27,6 +28,26 @@
 
 #define TEMP_SENSE_PIN  A0
 
+enum RUNNING_STATE : uint8_t
+{
+  SAMPLE = 0,
+  TURN_WIFI_ON, //WIFI_OFF taken
+  WAIT_FOR_WIFI_ON,
+  CONNECT_TO_NETWORK,
+  WAIT_FOR_NETWORK,
+  MQTT_CONNECT,
+  WAIT_FOR_MQTT_CONNECT,
+  UPDATE_LOCAL_VARIABLES,
+  POST_VARIABLES,
+  SLEEP_START,
+  MQTT_DISCONNECT,
+  WAIT_FOR_MQTT_DISCONNECT,
+  TURN_WIFI_OFF,
+  WAIT_FOR_WIFI_OFF,
+  SLEEP,
+  ALL_STATES
+};
+
 struct SaveInfo
 {
   public:
@@ -34,6 +55,7 @@ struct SaveInfo
     char sNetworkPass[16];
 
     char sServerURL[16];
+    uint16_t nServerPort;
     char sServerUser[16];
     char sServerPass[16];
 
@@ -79,6 +101,9 @@ SaveInfo savedInfo, workingInfo;
 
 uint32_t ulSleepTime = DEFAULT_SLEEP_TIME_US;
 uint32_t ulWakeTimeStart = 0;
+uint32_t ulConnectionTimer = 0;
+
+uint8_t currentRunningState = RUNNING_STATE::SAMPLE;
 
 void setupEEPROM()
 {
@@ -92,7 +117,7 @@ void setupEEPROM()
 
 bool recoverSaveInfo()
 {
-  
+
 }
 
 void setup()
@@ -115,26 +140,6 @@ void setup()
 
   setupEEPROM();
 
-  ulWakeTimeStart = millis();
-}
-
-void goToSleep()
-{
-  //Sleep
-  //Setup the reset latch
-  digitalWrite(HB_LED_PIN, LOW); //Off
-  digitalWrite(SLEEP_PIN, HIGH); //Before on
-  //Turn off the battery status LED
-  digitalWrite(BATT_LED_PIN, LOW);
-  //Turn off WiFi
-  WiFi.mode(WIFI_OFF);
-  //Deep sleep
-  ESP.deepSleep(ulSleepTime, WAKE_RF_DISABLED);
-
-  //Wakeup
-  //Clear the reset latch
-  digitalWrite(SLEEP_PIN, LOW); //Off
-  digitalWrite(HB_LED_PIN, HIGH); //Before on
   ulWakeTimeStart = millis();
 }
 
@@ -245,18 +250,152 @@ void updateButtonStates()
     ulCenterBtnTimer = millis();
 }
 
-void loop()
+uint8_t SampleStateFn()
 {
   sensor.update();
-  mqttClient.loop();
 
-  //Keep the sensor awake while charging
+  if ((millis() - ulWakeTimeStart) > WAKE_TIME_MS)
+    return RUNNING_STATE::TURN_WIFI_ON;
+
+  return RUNNING_STATE::SAMPLE;
+}
+
+uint8_t WifiOnStateFn()
+{
+  //Check if there's a network to connect to
+  if (workingInfo.sNetworkName[0])
+  {
+    WiFi.mode(WIFI_STA);
+    ulConnectionTimer = millis();
+
+    return RUNNING_STATE::WAIT_FOR_WIFI_ON;
+  }
+
+  //Just skip to sleep
+  return RUNNING_STATE::SLEEP_START;
+}
+
+uint8_t WaitForWifiOnStateFn()
+{
+  if (WiFi.getMode() == WIFI_STA)
+    return RUNNING_STATE::CONNECT_TO_NETWORK;
+
+  //If the mode doesn't change, just go to sleep
+  if ((millis() - ulConnectionTimer) > 250)
+    return RUNNING_STATE::SLEEP_START;
+
+  return RUNNING_STATE::WAIT_FOR_WIFI_ON;
+}
+
+uint8_t MQTTConnectStateFn()
+{
+  if (workingInfo.sServerURL[0] && workingInfo.nServerPort)
+  {
+    mqttClient.setServer(workingInfo.sServerURL, workingInfo.nServerPort);
+    mqttClient.setCallback(nullptr);
+    mqttClient.connect("");
+
+    ulConnectionTimer = millis();
+
+    return RUNNING_STATE::WAIT_FOR_MQTT_CONNECT;
+  }
+
+  return RUNNING_STATE::SLEEP_START;
+}
+
+uint8_t WaitForMQTTConnectStateFn()
+{
+  if (mqttClient.connected())
+  {
+    mqttClient.subscribe("");
+    ulConnectionTimer = millis();
+
+    return RUNNING_STATE::UPDATE_LOCAL_VARIABLES;
+  }
+
+  if ((millis() - ulConnectionTimer) > 1000)
+    return RUNNING_STATE::SLEEP_START;
+
+  return RUNNING_STATE::WAIT_FOR_MQTT_CONNECT;
+}
+
+uint8_t UpdateLocalVariablesStateFn()
+{
+  if ((millis() - ulConnectionTimer) > 500)
+    return RUNNING_STATE::POST_VARIABLES;
+
+  return RUNNING_STATE::UPDATE_LOCAL_VARIABLES;
+}
+
+uint8_t PostVariablesStateFn()
+{
+  if (false)
+  {
+    mqttClient.publish("", "");
+  }
+
+  return RUNNING_STATE::SLEEP_START;
+}
+
+uint8_t StartSleepStateFn()
+{
+  return RUNNING_STATE::MQTT_DISCONNECT;
+}
+
+uint8_t MQTTDisconnectStateFn()
+{
+  return RUNNING_STATE::WAIT_FOR_MQTT_DISCONNECT;
+}
+
+uint8_t WaitForMQTTDisconnectStateFn()
+{
+  return RUNNING_STATE::TURN_WIFI_OFF;
+}
+
+uint8_t WaitForWiFiOffStateFn()
+{
+  return RUNNING_STATE::WAIT_FOR_WIFI_OFF;
+}
+
+uint8_t SleepStateFn()
+{
+  ulWakeTimeStart = millis();
+
+  //Skip sleeping if the charger is active
   if (digitalRead(CHARGER_STATUS_PIN))
-    ulWakeTimeStart = millis();
+    return RUNNING_STATE::SAMPLE;
+
+  //Sleep
+  //Setup the reset latch
+  digitalWrite(HB_LED_PIN, LOW); //Off
+  digitalWrite(SLEEP_PIN, HIGH); //Before on
+  //Turn off the battery status LED
+  digitalWrite(BATT_LED_PIN, LOW);
+  //Deep sleep
+  ESP.deepSleep(ulSleepTime, WAKE_RF_DISABLED);
+
+  //Wakeup
+  //Clear the reset latch
+  digitalWrite(SLEEP_PIN, LOW); //Off
+  digitalWrite(HB_LED_PIN, HIGH); //Before on
+
+  return RUNNING_STATE::SAMPLE;
+}
+
+std::map<uint8_t, std::function<uint8_t(void)>> runningStateFnMap =
+{
+  {RUNNING_STATE::SAMPLE, SampleStateFn}
+};
+
+void loop()
+{
+  if (runningStateFnMap.find(currentRunningState) != runningStateFnMap.end())
+    currentRunningState = runningStateFnMap[currentRunningState]();
+  else
+    currentRunningState = RUNNING_STATE::SLEEP_START;
+
+  mqttClient.loop();
 
   updateStatusLED();
   updateButtonStates();
-
-  if ((millis() - ulWakeTimeStart) > WAKE_TIME_MS)
-    goToSleep();
 }
