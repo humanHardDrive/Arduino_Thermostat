@@ -146,7 +146,24 @@ void setupEEPROM()
 
 bool recoverSaveInfo()
 {
+  bool bRetVal = true;
+  EEPROM.get(0, workingInfo);
 
+  if(!workingInfo.isValid())
+  {
+    bRetVal = false;
+    
+    //Put everything back
+    memset(&workingInfo, 0, sizeof(SaveInfo));
+    //Build a device name
+    buildDeviceName(workingInfo.sDeviceName);
+    workingInfo.makeChecksum();
+  }
+
+  //Copy back the working info
+  memcpy(&savedInfo, &workingInfo, sizeof(SaveInfo));
+
+  return bRetVal;
 }
 
 void setup()
@@ -168,6 +185,7 @@ void setup()
   digitalWrite(SLEEP_PIN, LOW);
 
   setupEEPROM();
+  recoverSaveInfo();
 
   ulWakeTimeStart = millis();
 }
