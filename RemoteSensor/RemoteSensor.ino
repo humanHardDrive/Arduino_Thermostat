@@ -157,10 +157,10 @@ bool recoverSaveInfo()
   bool bRetVal = true;
   EEPROM.get(0, workingInfo);
 
-  if(!workingInfo.isValid())
+  if (!workingInfo.isValid())
   {
     bRetVal = false;
-    
+
     //Put everything back
     memset(&workingInfo, 0, sizeof(SaveInfo));
     //Build a device name
@@ -358,13 +358,25 @@ uint8_t WaitForNetworkStateFn()
   return RUNNING_STATE::WAIT_FOR_NETWORK;
 }
 
+void MQTTCallback(char* sTopic, byte* pPayload, unsigned int length)
+{
+  
+}
+
 uint8_t MQTTConnectStateFn()
 {
-  if (workingInfo.sServerURL[0] && workingInfo.nServerPort)
+  //Make sure all relavent info is setup to connect to MQTT server
+  if (workingInfo.sServerURL[0] && workingInfo.nServerPort
+      && workingInfo.sDeviceName
+      && workingInfo.sRemoteDevicePath[0]
+      && workingInfo.sAmbientTempPath[0]
+      && workingInfo.sTargetTempPath[0]
+      && workingInfo.sRequestedModePath[0]
+      && workingInfo.sCurrentModePath[0])
   {
     mqttClient.setServer(workingInfo.sServerURL, workingInfo.nServerPort);
-    mqttClient.setCallback(nullptr);
-    mqttClient.connect("");
+    mqttClient.setCallback(MQTTCallback);
+    mqttClient.connect(workingInfo.sDeviceName);
 
     ulConnectionTimer = millis();
 
