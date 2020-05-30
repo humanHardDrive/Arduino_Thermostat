@@ -120,6 +120,11 @@ uint32_t ulConnectionTimer = 0;
 
 uint8_t currentRunningState = RUNNING_STATE::SAMPLE;
 
+//The remote device name can be overwritten by MQTT notification
+//This flag isn't
+bool bBecomeRemoteDevice = false;
+char sRemoteDeviceName[MAX_DEVICE_NAME_LENGTH];
+
 const char sHexMap[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 void buildDeviceName(char* sName)
@@ -194,6 +199,8 @@ void setup()
 
   setupEEPROM();
   recoverSaveInfo();
+
+  memset(sRemoteDeviceName, 0, MAX_DEVICE_NAME_LENGTH);
 
   ulWakeTimeStart = millis();
 }
@@ -388,9 +395,13 @@ uint8_t MQTTConnectStateFn()
 
 uint8_t WaitForMQTTConnectStateFn()
 {
+  //Should only reach here if subscription info is setup
   if (mqttClient.connected())
   {
-    mqttClient.subscribe("");
+    mqttClient.subscribe(workingInfo.sRemoteDevicePath);
+    mqttClient.subscribe(workingInfo.sTargetTempPath);
+    mqttClient.subscribe(workingInfo.sCurrentModePath);
+    
     ulConnectionTimer = millis();
 
     return RUNNING_STATE::UPDATE_LOCAL_VARIABLES;
@@ -404,6 +415,7 @@ uint8_t WaitForMQTTConnectStateFn()
 
 uint8_t UpdateLocalVariablesStateFn()
 {
+  //Wait time for the callback to be called
   if ((millis() - ulConnectionTimer) > 500)
     return RUNNING_STATE::POST_VARIABLES;
 
@@ -412,9 +424,17 @@ uint8_t UpdateLocalVariablesStateFn()
 
 uint8_t PostVariablesStateFn()
 {
-  if (false)
+  //Check if this device should be posting data
+  if (!strcmp(sRemoteDeviceName, workingInfo.sDeviceName) || bBecomeRemoteDevice)
   {
-    mqttClient.publish("", "");
+    if(bBecomeRemoteDevice)
+      mqttClient.publish(workingInfo.sRemoteDevicePath, workingInfo.sDeviceName);
+
+    mqttClient.publish(workingInfo.sAmbientTempPath, "");
+    mqttClient.publish(workingInfo.sTargetTempPath, "");
+    mqttClient.publish(workingInfo.sRequestedModePath, "");
+
+    bBecomeRemoteDevice = false;
   }
 
   return RUNNING_STATE::SLEEP_START;
