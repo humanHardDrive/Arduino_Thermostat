@@ -14,6 +14,11 @@
 
 #define DEBOUNCE_TIME         15
 
+#define MAX_DEVICE_NAME_LENGTH    32
+#define MAX_PATH_LENGTH           32
+
+#define DEVICE_NAME_BASE          "remoteSensor-"
+
 #define CHARGE_STATUS_PIN     1
 #define HB_LED_PIN            2
 #define CHARGER_STATUS_PIN    3
@@ -51,6 +56,8 @@ enum RUNNING_STATE : uint8_t
 struct SaveInfo
 {
   public:
+    char sDeviceName[MAX_DEVICE_NAME_LENGTH];
+
     char sNetworkName[16];
     char sNetworkPass[16];
 
@@ -104,6 +111,28 @@ uint32_t ulWakeTimeStart = 0;
 uint32_t ulConnectionTimer = 0;
 
 uint8_t currentRunningState = RUNNING_STATE::SAMPLE;
+
+const char sHexMap[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
+void buildDeviceName(char* sName)
+{
+  /*Use the chip ID to build a unique identifier*/
+  /*Makes sense to use the one built in instead of creating a new one*/
+  uint32_t nID = ESP.getChipId();
+  char sID[MAX_DEVICE_NAME_LENGTH];
+  strcpy(sName, DEVICE_NAME_BASE);
+
+  memset(sID, 0, MAX_DEVICE_NAME_LENGTH);
+  /*The chip ID is 3 bytes, so 6 hex characters*/
+  for (uint8_t i = 0; i < 6; i++)
+  {
+    /*Reverse the bit order*/
+    sID[5 - i] = sHexMap[nID & 0x0F];
+    nID >>= 4;
+  }
+
+  strcat(sName, sID);
+}
 
 void setupEEPROM()
 {
@@ -291,15 +320,15 @@ uint8_t ConnectToNetworkStateFn()
 {
   WiFi.begin(workingInfo.sNetworkName, workingInfo.sNetworkPass);
   ulConnectionTimer = millis();
-  
+
   return RUNNING_STATE::WAIT_FOR_NETWORK;
 }
 
 uint8_t WaitForNetworkStateFn()
 {
-  if(WiFi.status() == WL_CONNECTED)
+  if (WiFi.status() == WL_CONNECTED)
     return RUNNING_STATE::MQTT_CONNECT;
-  
+
   return RUNNING_STATE::WAIT_FOR_NETWORK;
 }
 
