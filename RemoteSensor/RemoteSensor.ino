@@ -66,6 +66,14 @@ struct SaveInfo
     char sServerUser[16];
     char sServerPass[16];
 
+    char sRemoteDevicePath[MAX_PATH_LENGTH];
+
+    char sAmbientTempPath[MAX_PATH_LENGTH];
+    char sTargetTempPath[MAX_PATH_LENGTH];
+
+    char sRequestedModePath[MAX_PATH_LENGTH];
+    char sCurrentModePath[MAX_PATH_LENGTH];
+
     void makeChecksum()
     {
       //Set the current checksum to 0 to not interfere with the calculation
