@@ -367,7 +367,7 @@ uint8_t WaitForNetworkStateFn()
 
 void MQTTCallback(char* sTopic, byte* pPayload, unsigned int length)
 {
-  
+
 }
 
 uint8_t MQTTConnectStateFn()
@@ -401,7 +401,7 @@ uint8_t WaitForMQTTConnectStateFn()
     mqttClient.subscribe(workingInfo.sRemoteDevicePath);
     mqttClient.subscribe(workingInfo.sTargetTempPath);
     mqttClient.subscribe(workingInfo.sCurrentModePath);
-    
+
     ulConnectionTimer = millis();
 
     return RUNNING_STATE::UPDATE_LOCAL_VARIABLES;
@@ -427,7 +427,8 @@ uint8_t PostVariablesStateFn()
   //Check if this device should be posting data
   if (!strcmp(sRemoteDeviceName, workingInfo.sDeviceName) || bBecomeRemoteDevice)
   {
-    if(bBecomeRemoteDevice)
+    //These should block until completed
+    if (bBecomeRemoteDevice)
       mqttClient.publish(workingInfo.sRemoteDevicePath, workingInfo.sDeviceName);
 
     mqttClient.publish(workingInfo.sAmbientTempPath, "");
@@ -447,31 +448,41 @@ uint8_t StartSleepStateFn()
 
 uint8_t MQTTDisconnectStateFn()
 {
+  mqttClient.disconnect();
   return RUNNING_STATE::WAIT_FOR_MQTT_DISCONNECT;
 }
 
 uint8_t WaitForMQTTDisconnectStateFn()
 {
+  //Disconnects automatically
   return RUNNING_STATE::TURN_WIFI_OFF;
 }
 
 uint8_t TurnWiFiOffStateFn()
 {
+  WiFi.mode(WIFI_OFF);
+  ulConnectionTimer = millis();
+
   return RUNNING_STATE::WAIT_FOR_WIFI_OFF;
 }
 
 uint8_t WaitForWiFiOffStateFn()
 {
+  if (WiFi.getMode() == WIFI_OFF ||
+      (millis() - ulConnectionTimer) > 250)
+    return RUNNING_STATE::SLEEP;
+
   return RUNNING_STATE::WAIT_FOR_WIFI_OFF;
 }
 
 uint8_t SleepStateFn()
 {
-  ulWakeTimeStart = millis();
-
   //Skip sleeping if the charger is active
   if (digitalRead(CHARGER_STATUS_PIN))
+  {
+    ulWakeTimeStart = millis();
     return RUNNING_STATE::SAMPLE;
+  }
 
   //Sleep
   //Setup the reset latch
@@ -486,6 +497,8 @@ uint8_t SleepStateFn()
   //Clear the reset latch
   digitalWrite(SLEEP_PIN, LOW); //Off
   digitalWrite(HB_LED_PIN, HIGH); //Before on
+
+  ulWakeTimeStart = millis();
 
   return RUNNING_STATE::SAMPLE;
 }
