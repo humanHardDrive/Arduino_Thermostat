@@ -651,40 +651,16 @@ DOWN_PIN
 Text Label 6500 2500 2    50   ~ 0
 CENTER_PIN
 $Comp
-L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q2
-U 1 1 5EC43E55
-P 8500 3350
-F 0 "Q2" H 8608 3403 60  0000 L CNN
-F 1 "2N7002" H 8608 3297 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 8700 3550 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 8700 3650 60  0001 L CNN
-F 4 "2N7002NCT-ND" H 8700 3750 60  0001 L CNN "Digi-Key_PN"
-F 5 "2N7002" H 8700 3850 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 8700 3950 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 8700 4050 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 8700 4150 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 8700 4250 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 60V 115MA SOT-23" H 8700 4350 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 8700 4450 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 8700 4550 60  0001 L CNN "Status"
-	1    8500 3350
-	1    0    0    -1  
-$EndComp
-$Comp
 L SparkFun-PowerSymbols:GND #GND0109
 U 1 1 5EC68E1B
-P 8500 3900
-F 0 "#GND0109" H 8550 3850 45  0001 L BNN
-F 1 "GND" H 8500 3730 45  0000 C CNN
-F 2 "" H 8500 3800 60  0001 C CNN
-F 3 "" H 8500 3800 60  0001 C CNN
-	1    8500 3900
+P 8500 3300
+F 0 "#GND0109" H 8550 3250 45  0001 L BNN
+F 1 "GND" H 8500 3130 45  0000 C CNN
+F 2 "" H 8500 3200 60  0001 C CNN
+F 3 "" H 8500 3200 60  0001 C CNN
+	1    8500 3300
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8500 2900 8500 3150
-Wire Wire Line
-	8500 3550 8500 3900
 Wire Wire Line
 	2100 5700 2100 4800
 Wire Wire Line
@@ -700,8 +676,6 @@ Text Label 2450 4800 2    50   ~ 0
 WAKE_STS
 Text Label 3450 4800 2    50   ~ 0
 SLEEP_STS
-Text Label 7450 3450 0    50   ~ 0
-WAKE_STS
 $Comp
 L Power_Management:BD48ExxG U7
 U 1 1 5EC69473
@@ -1117,8 +1091,6 @@ F 3 "" H 6050 8350 60  0001 C CNN
 	1    6050 8450
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7450 3450 8200 3450
 $Comp
 L SparkFun-PowerSymbols:3.3V #SUPPLY0112
 U 1 1 5EC8248B
@@ -1139,26 +1111,6 @@ F 1 "3.3V" H 8550 5476 45  0000 C CNN
 F 2 "XXX-00000" H 8550 5381 60  0000 C CNN
 F 3 "" H 8550 5200 60  0001 C CNN
 	1    8550 5200
-	1    0    0    -1  
-$EndComp
-$Comp
-L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q3
-U 1 1 5EC96999
-P 11800 5600
-F 0 "Q3" H 11908 5653 60  0000 L CNN
-F 1 "2N7002" H 11908 5547 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 12000 5800 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 12000 5900 60  0001 L CNN
-F 4 "2N7002NCT-ND" H 12000 6000 60  0001 L CNN "Digi-Key_PN"
-F 5 "2N7002" H 12000 6100 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 12000 6200 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 12000 6300 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 12000 6400 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 12000 6500 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 60V 115MA SOT-23" H 12000 6600 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 12000 6700 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 12000 6800 60  0001 L CNN "Status"
-	1    11800 5600
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1420,4 +1372,26 @@ Wire Wire Line
 	7900 5100 7900 5300
 Wire Wire Line
 	5650 5100 5650 5300
+$Comp
+L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q3
+U 1 1 5EC96999
+P 11800 5600
+F 0 "Q3" H 11908 5653 60  0000 L CNN
+F 1 "2N7002" H 11908 5547 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 12000 5800 60  0001 L CNN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 12000 5900 60  0001 L CNN
+F 4 "2N7002NCT-ND" H 12000 6000 60  0001 L CNN "Digi-Key_PN"
+F 5 "2N7002" H 12000 6100 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 12000 6200 60  0001 L CNN "Category"
+F 7 "Transistors - FETs, MOSFETs - Single" H 12000 6300 60  0001 L CNN "Family"
+F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 12000 6400 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 12000 6500 60  0001 L CNN "DK_Detail_Page"
+F 10 "MOSFET N-CH 60V 115MA SOT-23" H 12000 6600 60  0001 L CNN "Description"
+F 11 "ON Semiconductor" H 12000 6700 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 12000 6800 60  0001 L CNN "Status"
+	1    11800 5600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8500 2900 8500 3300
 $EndSCHEMATC
