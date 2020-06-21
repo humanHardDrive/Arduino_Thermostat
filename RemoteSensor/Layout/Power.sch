@@ -67,17 +67,6 @@ Wire Wire Line
 Wire Wire Line
 	8950 4150 9350 4150
 $Comp
-L Regulator_Switching:LM3670MF U5
-U 1 1 5EEB129A
-P 9650 4250
-F 0 "U5" H 9650 4575 50  0000 C CNN
-F 1 "LM3670MF" H 9650 4484 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TSOT-23-5" H 9700 4000 50  0001 L CNN
-F 3 "http://www.ti.com/lit/ds/symlink/lm3670.pdf" H 9400 3900 50  0001 C CNN
-	1    9650 4250
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R_US R5
 U 1 1 5EEB12A2
 P 8650 5000
@@ -380,7 +369,7 @@ AR Path="/5EEC2148" Ref="L?"  Part="1"
 AR Path="/5EE9FD3C/5EEC2148" Ref="L1"  Part="1" 
 F 0 "L1" V 3190 6300 50  0000 C CNN
 F 1 "2.2u" V 3099 6300 50  0000 C CNN
-F 2 "Inductor_SMD:L_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 3000 6300 50  0001 C CNN
+F 2 "Inductor_SMD:L_Taiyo-Yuden_NR-24xx_HandSoldering" H 3000 6300 50  0001 C CNN
 F 3 "~" H 3000 6300 50  0001 C CNN
 	1    3000 6300
 	0    -1   -1   0   
@@ -755,4 +744,15 @@ Connection ~ 9650 5200
 Wire Wire Line
 	8650 4000 8650 4800
 Connection ~ 8650 4800
+$Comp
+L Regulator_Switching:LM3670MF U5
+U 1 1 5EEB129A
+P 9650 4250
+F 0 "U5" H 9650 4575 50  0000 C CNN
+F 1 "LM3671MF" H 9650 4484 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:TSOT-23-5" H 9700 4000 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm3671.pdf" H 9400 3900 50  0001 C CNN
+	1    9650 4250
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
