@@ -41,12 +41,12 @@ Wire Wire Line
 $Comp
 L SparkFun-PowerSymbols:GND #GND0101
 U 1 1 5EEB1274
-P 9650 5000
-F 0 "#GND0101" H 9700 4950 45  0001 L BNN
-F 1 "GND" H 9650 4830 45  0000 C CNN
-F 2 "" H 9650 4900 60  0001 C CNN
-F 3 "" H 9650 4900 60  0001 C CNN
-	1    9650 5000
+P 9650 5200
+F 0 "#GND0101" H 9700 5150 45  0001 L BNN
+F 1 "GND" H 9650 5030 45  0000 C CNN
+F 2 "" H 9650 5100 60  0001 C CNN
+F 3 "" H 9650 5100 60  0001 C CNN
+	1    9650 5200
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -67,26 +67,6 @@ Wire Wire Line
 Wire Wire Line
 	8950 4150 9350 4150
 $Comp
-L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q1
-U 1 1 5EEB1294
-P 8950 4800
-F 0 "Q1" H 9058 4853 60  0000 L CNN
-F 1 "2N7002" H 9058 4747 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 9150 5000 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 9150 5100 60  0001 L CNN
-F 4 "2N7002NCT-ND" H 9150 5200 60  0001 L CNN "Digi-Key_PN"
-F 5 "2N7002" H 9150 5300 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 9150 5400 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 9150 5500 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 9150 5600 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 9150 5700 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 60V 115MA SOT-23" H 9150 5800 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 9150 5900 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 9150 6000 60  0001 L CNN "Status"
-	1    8950 4800
-	1    0    0    1   
-$EndComp
-$Comp
 L Regulator_Switching:LM3670MF U5
 U 1 1 5EEB129A
 P 9650 4250
@@ -97,53 +77,32 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm3670.pdf" H 9400 3900 50  0001 C CNN
 	1    9650 4250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8950 4600 8950 4450
-Connection ~ 8950 4450
 $Comp
 L Device:R_US R5
 U 1 1 5EEB12A2
-P 8450 4850
-F 0 "R5" H 8518 4896 50  0000 L CNN
-F 1 "10k" H 8518 4805 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 8490 4840 50  0001 C CNN
-F 3 "~" H 8450 4850 50  0001 C CNN
-	1    8450 4850
+P 8650 5000
+F 0 "R5" H 8718 5046 50  0000 L CNN
+F 1 "10k" H 8718 4955 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 8690 4990 50  0001 C CNN
+F 3 "~" H 8650 5000 50  0001 C CNN
+	1    8650 5000
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8450 4700 8650 4700
-Wire Wire Line
-	8450 5000 8950 5000
-Wire Wire Line
-	8950 5000 9650 5000
-Wire Wire Line
-	9650 5000 9650 4550
-Connection ~ 8950 5000
-Connection ~ 9650 5000
 Wire Wire Line
 	8950 4150 8000 4150
 Connection ~ 8950 4150
 Connection ~ 8000 4150
-Wire Wire Line
-	8000 5000 8450 5000
-Wire Wire Line
-	8000 4450 8000 5000
-Connection ~ 8450 5000
 $Comp
 L SparkFun-PowerSymbols:V_USB #SUPPLY0102
 U 1 1 5EEB12BC
-P 8450 4100
-F 0 "#SUPPLY0102" H 8500 4100 45  0001 L BNN
-F 1 "V_USB" H 8450 4376 45  0000 C CNN
-F 2 "XXX-00000" H 8450 4281 60  0000 C CNN
-F 3 "" H 8450 4100 60  0001 C CNN
-	1    8450 4100
+P 8650 4000
+F 0 "#SUPPLY0102" H 8700 4000 45  0001 L BNN
+F 1 "V_USB" H 8650 4276 45  0000 C CNN
+F 2 "XXX-00000" H 8650 4181 60  0000 C CNN
+F 3 "" H 8650 4000 60  0001 C CNN
+	1    8650 4000
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8450 4100 8450 4700
-Connection ~ 8450 4700
 $Comp
 L Connector:USB_B_Micro J?
 U 1 1 5EEC20C4
@@ -751,4 +710,49 @@ Connection ~ 2950 4400
 Wire Wire Line
 	7150 2100 7500 2100
 Connection ~ 7150 2100
+$Comp
+L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q1
+U 1 1 5EEB1294
+P 8950 4700
+F 0 "Q1" H 9058 4753 60  0000 L CNN
+F 1 "2N7002" H 9058 4647 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 9150 4900 60  0001 L CNN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 9150 5000 60  0001 L CNN
+F 4 "2N7002NCT-ND" H 9150 5100 60  0001 L CNN "Digi-Key_PN"
+F 5 "2N7002" H 9150 5200 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 9150 5300 60  0001 L CNN "Category"
+F 7 "Transistors - FETs, MOSFETs - Single" H 9150 5400 60  0001 L CNN "Family"
+F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 9150 5500 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 9150 5600 60  0001 L CNN "DK_Detail_Page"
+F 10 "MOSFET N-CH 60V 115MA SOT-23" H 9150 5700 60  0001 L CNN "Description"
+F 11 "ON Semiconductor" H 9150 5800 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 9150 5900 60  0001 L CNN "Status"
+	1    8950 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8950 4500 8950 4450
+Connection ~ 8950 4450
+Wire Wire Line
+	8650 4800 8650 4850
+Wire Wire Line
+	8650 5150 8650 5200
+Wire Wire Line
+	8650 5200 8950 5200
+Wire Wire Line
+	8950 5200 8950 4900
+Wire Wire Line
+	8000 4450 8000 5200
+Wire Wire Line
+	8000 5200 8650 5200
+Connection ~ 8650 5200
+Wire Wire Line
+	8950 5200 9650 5200
+Connection ~ 8950 5200
+Wire Wire Line
+	9650 5200 9650 4550
+Connection ~ 9650 5200
+Wire Wire Line
+	8650 4000 8650 4800
+Connection ~ 8650 4800
 $EndSCHEMATC
