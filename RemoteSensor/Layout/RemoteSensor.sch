@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:RemoteSensor-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
@@ -63,7 +62,7 @@ Wire Wire Line
 Wire Wire Line
 	7150 4200 7700 4200
 $Comp
-L SparkFun-PowerSymbols:GND #GND0118
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND0118
 U 1 1 5ED93B1B
 P 7700 3850
 F 0 "#GND0118" H 7750 3800 45  0001 L BNN
@@ -77,7 +76,7 @@ Connection ~ 7700 3850
 Wire Wire Line
 	7700 3850 8200 3850
 $Comp
-L SparkFun-PowerSymbols:GND #GND0119
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND0119
 U 1 1 5ED940BC
 P 7700 4200
 F 0 "#GND0119" H 7750 4150 45  0001 L BNN

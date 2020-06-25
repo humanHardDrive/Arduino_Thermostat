@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:RemoteSensor-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -41,7 +40,7 @@ F 3 "~" H 4350 4750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF5A921
 P 5650 4150
 AR Path="/5EF5A921" Ref="#GND?"  Part="1" 
@@ -84,7 +83,7 @@ F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 4800 4000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF5A935
 P 4800 4100
 AR Path="/5EF5A935" Ref="#GND?"  Part="1" 
@@ -115,7 +114,7 @@ Wire Wire Line
 Wire Wire Line
 	5350 4950 5350 4900
 $Comp
-L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q?
+L RemoteSensor-rescue:2N7002-dk_Transistors-FETs-MOSFETs-Single Q?
 U 1 1 5EF5A94D
 P 6500 3950
 AR Path="/5EF5A94D" Ref="Q?"  Part="1" 
@@ -163,7 +162,7 @@ Connection ~ 6200 4050
 Wire Wire Line
 	6500 3750 6500 3450
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF5A963
 P 4800 3650
 AR Path="/5EF5A963" Ref="#SUPPLY?"  Part="1" 
@@ -176,7 +175,7 @@ F 3 "" H 4800 3650 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF5A969
 P 5650 3700
 AR Path="/5EF5A969" Ref="#SUPPLY?"  Part="1" 
@@ -218,7 +217,7 @@ Connection ~ 4950 4950
 Wire Wire Line
 	4350 4950 4950 4950
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF5A98A
 P 5350 4950
 AR Path="/5EF5A98A" Ref="#GND?"  Part="1" 
@@ -249,7 +248,7 @@ F 3 "~" H 5550 2250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF5D1D7
 P 5900 2050
 AR Path="/5EF5D1D7" Ref="#GND?"  Part="1" 

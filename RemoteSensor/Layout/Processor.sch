@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:RemoteSensor-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -27,7 +26,7 @@ TEMP_PIN
 Wire Wire Line
 	5000 2350 4450 2350
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF6911C
 P 5600 1500
 AR Path="/5EF6911C" Ref="#SUPPLY?"  Part="1" 
@@ -77,7 +76,7 @@ F 3 "http://wiki.ai-thinker.com/_media/esp8266/esp8266_series_modules_user_manua
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF69140
 P 5600 3250
 AR Path="/5EF69140" Ref="#GND?"  Part="1" 
@@ -108,7 +107,7 @@ F 3 "~" H 4650 1650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-Switches:NAV_SWITCH S?
+L RemoteSensor-rescue:NAV_SWITCH-SparkFun-Switches S?
 U 1 1 5EF6B1EF
 P 9500 1200
 AR Path="/5EF6B1EF" Ref="S?"  Part="1" 
@@ -122,7 +121,7 @@ F 4 "SWCH-08301" H 9500 1481 60  0000 C CNN "Field4"
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF6B1F5
 P 9900 1200
 AR Path="/5EF6B1F5" Ref="#GND?"  Part="1" 
@@ -163,7 +162,7 @@ F 3 "~" H 2650 1850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF6D225
 P 2050 1500
 AR Path="/5EF6D225" Ref="#SUPPLY?"  Part="1" 
@@ -208,7 +207,7 @@ F 3 "~" H 2600 3200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF6FC22
 P 2250 3100
 AR Path="/5EF6FC22" Ref="#SUPPLY?"  Part="1" 
@@ -235,7 +234,7 @@ SCL
 Text Label 1800 3400 0    50   ~ 0
 SDA
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF6FC2F
 P 2250 3900
 AR Path="/5EF6FC2F" Ref="#GND?"  Part="1" 
@@ -248,7 +247,7 @@ F 3 "" H 2250 3800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q?
+L RemoteSensor-rescue:2N7002-dk_Transistors-FETs-MOSFETs-Single Q?
 U 1 1 5EF6FC40
 P 2250 3700
 AR Path="/5EF6FC40" Ref="Q?"  Part="1" 
@@ -270,7 +269,7 @@ F 12 "Active" H 2450 4900 60  0001 L CNN "Status"
 	1    0    0    -1  
 $EndComp
 $Comp
-L LM50CIM3:LM50CIM3 U?
+L RemoteSensor-rescue:LM50CIM3-LM50CIM3 U?
 U 1 1 5EF73CDC
 P 9450 2550
 AR Path="/5EF73CDC" Ref="U?"  Part="1" 
@@ -288,7 +287,7 @@ F 8 "SOT-23 Texas Instruments" H 9450 2550 50  0001 L BNN "Field8"
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF73CE2
 P 8750 2350
 AR Path="/5EF73CE2" Ref="#SUPPLY?"  Part="1" 
@@ -303,7 +302,7 @@ $EndComp
 Wire Wire Line
 	8750 2550 8750 2350
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF73CE9
 P 8750 3150
 AR Path="/5EF73CE9" Ref="#GND?"  Part="1" 
@@ -335,7 +334,7 @@ F 3 "~" H 9850 5000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF7CD1C
 P 9500 5200
 AR Path="/5EF7CD1C" Ref="#GND?"  Part="1" 
@@ -422,7 +421,7 @@ Wire Wire Line
 Wire Wire Line
 	3000 5550 2800 5550
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF7FA2C
 P 3000 5650
 AR Path="/5EF7FA2C" Ref="#GND?"  Part="1" 
@@ -547,7 +546,7 @@ Wire Wire Line
 	5650 5250 5800 5250
 Connection ~ 5650 5350
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY0120
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY0120
 U 1 1 5EF03A19
 P 6200 4000
 F 0 "#SUPPLY0120" H 6250 4000 45  0001 L BNN
@@ -560,7 +559,7 @@ $EndComp
 Wire Wire Line
 	6200 4000 6200 4050
 $Comp
-L dk_Interface-I-O-Expanders:MCP23008-E_P U9
+L RemoteSensor-rescue:MCP23008-E_P-dk_Interface-I-O-Expanders U9
 U 1 1 5EEF9F80
 P 6300 4750
 F 0 "U9" H 6650 5500 60  0000 C CNN
@@ -580,7 +579,7 @@ F 12 "Active" H 6500 5950 60  0001 L CNN "Status"
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND0122
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND0122
 U 1 1 5EF09AEA
 P 6300 5900
 F 0 "#GND0122" H 6350 5850 45  0001 L BNN
@@ -619,7 +618,7 @@ $EndComp
 Wire Wire Line
 	5000 5550 5800 5550
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY0121
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY0121
 U 1 1 5EF20521
 P 5000 5250
 F 0 "#SUPPLY0121" H 5050 5250 45  0001 L BNN

@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:RemoteSensor-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -14,17 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L Interface_USB:FT230XS U?
-U 1 1 5EF07365
-P 2150 2250
-F 0 "U?" H 2150 3131 50  0000 C CNN
-F 1 "FT230XS" H 2150 3040 50  0000 C CNN
-F 2 "Package_SO:SSOP-16_3.9x4.9mm_P0.635mm" H 2600 1600 50  0001 C CNN
-F 3 "http://www.ftdichip.com/Products/ICs/FT230X.html" H 2150 2250 50  0001 C CNN
-	1    2150 2250
-	1    0    0    -1  
-$EndComp
 $Comp
 L Device:Ferrite_Bead FB?
 U 1 1 5EF07BAD
@@ -94,12 +82,12 @@ Connection ~ 5050 3200
 $Comp
 L Jumper:Jumper_2_Open JP?
 U 1 1 5EF0D6FF
-P 7200 3500
-F 0 "JP?" H 7200 3735 50  0000 C CNN
-F 1 "Jumper_2_Open" H 7200 3644 50  0000 C CNN
-F 2 "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm" H 7200 3500 50  0001 C CNN
-F 3 "~" H 7200 3500 50  0001 C CNN
-	1    7200 3500
+P 7200 3600
+F 0 "JP?" H 7200 3835 50  0000 C CNN
+F 1 "Jumper_2_Open" H 7200 3744 50  0000 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm" H 7200 3600 50  0001 C CNN
+F 3 "~" H 7200 3600 50  0001 C CNN
+	1    7200 3600
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -116,9 +104,9 @@ $EndComp
 Wire Wire Line
 	7650 3400 6600 3400
 Wire Wire Line
-	6600 3500 7000 3500
+	6600 3600 7000 3600
 $Comp
-L SparkFun-PowerSymbols:V_USB #SUPPLY?
+L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF0F32D
 P 5800 2200
 F 0 "#SUPPLY?" H 5850 2200 45  0001 L BNN
@@ -250,7 +238,7 @@ PRG_RX
 Text GLabel 6750 2500 1    50   Input ~ 0
 PRG_TX
 $Comp
-L dk_Transistors-Bipolar-BJT-Single:MMBT2222A-TP Q?
+L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q?
 U 1 1 5EF2CE7F
 P 2600 5500
 F 0 "Q?" H 2788 5553 60  0000 L CNN
@@ -270,7 +258,7 @@ F 12 "Active" H 2800 6700 60  0001 L CNN "Status"
 	1    0    0    -1  
 $EndComp
 $Comp
-L dk_Transistors-Bipolar-BJT-Single:MMBT2222A-TP Q?
+L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q?
 U 1 1 5EF2EBF2
 P 2600 6350
 F 0 "Q?" H 2788 6297 60  0000 L CNN
@@ -350,7 +338,7 @@ FLASH
 Text GLabel 3550 6750 2    50   Input ~ 0
 RST
 Wire Wire Line
-	7400 3500 8600 3500
+	7400 3600 8600 3600
 Wire Wire Line
 	8050 3400 8600 3400
 Text Label 8600 3400 2    50   ~ 0
@@ -378,7 +366,7 @@ Connection ~ 5800 4850
 Wire Wire Line
 	5800 4850 6000 4850
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF4CBA7
 P 6000 4850
 F 0 "#GND?" H 6050 4800 45  0001 L BNN
@@ -389,4 +377,6 @@ F 3 "" H 6000 4750 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 6000 4850
+Text Label 8600 3600 2    50   ~ 0
+DTR
 $EndSCHEMATC

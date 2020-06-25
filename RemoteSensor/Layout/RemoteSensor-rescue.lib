@@ -1,0 +1,215 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# 2N7002-dk_Transistors-FETs-MOSFETs-Single
+#
+DEF 2N7002-dk_Transistors-FETs-MOSFETs-Single Q 0 0 Y Y 1 F N
+F0 "Q" -106 143 60 H V R CNN
+F1 "2N7002-dk_Transistors-FETs-MOSFETs-Single" 136 0 60 V V C CNN
+F2 "digikey-footprints:SOT-23-3" 200 200 60 H I L CNN
+F3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" 200 300 60 H I L CNN
+F4 "2N7002NCT-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "2N7002" 200 500 60 H I L CNN "MPN"
+F6 "Discrete Semiconductor Products" 200 600 60 H I L CNN "Category"
+F7 "Transistors - FETs, MOSFETs - Single" 200 700 60 H I L CNN "Family"
+F8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "MOSFET N-CH 60V 115MA SOT-23" 200 1000 60 H I L CNN "Description"
+F11 "ON Semiconductor" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+C -50 0 130 0 1 0 f
+C 0 -75 5 0 1 0 N
+C 0 -55 5 0 1 0 N
+C 0 75 5 0 1 0 N
+P 2 0 1 0 0 -55 -100 -55 N
+P 3 0 1 0 -200 -100 -120 -100 -120 55 N
+P 3 0 1 0 0 -100 0 0 -100 0 N
+P 3 0 1 0 0 100 0 55 -100 55 N
+P 5 0 1 0 -5 -75 40 -75 40 55 40 75 -5 75 N
+P 2 1 1 0 -100 -55 -100 -75 N
+P 2 1 1 0 -100 -55 -100 -35 N
+P 2 1 1 0 -100 0 -100 -20 N
+P 2 1 1 0 -100 0 -100 20 N
+P 2 1 1 0 -100 75 -100 35 N
+P 2 1 1 0 60 20 20 20 N
+P 4 1 1 0 -100 0 -70 20 -70 -20 -100 0 F
+P 4 1 1 0 40 20 20 -10 60 -10 40 20 F
+X G 1 -300 -100 100 R 50 50 1 1 B
+X S 2 0 -200 100 U 50 50 1 1 B
+X D 3 0 200 100 D 50 50 1 1 B
+ENDDRAW
+ENDDEF
+#
+# 3.3V-SparkFun-PowerSymbols
+#
+DEF 3.3V-SparkFun-PowerSymbols #SUPPLY 0 40 N N 1 L P
+F0 "#SUPPLY" 50 0 45 H I L BNN
+F1 "3.3V-SparkFun-PowerSymbols" -50 150 45 H V L BNN
+F2 "XXX-00000" 0 300 60 H V C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+P 2 1 0 0 0 0 0 100 N
+P 2 1 0 0 0 100 -30 50 N
+P 2 1 0 0 30 50 0 100 N
+X 3.3V ~ 0 0 0 U 40 40 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# GND-SparkFun-PowerSymbols
+#
+DEF GND-SparkFun-PowerSymbols #GND 0 40 N N 1 L P
+F0 "#GND" 50 -50 45 H I L BNN
+F1 "GND-SparkFun-PowerSymbols" -70 -200 45 H V L BNN
+F2 "" 0 -100 60 H I C CNN
+F3 "" 0 -100 60 H I C CNN
+DRAW
+P 2 1 0 0 -75 -100 75 -100 N
+P 2 1 0 0 0 0 0 -100 N
+X GND ~ 0 0 0 D 40 40 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# LM50CIM3-LM50CIM3
+#
+DEF LM50CIM3-LM50CIM3 U 0 40 Y Y 1 L N
+F0 "U" -191 253 50 H V L BNN
+F1 "LM50CIM3-LM50CIM3" -146 -516 50 H V L BNN
+F2 "SOT95P260X110-3N" 0 0 50 H I L BNN
+F3 "?2?C Analog Output Temperature Sensor 3-SOT-23 -40 to 150" 0 0 50 H I L BNN
+F4 "LM50CIM3/NOPBCT-ND" 0 0 50 H I L BNN
+F5 "Texas Instruments" 0 0 50 H I L BNN
+F6 "https://www.digikey.com/product-detail/en/texas-instruments/LM50CIM3-NOPB/LM50CIM3-NOPBCT-ND/120169?utm_source=snapeda&utm_medium=aggregator&utm_campaign=symbol" 0 0 50 H I L BNN
+F7 "LM50CIM3/NOPB" 0 0 50 H I L BNN
+F8 "SOT-23 Texas Instruments" 0 0 50 H I L BNN
+DRAW
+P 2 0 0 6 -500 -400 500 -400 N
+P 2 0 0 6 -500 200 -500 -400 N
+P 2 0 0 6 500 -400 500 200 N
+P 2 0 0 6 500 200 -500 200 N
+X +VS 1 -700 0 200 R 40 40 0 0 W
+X VO 2 700 0 200 L 40 40 0 0 O
+X GND 3 -700 -200 200 R 40 40 0 0 P
+ENDDRAW
+ENDDEF
+#
+# MCP23008-E_P-dk_Interface-I-O-Expanders
+#
+DEF MCP23008-E_P-dk_Interface-I-O-Expanders U 0 40 Y Y 1 F N
+F0 "U" -300 650 60 H V C CNN
+F1 "MCP23008-E_P-dk_Interface-I-O-Expanders" -100 -200 60 V V C CNN
+F2 "digikey-footprints:DIP-18_W7.62mm" 200 200 60 H I L CNN
+F3 "http://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en021920" 200 300 60 H I L CNN
+F4 "MCP23008-E/P-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "MCP23008-E/P" 200 500 60 H I L CNN "MPN"
+F6 "Integrated Circuits (ICs)" 200 600 60 H I L CNN "Category"
+F7 "Interface - I/O Expanders" 200 700 60 H I L CNN "Family"
+F8 "http://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en021920" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/microchip-technology/MCP23008-E-P/MCP23008-E-P-ND/735951" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "IC I/O EXPANDER I2C 8B 18DIP" 200 1000 60 H I L CNN "Description"
+F11 "Microchip Technology" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+S -400 600 200 -900 0 1 0 f
+X SCL 1 -500 -400 100 R 50 50 1 1 I
+X GP0 10 -500 500 100 R 50 50 1 1 B
+X GP1 11 -500 400 100 R 50 50 1 1 B
+X GP2 12 -500 300 100 R 50 50 1 1 B
+X GP3 13 -500 200 100 R 50 50 1 1 B
+X GP4 14 -500 100 100 R 50 50 1 1 B
+X GP5 15 -500 0 100 R 50 50 1 1 B
+X GP6 16 -500 -100 100 R 50 50 1 1 B
+X GP7 17 -500 -200 100 R 50 50 1 1 B
+X VDD 18 -100 700 100 D 50 50 1 1 W
+X SDA 2 -500 -300 100 R 50 50 1 1 B
+X A2 3 -500 -500 100 R 50 50 1 1 I
+X A1 4 -500 -600 100 R 50 50 1 1 I
+X A0 5 -500 -700 100 R 50 50 1 1 I
+X ~RESET 6 -500 -800 100 R 50 50 1 1 I
+X NC 7 300 100 100 L 50 50 1 1 N
+X INT 8 300 300 100 L 50 50 1 1 O
+X VSS 9 0 -1000 100 U 50 50 1 1 W
+ENDDRAW
+ENDDEF
+#
+# MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single
+#
+DEF MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q 0 0 Y Y 1 F N
+F0 "Q" -126 166 60 H V L CNN
+F1 "MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single" 206 0 60 V V C CNN
+F2 "digikey-footprints:SOT-23-3" 200 200 60 H I L CNN
+F3 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" 200 300 60 H I L CNN
+F4 "MMBT2222ATPMSCT-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "MMBT2222A-TP" 200 500 60 H I L CNN "MPN"
+F6 "Discrete Semiconductor Products" 200 600 60 H I L CNN "Category"
+F7 "Transistors - Bipolar (BJT) - Single" 200 700 60 H I L CNN "Family"
+F8 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/micro-commercial-co/MMBT2222A-TP/MMBT2222ATPMSCT-ND/717394" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "TRANS NPN 40V 0.6A SOT23" 200 1000 60 H I L CNN "Description"
+F11 "Micro Commercial Co" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+C 0 0 128 0 1 0 f
+P 2 0 1 0 -150 0 -100 0 N
+P 2 0 1 0 -140 0 0 0 N
+P 2 0 1 0 0 -50 100 -100 N
+P 2 0 1 0 0 50 100 100 N
+P 2 0 1 0 0 100 0 -100 N
+P 4 0 1 0 60 -50 80 -90 40 -100 60 -50 F
+X B 1 -200 0 100 R 50 50 1 1 I
+X E 2 100 -200 100 U 50 50 1 1 P
+X C 3 100 200 100 D 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# NAV_SWITCH-SparkFun-Switches
+#
+DEF NAV_SWITCH-SparkFun-Switches S 0 40 Y N 1 L N
+F0 "S" -200 250 45 H V L BNN
+F1 "NAV_SWITCH-SparkFun-Switches" -200 -300 45 H V L BNN
+F2 "NAV_SWITCH" 0 350 20 H I C CNN
+F3 "" 0 0 50 H I C CNN
+F4 "SWCH-08301" 0 400 60 H V C CNN
+$FPLIST
+ *NAV_SWITCH*
+$ENDFPLIST
+DRAW
+P 5 1 1 0 -200 200 200 200 200 -200 -200 -200 -200 200 f
+X 1 1 -300 100 100 R 40 40 1 1 I
+X 2 2 -300 -100 100 R 40 40 1 1 I
+X C C 300 0 100 L 40 40 1 1 W
+X T T -300 0 100 R 40 40 1 1 I
+ENDDRAW
+ENDDEF
+#
+# V_BATT-SparkFun-PowerSymbols
+#
+DEF V_BATT-SparkFun-PowerSymbols #SUPPLY 0 40 N N 1 L P
+F0 "#SUPPLY" 50 0 45 H I L BNN
+F1 "V_BATT-SparkFun-PowerSymbols" -100 150 45 H V L BNN
+F2 "XXX-00000" 0 300 60 H V C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+P 2 1 0 0 0 0 0 100 N
+P 2 1 0 0 0 100 -30 50 N
+P 2 1 0 0 30 50 0 100 N
+X V_BATT ~ 0 0 0 U 40 40 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# V_USB-SparkFun-PowerSymbols
+#
+DEF V_USB-SparkFun-PowerSymbols #SUPPLY 0 40 N N 1 L P
+F0 "#SUPPLY" 50 0 45 H I L BNN
+F1 "V_USB-SparkFun-PowerSymbols" -100 150 45 H V L BNN
+F2 "XXX-00000" 0 300 60 H V C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+P 2 1 0 0 0 0 0 100 N
+P 2 1 0 0 0 100 -30 50 N
+P 2 1 0 0 30 50 0 100 N
+X V_USB ~ 0 0 0 U 40 40 1 1 W N
+ENDDRAW
+ENDDEF
+#
+#End Library

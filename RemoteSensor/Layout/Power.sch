@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:RemoteSensor-cache
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -15,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L SparkFun-PowerSymbols:V_BATT #SUPPLY0101
+L RemoteSensor-rescue:V_BATT-SparkFun-PowerSymbols #SUPPLY0101
 U 1 1 5EEB1246
 P 8000 4000
 F 0 "#SUPPLY0101" H 8050 4000 45  0001 L BNN
@@ -39,7 +38,7 @@ $EndComp
 Wire Wire Line
 	8000 4000 8000 4150
 $Comp
-L SparkFun-PowerSymbols:GND #GND0101
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND0101
 U 1 1 5EEB1274
 P 9650 5200
 F 0 "#GND0101" H 9700 5150 45  0001 L BNN
@@ -82,7 +81,7 @@ Wire Wire Line
 Connection ~ 8950 4150
 Connection ~ 8000 4150
 $Comp
-L SparkFun-PowerSymbols:V_USB #SUPPLY0102
+L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY0102
 U 1 1 5EEB12BC
 P 8650 4000
 F 0 "#SUPPLY0102" H 8700 4000 45  0001 L BNN
@@ -106,7 +105,7 @@ F 3 "~" H 1700 1950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:V_USB #SUPPLY?
+L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC20CA
 P 2650 1600
 AR Path="/5EEC20CA" Ref="#SUPPLY?"  Part="1" 
@@ -119,7 +118,7 @@ F 3 "" H 2650 1600 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EEC20D0
 P 1550 2650
 AR Path="/5EEC20D0" Ref="#GND?"  Part="1" 
@@ -197,7 +196,7 @@ F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/20001984g.pdf" H 1900 4250 
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:V_USB #SUPPLY?
+L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC20F7
 P 2050 3700
 AR Path="/5EEC20F7" Ref="#SUPPLY?"  Part="1" 
@@ -210,7 +209,7 @@ F 3 "" H 2050 3700 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:V_BATT #SUPPLY?
+L RemoteSensor-rescue:V_BATT-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC20FD
 P 2750 3700
 AR Path="/5EEC20FD" Ref="#SUPPLY?"  Part="1" 
@@ -252,7 +251,7 @@ Wire Wire Line
 Wire Wire Line
 	1450 5100 1450 4900
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EEC2111
 P 2050 5100
 AR Path="/5EEC2111" Ref="#GND?"  Part="1" 
@@ -279,7 +278,7 @@ F 3 "~" H 4450 4400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EEC211E
 P 4900 4650
 AR Path="/5EEC211E" Ref="#GND?"  Part="1" 
@@ -309,7 +308,7 @@ Wire Wire Line
 Wire Wire Line
 	2950 4400 2950 4300
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC212C
 P 2950 4000
 AR Path="/5EEC212C" Ref="#SUPPLY?"  Part="1" 
@@ -326,7 +325,7 @@ Wire Wire Line
 Wire Wire Line
 	1450 2500 1550 2500
 $Comp
-L SparkFun-PowerSymbols:V_BATT #SUPPLY?
+L RemoteSensor-rescue:V_BATT-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC2137
 P 4900 4200
 AR Path="/5EEC2137" Ref="#SUPPLY?"  Part="1" 
@@ -439,7 +438,7 @@ Wire Wire Line
 Wire Wire Line
 	3900 6700 3900 6600
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC2172
 P 4350 6150
 AR Path="/5EEC2172" Ref="#SUPPLY?"  Part="1" 
@@ -457,7 +456,7 @@ Wire Wire Line
 	4350 6150 4350 6300
 Connection ~ 3900 6300
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EEC217B
 P 4500 2550
 AR Path="/5EEC217B" Ref="#GND?"  Part="1" 
@@ -493,7 +492,7 @@ Wire Wire Line
 Connection ~ 3900 6700
 Connection ~ 4350 6300
 $Comp
-L SparkFun-PowerSymbols:V_USB #SUPPLY?
+L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC218D
 P 3900 1850
 AR Path="/5EEC218D" Ref="#SUPPLY?"  Part="1" 
@@ -519,7 +518,7 @@ F 3 "https://www.rohm.de/datasheet/BD4830FVE/bd48xxg-e" H 6050 3800 50  0001 C C
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF05E4C
 P 6050 4850
 AR Path="/5EF05E4C" Ref="#GND?"  Part="1" 
@@ -564,7 +563,7 @@ F 3 "https://www.rohm.de/datasheet/BD4830FVE/bd48xxg-e" H 6500 1500 50  0001 C C
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EF05E64
 P 6500 2550
 AR Path="/5EF05E64" Ref="#GND?"  Part="1" 
@@ -596,7 +595,7 @@ Wire Wire Line
 Wire Wire Line
 	7150 2100 6900 2100
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF05E76
 P 7150 1700
 AR Path="/5EF05E76" Ref="#SUPPLY?"  Part="1" 
@@ -609,7 +608,7 @@ F 3 "" H 7150 1700 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY?
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF05E7C
 P 6700 4000
 AR Path="/5EF05E7C" Ref="#SUPPLY?"  Part="1" 
@@ -622,7 +621,7 @@ F 3 "" H 6700 4000 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:V_USB #SUPPLY?
+L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF05E82
 P 6500 1600
 AR Path="/5EF05E82" Ref="#SUPPLY?"  Part="1" 
@@ -635,7 +634,7 @@ F 3 "" H 6500 1600 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:V_BATT #SUPPLY?
+L RemoteSensor-rescue:V_BATT-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF05E88
 P 6050 3900
 AR Path="/5EF05E88" Ref="#SUPPLY?"  Part="1" 
@@ -652,7 +651,7 @@ Wire Wire Line
 Wire Wire Line
 	6500 1600 6500 1800
 $Comp
-L SparkFun-PowerSymbols:GND #GND0108
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND0108
 U 1 1 5EF27A6F
 P 3900 6700
 F 0 "#GND0108" H 3950 6650 45  0001 L BNN
@@ -700,7 +699,7 @@ Wire Wire Line
 	7150 2100 7500 2100
 Connection ~ 7150 2100
 $Comp
-L dk_Transistors-FETs-MOSFETs-Single:2N7002 Q1
+L RemoteSensor-rescue:2N7002-dk_Transistors-FETs-MOSFETs-Single Q1
 U 1 1 5EEB1294
 P 8950 4700
 F 0 "Q1" H 9058 4753 60  0000 L CNN
@@ -755,4 +754,16 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm3671.pdf" H 9400 3900 50  0001 C CNN
 	1    9650 4250
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	1850 2000 2050 2000
+Wire Wire Line
+	2050 2000 2050 2750
+Wire Wire Line
+	1850 2100 1950 2100
+Wire Wire Line
+	1950 2100 1950 2750
+Text GLabel 2050 2750 3    50   Input ~ 0
+USBDP
+Text GLabel 1950 2750 3    50   Input ~ 0
+USBDM
 $EndSCHEMATC
