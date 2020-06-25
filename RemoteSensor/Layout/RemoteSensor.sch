@@ -4,7 +4,7 @@ EELAYER 29 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 1 4
+Sheet 1 5
 Title ""
 Date ""
 Rev ""
@@ -107,5 +107,11 @@ S 1400 1500 2100 1950
 U 5EF5F91F
 F0 "Processor" 50
 F1 "Processor.sch" 50
+$EndSheet
+$Sheet
+S 3950 4000 2100 1950
+U 5EF070B6
+F0 "USB" 50
+F1 "USB.sch" 50
 $EndSheet
 $EndSCHEMATC

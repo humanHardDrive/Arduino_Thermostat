@@ -4,7 +4,7 @@ EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 4
+Sheet 4 5
 Title ""
 Date ""
 Rev ""
@@ -22,25 +22,10 @@ Wire Wire Line
 	5000 2850 4250 2850
 Wire Wire Line
 	5000 2750 4250 2750
-Wire Wire Line
-	6800 1950 7300 1950
 Text Label 4450 2350 0    50   ~ 0
 TEMP_PIN
 Wire Wire Line
 	5000 2350 4450 2350
-$Comp
-L Switch:SW_Push SW?
-U 1 1 5EF69116
-P 6600 1950
-AR Path="/5EF69116" Ref="SW?"  Part="1" 
-AR Path="/5EF5F91F/5EF69116" Ref="SW3"  Part="1" 
-F 0 "SW3" H 6600 2235 50  0000 C CNN
-F 1 "BTN_LOAD" H 6600 2144 50  0000 C CNN
-F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 6600 2150 50  0001 C CNN
-F 3 "~" H 6600 2150 50  0001 C CNN
-	1    6600 1950
-	1    0    0    -1  
-$EndComp
 $Comp
 L SparkFun-PowerSymbols:3.3V #SUPPLY?
 U 1 1 5EF6911C
@@ -54,21 +39,6 @@ F 3 "" H 5600 1500 60  0001 C CNN
 	1    5600 1500
 	1    0    0    -1  
 $EndComp
-$Comp
-L SparkFun-PowerSymbols:GND #GND?
-U 1 1 5EF69122
-P 7300 1950
-AR Path="/5EF69122" Ref="#GND?"  Part="1" 
-AR Path="/5EF5F91F/5EF69122" Ref="#GND0113"  Part="1" 
-F 0 "#GND0113" H 7350 1900 45  0001 L BNN
-F 1 "GND" H 7300 1780 45  0000 C CNN
-F 2 "" H 7300 1850 60  0001 C CNN
-F 3 "" H 7300 1850 60  0001 C CNN
-	1    7300 1950
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6200 1950 6400 1950
 Connection ~ 5600 1500
 Wire Wire Line
 	5600 1500 5600 1750
@@ -671,8 +641,6 @@ F 3 "~" H 7000 1650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5600 1500 7000 1500
-Wire Wire Line
 	7000 1800 7000 2150
 Wire Wire Line
 	6200 2150 7000 2150
@@ -733,4 +701,29 @@ EXP_RST
 Wire Wire Line
 	4700 5550 5000 5550
 Connection ~ 5000 5550
+Wire Wire Line
+	5600 1500 6450 1500
+$Comp
+L Device:R_US R?
+U 1 1 5EF17614
+P 6450 1650
+F 0 "R?" H 6518 1696 50  0000 L CNN
+F 1 "R_US" H 6518 1605 50  0000 L CNN
+F 2 "" V 6490 1640 50  0001 C CNN
+F 3 "~" H 6450 1650 50  0001 C CNN
+	1    6450 1650
+	1    0    0    -1  
+$EndComp
+Connection ~ 6450 1500
+Wire Wire Line
+	6450 1500 7000 1500
+Wire Wire Line
+	6450 1800 6450 1950
+Wire Wire Line
+	6200 1950 6450 1950
+Wire Wire Line
+	6450 1950 6550 1950
+Connection ~ 6450 1950
+Text GLabel 6550 1950 2    50   Input ~ 0
+FLASH
 $EndSCHEMATC
