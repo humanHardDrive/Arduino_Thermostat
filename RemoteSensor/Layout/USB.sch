@@ -14,34 +14,34 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Device:Ferrite_Bead FB?
+L Device:Ferrite_Bead FB1
 U 1 1 5EF07BAD
 P 5800 2350
-F 0 "FB?" H 5663 2304 50  0000 R CNN
+F 0 "FB1" H 5663 2304 50  0000 R CNN
 F 1 "Ferrite_Bead" H 5663 2395 50  0000 R CNN
-F 2 "" V 5730 2350 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5730 2350 50  0001 C CNN
 F 3 "~" H 5800 2350 50  0001 C CNN
 	1    5800 2350
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:R_US R?
+L Device:R_US R25
 U 1 1 5EF0826F
 P 4400 3500
-F 0 "R?" V 4195 3500 50  0000 C CNN
+F 0 "R25" V 4195 3500 50  0000 C CNN
 F 1 "27" V 4286 3500 50  0000 C CNN
-F 2 "" V 4440 3490 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 4440 3490 50  0001 C CNN
 F 3 "~" H 4400 3500 50  0001 C CNN
 	1    4400 3500
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_US R?
+L Device:R_US R26
 U 1 1 5EF088E2
 P 4800 3600
-F 0 "R?" V 4595 3600 50  0000 C CNN
+F 0 "R26" V 4595 3600 50  0000 C CNN
 F 1 "27" V 4686 3600 50  0000 C CNN
-F 2 "" V 4840 3590 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 4840 3590 50  0001 C CNN
 F 3 "~" H 4800 3600 50  0001 C CNN
 	1    4800 3600
 	0    1    1    0   
@@ -55,12 +55,12 @@ Wire Wire Line
 Wire Wire Line
 	5050 3800 5200 3800
 $Comp
-L Device:C C?
+L Device:C C10
 U 1 1 5EF0B19A
 P 5050 4150
-F 0 "C?" H 5165 4196 50  0000 L CNN
+F 0 "C10" H 5165 4196 50  0000 L CNN
 F 1 "100n" H 5165 4105 50  0000 L CNN
-F 2 "" H 5088 4000 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 5088 4000 50  0001 C CNN
 F 3 "~" H 5050 4150 50  0001 C CNN
 	1    5050 4150
 	1    0    0    -1  
@@ -80,10 +80,10 @@ Wire Wire Line
 	6000 2650 6000 2900
 Connection ~ 5050 3200
 $Comp
-L Jumper:Jumper_2_Open JP?
+L Jumper:Jumper_2_Open JP1
 U 1 1 5EF0D6FF
 P 7200 3600
-F 0 "JP?" H 7200 3835 50  0000 C CNN
+F 0 "JP1" H 7200 3835 50  0000 C CNN
 F 1 "Jumper_2_Open" H 7200 3744 50  0000 C CNN
 F 2 "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm" H 7200 3600 50  0001 C CNN
 F 3 "~" H 7200 3600 50  0001 C CNN
@@ -91,10 +91,10 @@ F 3 "~" H 7200 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Jumper:Jumper_2_Open JP?
+L Jumper:Jumper_2_Open JP2
 U 1 1 5EF0E1DD
 P 7850 3400
-F 0 "JP?" H 7850 3635 50  0000 C CNN
+F 0 "JP2" H 7850 3635 50  0000 C CNN
 F 1 "Jumper_2_Open" H 7850 3544 50  0000 C CNN
 F 2 "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm" H 7850 3400 50  0001 C CNN
 F 3 "~" H 7850 3400 50  0001 C CNN
@@ -106,10 +106,10 @@ Wire Wire Line
 Wire Wire Line
 	6600 3600 7000 3600
 $Comp
-L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY?
+L RemoteSensor-rescue:V_USB-SparkFun-PowerSymbols #SUPPLY0122
 U 1 1 5EF0F32D
 P 5800 2200
-F 0 "#SUPPLY?" H 5850 2200 45  0001 L BNN
+F 0 "#SUPPLY0122" H 5850 2200 45  0001 L BNN
 F 1 "V_USB" H 5800 2476 45  0000 C CNN
 F 2 "XXX-00000" H 5800 2381 60  0000 C CNN
 F 3 "" H 5800 2200 60  0001 C CNN
@@ -117,23 +117,23 @@ F 3 "" H 5800 2200 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:LED D?
+L Device:LED D3
 U 1 1 5EF0F904
 P 6750 4800
-F 0 "D?" V 6697 4878 50  0000 L CNN
+F 0 "D3" V 6697 4878 50  0000 L CNN
 F 1 "LED" V 6788 4878 50  0000 L CNN
-F 2 "" H 6750 4800 50  0001 C CNN
+F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 6750 4800 50  0001 C CNN
 F 3 "~" H 6750 4800 50  0001 C CNN
 	1    6750 4800
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:LED D?
+L Device:LED D4
 U 1 1 5EF109F5
 P 7150 4800
-F 0 "D?" V 7097 4878 50  0000 L CNN
+F 0 "D4" V 7097 4878 50  0000 L CNN
 F 1 "LED" V 7188 4878 50  0000 L CNN
-F 2 "" H 7150 4800 50  0001 C CNN
+F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 7150 4800 50  0001 C CNN
 F 3 "~" H 7150 4800 50  0001 C CNN
 	1    7150 4800
 	0    1    1    0   
@@ -147,23 +147,23 @@ Wire Wire Line
 Wire Wire Line
 	7150 4200 7150 4650
 $Comp
-L Device:R_US R?
+L Device:R_US R27
 U 1 1 5EF1163C
 P 6750 5100
-F 0 "R?" H 6818 5146 50  0000 L CNN
-F 1 "R_US" H 6818 5055 50  0000 L CNN
-F 2 "" V 6790 5090 50  0001 C CNN
+F 0 "R27" H 6818 5146 50  0000 L CNN
+F 1 "100" H 6818 5055 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 6790 5090 50  0001 C CNN
 F 3 "~" H 6750 5100 50  0001 C CNN
 	1    6750 5100
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R?
+L Device:R_US R28
 U 1 1 5EF11D39
 P 7150 5100
-F 0 "R?" H 7218 5146 50  0000 L CNN
-F 1 "R_US" H 7218 5055 50  0000 L CNN
-F 2 "" V 7190 5090 50  0001 C CNN
+F 0 "R28" H 7218 5146 50  0000 L CNN
+F 1 "100" H 7218 5055 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 7190 5090 50  0001 C CNN
 F 3 "~" H 7150 5100 50  0001 C CNN
 	1    7150 5100
 	1    0    0    -1  
@@ -180,23 +180,23 @@ Connection ~ 7150 5400
 Text Label 7900 5400 2    50   ~ 0
 VCCIO
 $Comp
-L Device:C C?
+L Device:C C9
 U 1 1 5EF16A27
 P 4650 4150
-F 0 "C?" H 4765 4196 50  0000 L CNN
+F 0 "C9" H 4765 4196 50  0000 L CNN
 F 1 "47p" H 4765 4105 50  0000 L CNN
-F 2 "" H 4688 4000 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 4688 4000 50  0001 C CNN
 F 3 "~" H 4650 4150 50  0001 C CNN
 	1    4650 4150
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C?
+L Device:C C8
 U 1 1 5EF171E4
 P 4250 4150
-F 0 "C?" H 4365 4196 50  0000 L CNN
+F 0 "C8" H 4365 4196 50  0000 L CNN
 F 1 "47p" H 4365 4105 50  0000 L CNN
-F 2 "" H 4288 4000 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 4288 4000 50  0001 C CNN
 F 3 "~" H 4250 4150 50  0001 C CNN
 	1    4250 4150
 	1    0    0    -1  
@@ -238,10 +238,10 @@ PRG_RX
 Text GLabel 6750 2500 1    50   Input ~ 0
 PRG_TX
 $Comp
-L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q?
+L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q4
 U 1 1 5EF2CE7F
 P 2600 5500
-F 0 "Q?" H 2788 5553 60  0000 L CNN
+F 0 "Q4" H 2788 5553 60  0000 L CNN
 F 1 "MMBT2222A-TP" H 2788 5447 60  0000 L CNN
 F 2 "digikey-footprints:SOT-23-3" H 2800 5700 60  0001 L CNN
 F 3 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 5800 60  0001 L CNN
@@ -258,10 +258,10 @@ F 12 "Active" H 2800 6700 60  0001 L CNN "Status"
 	1    0    0    -1  
 $EndComp
 $Comp
-L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q?
+L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q5
 U 1 1 5EF2EBF2
 P 2600 6350
-F 0 "Q?" H 2788 6297 60  0000 L CNN
+F 0 "Q5" H 2788 6297 60  0000 L CNN
 F 1 "MMBT2222A-TP" H 2788 6403 60  0000 L CNN
 F 2 "digikey-footprints:SOT-23-3" H 2800 6550 60  0001 L CNN
 F 3 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 6650 60  0001 L CNN
@@ -278,23 +278,23 @@ F 12 "Active" H 2800 7550 60  0001 L CNN "Status"
 	1    0    0    1   
 $EndComp
 $Comp
-L Device:R_US R?
+L Device:R_US R23
 U 1 1 5EF30FEC
 P 2150 5500
-F 0 "R?" V 1945 5500 50  0000 C CNN
-F 1 "R_US" V 2036 5500 50  0000 C CNN
-F 2 "" V 2190 5490 50  0001 C CNN
+F 0 "R23" V 1945 5500 50  0000 C CNN
+F 1 "10k" V 2036 5500 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2190 5490 50  0001 C CNN
 F 3 "~" H 2150 5500 50  0001 C CNN
 	1    2150 5500
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_US R?
+L Device:R_US R24
 U 1 1 5EF32BAD
 P 2150 6350
-F 0 "R?" V 2250 6350 50  0000 C CNN
-F 1 "R_US" V 2350 6350 50  0000 C CNN
-F 2 "" V 2190 6340 50  0001 C CNN
+F 0 "R24" V 2250 6350 50  0000 C CNN
+F 1 "10k" V 2350 6350 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2190 6340 50  0001 C CNN
 F 3 "~" H 2150 6350 50  0001 C CNN
 	1    2150 6350
 	0    1    1    0   
@@ -344,10 +344,10 @@ Wire Wire Line
 Text Label 8600 3400 2    50   ~ 0
 RTS
 $Comp
-L Interface_USB:FT231XS U?
+L Interface_USB:FT231XS U10
 U 1 1 5EF43B07
 P 5900 3800
-F 0 "U?" H 5900 4881 50  0000 C CNN
+F 0 "U10" H 5900 4881 50  0000 C CNN
 F 1 "FT231XS" H 5900 4790 50  0000 C CNN
 F 2 "Package_SO:SSOP-20_3.9x8.7mm_P0.635mm" H 6500 2850 50  0001 C CNN
 F 3 "http://www.ftdichip.com/Products/ICs/FT231X.html" H 5900 3800 50  0001 C CNN
@@ -366,10 +366,10 @@ Connection ~ 5800 4850
 Wire Wire Line
 	5800 4850 6000 4850
 $Comp
-L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND0113
 U 1 1 5EF4CBA7
 P 6000 4850
-F 0 "#GND?" H 6050 4800 45  0001 L BNN
+F 0 "#GND0113" H 6050 4800 45  0001 L BNN
 F 1 "GND" H 6000 4680 45  0000 C CNN
 F 2 "" H 6000 4750 60  0001 C CNN
 F 3 "" H 6000 4750 60  0001 C CNN
