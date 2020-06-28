@@ -271,7 +271,7 @@ SLEEP_STS
 Text GLabel 6750 3450 2    50   Input ~ 0
 RST
 Text GLabel 6750 4300 2    50   Input ~ 0
-CENTER_PIN
+CENTER_BTN
 Text GLabel 3950 3950 0    50   Input ~ 0
 SLEEP_PIN
 Text GLabel 3950 4500 0    50   Input ~ 0

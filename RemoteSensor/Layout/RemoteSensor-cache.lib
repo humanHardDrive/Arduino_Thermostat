@@ -620,6 +620,20 @@ X V_USB ~ 0 0 0 U 40 40 1 1 W N
 ENDDRAW
 ENDDEF
 #
+# SparkFun-PowerSymbols_GND
+#
+DEF SparkFun-PowerSymbols_GND #GND 0 40 N N 1 L P
+F0 "#GND" 50 -50 45 H I L BNN
+F1 "SparkFun-PowerSymbols_GND" -70 -200 45 H V L BNN
+F2 "" 0 -100 60 H I C CNN
+F3 "" 0 -100 60 H I C CNN
+DRAW
+P 2 1 0 0 -75 -100 75 -100 N
+P 2 1 0 0 0 0 0 -100 N
+X GND ~ 0 0 0 D 40 40 1 1 W N
+ENDDRAW
+ENDDEF
+#
 # Switch_SW_Push
 #
 DEF Switch_SW_Push SW 0 40 N N 1 F N

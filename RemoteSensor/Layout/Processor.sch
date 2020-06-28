@@ -136,139 +136,6 @@ $EndComp
 Wire Wire Line
 	9800 1200 9900 1200
 $Comp
-L Device:R_US R?
-U 1 1 5EF6D219
-P 2050 1850
-AR Path="/5EF6D219" Ref="R?"  Part="1" 
-AR Path="/5EF5F91F/5EF6D219" Ref="R11"  Part="1" 
-F 0 "R11" H 2118 1896 50  0000 L CNN
-F 1 "4.7k" H 2118 1805 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2090 1840 50  0001 C CNN
-F 3 "~" H 2050 1850 50  0001 C CNN
-	1    2050 1850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_US R?
-U 1 1 5EF6D21F
-P 2650 1850
-AR Path="/5EF6D21F" Ref="R?"  Part="1" 
-AR Path="/5EF5F91F/5EF6D21F" Ref="R14"  Part="1" 
-F 0 "R14" H 2718 1896 50  0000 L CNN
-F 1 "4.7k" H 2718 1805 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2690 1840 50  0001 C CNN
-F 3 "~" H 2650 1850 50  0001 C CNN
-	1    2650 1850
-	1    0    0    -1  
-$EndComp
-$Comp
-L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
-U 1 1 5EF6D225
-P 2050 1500
-AR Path="/5EF6D225" Ref="#SUPPLY?"  Part="1" 
-AR Path="/5EF5F91F/5EF6D225" Ref="#SUPPLY0117"  Part="1" 
-F 0 "#SUPPLY0117" H 2100 1500 45  0001 L BNN
-F 1 "3.3V" H 2050 1776 45  0000 C CNN
-F 2 "XXX-00000" H 2050 1681 60  0000 C CNN
-F 3 "" H 2050 1500 60  0001 C CNN
-	1    2050 1500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2050 1500 2050 1650
-Wire Wire Line
-	2050 1650 2650 1650
-Wire Wire Line
-	2650 1650 2650 1700
-Connection ~ 2050 1650
-Wire Wire Line
-	2050 1650 2050 1700
-Wire Wire Line
-	2050 2000 1600 2000
-Wire Wire Line
-	2650 2000 2650 2150
-Wire Wire Line
-	2650 2150 1600 2150
-Text Label 1600 2000 0    50   ~ 0
-SCL
-Text Label 1600 2150 0    50   ~ 0
-SDA
-$Comp
-L Connector_Generic:Conn_01x04 J?
-U 1 1 5EF6FC1C
-P 2600 3200
-AR Path="/5EF6FC1C" Ref="J?"  Part="1" 
-AR Path="/5EF5F91F/5EF6FC1C" Ref="J3"  Part="1" 
-F 0 "J3" H 2680 3192 50  0000 L CNN
-F 1 "LCD_HEADER" H 2680 3101 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 2600 3200 50  0001 C CNN
-F 3 "~" H 2600 3200 50  0001 C CNN
-	1    2600 3200
-	1    0    0    -1  
-$EndComp
-$Comp
-L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
-U 1 1 5EF6FC22
-P 2250 3100
-AR Path="/5EF6FC22" Ref="#SUPPLY?"  Part="1" 
-AR Path="/5EF5F91F/5EF6FC22" Ref="#SUPPLY0118"  Part="1" 
-F 0 "#SUPPLY0118" H 2300 3100 45  0001 L BNN
-F 1 "3.3V" H 2250 3376 45  0000 C CNN
-F 2 "XXX-00000" H 2250 3281 60  0000 C CNN
-F 3 "" H 2250 3100 60  0001 C CNN
-	1    2250 3100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2250 3100 2400 3100
-Wire Wire Line
-	2400 3200 2250 3200
-Wire Wire Line
-	2250 3200 2250 3500
-Wire Wire Line
-	2400 3300 1800 3300
-Wire Wire Line
-	1800 3400 2400 3400
-Text Label 1800 3300 0    50   ~ 0
-SCL
-Text Label 1800 3400 0    50   ~ 0
-SDA
-$Comp
-L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
-U 1 1 5EF6FC2F
-P 2250 3900
-AR Path="/5EF6FC2F" Ref="#GND?"  Part="1" 
-AR Path="/5EF5F91F/5EF6FC2F" Ref="#GND0116"  Part="1" 
-F 0 "#GND0116" H 2300 3850 45  0001 L BNN
-F 1 "GND" H 2250 3730 45  0000 C CNN
-F 2 "" H 2250 3800 60  0001 C CNN
-F 3 "" H 2250 3800 60  0001 C CNN
-	1    2250 3900
-	1    0    0    -1  
-$EndComp
-$Comp
-L RemoteSensor-rescue:2N7002-dk_Transistors-FETs-MOSFETs-Single Q?
-U 1 1 5EF6FC40
-P 2250 3700
-AR Path="/5EF6FC40" Ref="Q?"  Part="1" 
-AR Path="/5EF5F91F/5EF6FC40" Ref="Q3"  Part="1" 
-F 0 "Q3" H 2358 3753 60  0000 L CNN
-F 1 "2N7002" H 2358 3647 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 2450 3900 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2450 4000 60  0001 L CNN
-F 4 "2N7002NCT-ND" H 2450 4100 60  0001 L CNN "Digi-Key_PN"
-F 5 "2N7002" H 2450 4200 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 2450 4300 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 2450 4400 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2450 4500 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 2450 4600 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 60V 115MA SOT-23" H 2450 4700 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 2450 4800 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2450 4900 60  0001 L CNN "Status"
-	1    2250 3700
-	1    0    0    -1  
-$EndComp
-$Comp
 L RemoteSensor-rescue:LM50CIM3-LM50CIM3 U?
 U 1 1 5EF73CDC
 P 9450 2550
@@ -380,90 +247,10 @@ F 3 "~" H 9450 4250 50  0001 C CNN
 	1    9450 4250
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:LED D?
-U 1 1 5EF7FA1D
-P 2650 5150
-AR Path="/5EF7FA1D" Ref="D?"  Part="1" 
-AR Path="/5EF5F91F/5EF7FA1D" Ref="D1"  Part="1" 
-F 0 "D1" H 2643 4895 50  0000 C CNN
-F 1 "HB_LED" H 2643 4986 50  0000 C CNN
-F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 2650 5150 50  0001 C CNN
-F 3 "~" H 2650 5150 50  0001 C CNN
-	1    2650 5150
-	-1   0    0    1   
-$EndComp
-$Comp
-L Device:LED D?
-U 1 1 5EF7FA23
-P 2650 5550
-AR Path="/5EF7FA23" Ref="D?"  Part="1" 
-AR Path="/5EF5F91F/5EF7FA23" Ref="D2"  Part="1" 
-F 0 "D2" H 2643 5295 50  0000 C CNN
-F 1 "BATT_LED" H 2643 5386 50  0000 C CNN
-F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 2650 5550 50  0001 C CNN
-F 3 "~" H 2650 5550 50  0001 C CNN
-	1    2650 5550
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	2800 5150 3000 5150
-Wire Wire Line
-	3000 5150 3000 5550
-Wire Wire Line
-	3000 5550 2800 5550
-$Comp
-L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
-U 1 1 5EF7FA2C
-P 3000 5650
-AR Path="/5EF7FA2C" Ref="#GND?"  Part="1" 
-AR Path="/5EF5F91F/5EF7FA2C" Ref="#GND0121"  Part="1" 
-F 0 "#GND0121" H 3050 5600 45  0001 L BNN
-F 1 "GND" H 3000 5480 45  0000 C CNN
-F 2 "" H 3000 5550 60  0001 C CNN
-F 3 "" H 3000 5550 60  0001 C CNN
-	1    3000 5650
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3000 5650 3000 5550
-Connection ~ 3000 5550
-$Comp
-L Device:R_US R?
-U 1 1 5EF7FA34
-P 2200 5150
-AR Path="/5EF7FA34" Ref="R?"  Part="1" 
-AR Path="/5EF5F91F/5EF7FA34" Ref="R12"  Part="1" 
-F 0 "R12" V 2405 5150 50  0000 C CNN
-F 1 "100" V 2314 5150 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2240 5140 50  0001 C CNN
-F 3 "~" H 2200 5150 50  0001 C CNN
-	1    2200 5150
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:R_US R?
-U 1 1 5EF7FA3A
-P 2200 5550
-AR Path="/5EF7FA3A" Ref="R?"  Part="1" 
-AR Path="/5EF5F91F/5EF7FA3A" Ref="R13"  Part="1" 
-F 0 "R13" V 1995 5550 50  0000 C CNN
-F 1 "100" V 2086 5550 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2240 5540 50  0001 C CNN
-F 3 "~" H 2200 5550 50  0001 C CNN
-	1    2200 5550
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	2350 5550 2500 5550
-Wire Wire Line
-	2350 5150 2500 5150
 Text GLabel 9050 1200 0    50   Input ~ 0
-CENTER_PIN
+CENTER_BTN
 Wire Wire Line
 	9050 1200 9200 1200
-Text GLabel 3900 1950 0    50   Input ~ 0
-RST
 Wire Wire Line
 	3900 1950 4650 1950
 Connection ~ 4650 1950
@@ -473,10 +260,8 @@ Text GLabel 6550 2250 2    50   Input ~ 0
 RADIO_RX
 Text GLabel 6550 2050 2    50   Input ~ 0
 RADIO_TX
-Text GLabel 9050 1300 0    50   Input ~ 0
-DOWN_PIN
 Text GLabel 9050 1100 0    50   Input ~ 0
-UP_PIN
+UP_BTN
 Wire Wire Line
 	9050 1100 9200 1100
 Wire Wire Line
@@ -489,10 +274,6 @@ Wire Wire Line
 	8900 4250 9300 4250
 Wire Wire Line
 	8900 3900 9300 3900
-Text GLabel 1650 3800 0    50   Input ~ 0
-WAKE_STS
-Wire Wire Line
-	1650 3800 1950 3800
 Wire Wire Line
 	6200 2050 6550 2050
 Wire Wire Line
@@ -507,14 +288,6 @@ Wire Wire Line
 	6200 2650 6550 2650
 Wire Wire Line
 	6200 2950 6550 2950
-Text GLabel 1850 5150 0    50   Input ~ 0
-HB_PIN
-Text GLabel 1850 5550 0    50   Input ~ 0
-BATT_PIN
-Wire Wire Line
-	1850 5550 2050 5550
-Wire Wire Line
-	1850 5150 2050 5150
 Wire Wire Line
 	8800 4900 9650 4900
 Wire Wire Line
@@ -582,10 +355,6 @@ F 3 "" H 6300 5800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 6300 5900
-Text GLabel 5300 4250 0    50   Input ~ 0
-UP_BTN
-Text GLabel 5300 4350 0    50   Input ~ 0
-DOWN_BTN
 Text GLabel 5300 4450 0    50   Input ~ 0
 CENTER_BTN
 Text Label 5400 5050 0    50   ~ 0
@@ -725,4 +494,263 @@ Wire Wire Line
 	9600 3900 10000 3900
 Wire Wire Line
 	9600 4250 10000 4250
+Text GLabel 5300 4350 0    50   Input ~ 0
+DOWN_BTN
+Text GLabel 5300 4250 0    50   Input ~ 0
+UP_BTN
+Text GLabel 9050 1300 0    50   Input ~ 0
+DOWN_BTN
+$Comp
+L Switch:SW_Push SW?
+U 1 1 5EF8556A
+P 2100 1300
+F 0 "SW?" H 2100 1585 50  0000 C CNN
+F 1 "SW_Push" H 2100 1494 50  0000 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 2100 1500 50  0001 C CNN
+F 3 "~" H 2100 1500 50  0001 C CNN
+	1    2100 1300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2000 5950 2200 5950
+Wire Wire Line
+	2000 6350 2200 6350
+Text GLabel 2000 6350 0    50   Input ~ 0
+BATT_PIN
+Text GLabel 2000 5950 0    50   Input ~ 0
+HB_PIN
+Wire Wire Line
+	1800 4600 2100 4600
+Text GLabel 1800 4600 0    50   Input ~ 0
+WAKE_STS
+Text GLabel 3900 1950 0    50   Input ~ 0
+RST
+Wire Wire Line
+	2500 5950 2650 5950
+Wire Wire Line
+	2500 6350 2650 6350
+$Comp
+L Device:R_US R?
+U 1 1 5EF7FA3A
+P 2350 6350
+AR Path="/5EF7FA3A" Ref="R?"  Part="1" 
+AR Path="/5EF5F91F/5EF7FA3A" Ref="R13"  Part="1" 
+F 0 "R13" V 2145 6350 50  0000 C CNN
+F 1 "100" V 2236 6350 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2390 6340 50  0001 C CNN
+F 3 "~" H 2350 6350 50  0001 C CNN
+	1    2350 6350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5EF7FA34
+P 2350 5950
+AR Path="/5EF7FA34" Ref="R?"  Part="1" 
+AR Path="/5EF5F91F/5EF7FA34" Ref="R12"  Part="1" 
+F 0 "R12" V 2555 5950 50  0000 C CNN
+F 1 "100" V 2464 5950 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2390 5940 50  0001 C CNN
+F 3 "~" H 2350 5950 50  0001 C CNN
+	1    2350 5950
+	0    -1   -1   0   
+$EndComp
+Connection ~ 3150 6350
+Wire Wire Line
+	3150 6450 3150 6350
+$Comp
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
+U 1 1 5EF7FA2C
+P 3150 6450
+AR Path="/5EF7FA2C" Ref="#GND?"  Part="1" 
+AR Path="/5EF5F91F/5EF7FA2C" Ref="#GND0121"  Part="1" 
+F 0 "#GND0121" H 3200 6400 45  0001 L BNN
+F 1 "GND" H 3150 6280 45  0000 C CNN
+F 2 "" H 3150 6350 60  0001 C CNN
+F 3 "" H 3150 6350 60  0001 C CNN
+	1    3150 6450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3150 6350 2950 6350
+Wire Wire Line
+	3150 5950 3150 6350
+Wire Wire Line
+	2950 5950 3150 5950
+$Comp
+L Device:LED D?
+U 1 1 5EF7FA23
+P 2800 6350
+AR Path="/5EF7FA23" Ref="D?"  Part="1" 
+AR Path="/5EF5F91F/5EF7FA23" Ref="D2"  Part="1" 
+F 0 "D2" H 2793 6095 50  0000 C CNN
+F 1 "BATT_LED" H 2793 6186 50  0000 C CNN
+F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 2800 6350 50  0001 C CNN
+F 3 "~" H 2800 6350 50  0001 C CNN
+	1    2800 6350
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:LED D?
+U 1 1 5EF7FA1D
+P 2800 5950
+AR Path="/5EF7FA1D" Ref="D?"  Part="1" 
+AR Path="/5EF5F91F/5EF7FA1D" Ref="D1"  Part="1" 
+F 0 "D1" H 2793 5695 50  0000 C CNN
+F 1 "HB_LED" H 2793 5786 50  0000 C CNN
+F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 2800 5950 50  0001 C CNN
+F 3 "~" H 2800 5950 50  0001 C CNN
+	1    2800 5950
+	-1   0    0    1   
+$EndComp
+$Comp
+L RemoteSensor-rescue:2N7002-dk_Transistors-FETs-MOSFETs-Single Q?
+U 1 1 5EF6FC40
+P 2400 4500
+AR Path="/5EF6FC40" Ref="Q?"  Part="1" 
+AR Path="/5EF5F91F/5EF6FC40" Ref="Q3"  Part="1" 
+F 0 "Q3" H 2508 4553 60  0000 L CNN
+F 1 "2N7002" H 2508 4447 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 2600 4700 60  0001 L CNN
+F 3 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2600 4800 60  0001 L CNN
+F 4 "2N7002NCT-ND" H 2600 4900 60  0001 L CNN "Digi-Key_PN"
+F 5 "2N7002" H 2600 5000 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 2600 5100 60  0001 L CNN "Category"
+F 7 "Transistors - FETs, MOSFETs - Single" H 2600 5200 60  0001 L CNN "Family"
+F 8 "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF" H 2600 5300 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/on-semiconductor/2N7002/2N7002NCT-ND/244664" H 2600 5400 60  0001 L CNN "DK_Detail_Page"
+F 10 "MOSFET N-CH 60V 115MA SOT-23" H 2600 5500 60  0001 L CNN "Description"
+F 11 "ON Semiconductor" H 2600 5600 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 2600 5700 60  0001 L CNN "Status"
+	1    2400 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
+U 1 1 5EF6FC2F
+P 2400 4700
+AR Path="/5EF6FC2F" Ref="#GND?"  Part="1" 
+AR Path="/5EF5F91F/5EF6FC2F" Ref="#GND0116"  Part="1" 
+F 0 "#GND0116" H 2450 4650 45  0001 L BNN
+F 1 "GND" H 2400 4530 45  0000 C CNN
+F 2 "" H 2400 4600 60  0001 C CNN
+F 3 "" H 2400 4600 60  0001 C CNN
+	1    2400 4700
+	1    0    0    -1  
+$EndComp
+Text Label 1950 4200 0    50   ~ 0
+SDA
+Text Label 1950 4100 0    50   ~ 0
+SCL
+Wire Wire Line
+	1950 4200 2550 4200
+Wire Wire Line
+	2550 4100 1950 4100
+Wire Wire Line
+	2400 4000 2400 4300
+Wire Wire Line
+	2550 4000 2400 4000
+Wire Wire Line
+	2400 3900 2550 3900
+$Comp
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
+U 1 1 5EF6FC22
+P 2400 3900
+AR Path="/5EF6FC22" Ref="#SUPPLY?"  Part="1" 
+AR Path="/5EF5F91F/5EF6FC22" Ref="#SUPPLY0118"  Part="1" 
+F 0 "#SUPPLY0118" H 2450 3900 45  0001 L BNN
+F 1 "3.3V" H 2400 4176 45  0000 C CNN
+F 2 "XXX-00000" H 2400 4081 60  0000 C CNN
+F 3 "" H 2400 3900 60  0001 C CNN
+	1    2400 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x04 J?
+U 1 1 5EF6FC1C
+P 2750 4000
+AR Path="/5EF6FC1C" Ref="J?"  Part="1" 
+AR Path="/5EF5F91F/5EF6FC1C" Ref="J3"  Part="1" 
+F 0 "J3" H 2830 3992 50  0000 L CNN
+F 1 "LCD_HEADER" H 2830 3901 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 2750 4000 50  0001 C CNN
+F 3 "~" H 2750 4000 50  0001 C CNN
+	1    2750 4000
+	1    0    0    -1  
+$EndComp
+Text Label 1750 2950 0    50   ~ 0
+SDA
+Text Label 1750 2800 0    50   ~ 0
+SCL
+Wire Wire Line
+	2800 2950 1750 2950
+Wire Wire Line
+	2800 2800 2800 2950
+Wire Wire Line
+	2200 2800 1750 2800
+Wire Wire Line
+	2200 2450 2200 2500
+Connection ~ 2200 2450
+Wire Wire Line
+	2800 2450 2800 2500
+Wire Wire Line
+	2200 2450 2800 2450
+Wire Wire Line
+	2200 2300 2200 2450
+$Comp
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
+U 1 1 5EF6D225
+P 2200 2300
+AR Path="/5EF6D225" Ref="#SUPPLY?"  Part="1" 
+AR Path="/5EF5F91F/5EF6D225" Ref="#SUPPLY0117"  Part="1" 
+F 0 "#SUPPLY0117" H 2250 2300 45  0001 L BNN
+F 1 "3.3V" H 2200 2576 45  0000 C CNN
+F 2 "XXX-00000" H 2200 2481 60  0000 C CNN
+F 3 "" H 2200 2300 60  0001 C CNN
+	1    2200 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5EF6D21F
+P 2800 2650
+AR Path="/5EF6D21F" Ref="R?"  Part="1" 
+AR Path="/5EF5F91F/5EF6D21F" Ref="R14"  Part="1" 
+F 0 "R14" H 2868 2696 50  0000 L CNN
+F 1 "4.7k" H 2868 2605 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2840 2640 50  0001 C CNN
+F 3 "~" H 2800 2650 50  0001 C CNN
+	1    2800 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5EF6D219
+P 2200 2650
+AR Path="/5EF6D219" Ref="R?"  Part="1" 
+AR Path="/5EF5F91F/5EF6D219" Ref="R11"  Part="1" 
+F 0 "R11" H 2268 2696 50  0000 L CNN
+F 1 "4.7k" H 2268 2605 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2240 2640 50  0001 C CNN
+F 3 "~" H 2200 2650 50  0001 C CNN
+	1    2200 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND?
+U 1 1 5EF95E82
+P 2550 1300
+F 0 "#GND?" H 2600 1250 45  0001 L BNN
+F 1 "GND" H 2550 1130 45  0000 C CNN
+F 2 "" H 2550 1200 60  0001 C CNN
+F 3 "" H 2550 1200 60  0001 C CNN
+	1    2550 1300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2300 1300 2550 1300
+Text GLabel 1650 1300 0    50   Input ~ 0
+FLASH
+Wire Wire Line
+	1650 1300 1900 1300
 $EndSCHEMATC
