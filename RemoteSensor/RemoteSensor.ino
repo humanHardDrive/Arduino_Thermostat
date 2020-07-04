@@ -2,6 +2,7 @@
 #include <PubSubClient.h>
 #include <EEPROM.h>
 #include <map>
+#include <Wire.h>
 
 #include "SensorDevice.h"
 
@@ -19,17 +20,12 @@
 
 #define DEVICE_NAME_BASE          "remoteSensor-"
 
-#define CHARGE_STATUS_PIN     1
-#define HB_LED_PIN            2
-#define CHARGER_STATUS_PIN    3
-#define BATT_LED_PIN          4
-#define UP_BTN_PIN            5
-#define SCL_PIN               9
-#define SDA_PIN               10
-#define DOWN_BTN_PIN          12
-#define CENTER_BTN_PIN        13
-#define BATTERY_STATUS_PIN    14
-#define SLEEP_PIN             15
+#define HB_PIN          4
+#define BATT_PIN        5
+#define SCL_PIN         9
+#define SDA_PIN         10
+#define SLEEP_PIN       12
+#define EXP_RST_PIN     13
 
 #define TEMP_SENSE_PIN  A0
 
@@ -181,21 +177,14 @@ bool recoverSaveInfo()
 
 void setup()
 {
-  pinMode(UP_BTN_PIN, INPUT_PULLUP);
-  pinMode(DOWN_BTN_PIN, INPUT_PULLUP);
-  pinMode(CENTER_BTN_PIN, INPUT_PULLUP);
-
-  pinMode(CHARGE_STATUS_PIN, INPUT);
-  pinMode(CHARGER_STATUS_PIN, INPUT);
-  pinMode(BATTERY_STATUS_PIN, INPUT);
-
-  pinMode(HB_LED_PIN, OUTPUT);
-  pinMode(BATT_LED_PIN, OUTPUT);
+  Serial.begin(115200);
+  Wire.begin(SDA_PIN, SCL_PIN);
+  
+  pinMode(HB_PIN, OUTPUT);
   pinMode(SLEEP_PIN, OUTPUT);
-
-  digitalWrite(HB_LED_PIN, HIGH);
-  digitalWrite(BATT_LED_PIN, LOW);
-  digitalWrite(SLEEP_PIN, LOW);
+  pinMode(EXP_RST_PIN, OUTPUT);
+  
+  pinMode(BATT_PIN, INPUT);
 
   setupEEPROM();
   recoverSaveInfo();
