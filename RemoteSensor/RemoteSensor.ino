@@ -20,14 +20,46 @@
 
 #define DEVICE_NAME_BASE          "remoteSensor-"
 
-#define HB_PIN          4
-#define BATT_PIN        5
-#define SCL_PIN         9
-#define SDA_PIN         10
-#define SLEEP_PIN       12
-#define EXP_RST_PIN     13
+//Native GPIO
+//All of the native GPIO are used as output
+enum
+{
+  FLASH_PIN = 0,
+  RADIO_TX,
+  RESERVED_PIN_2,
+  RADIO_RX,
+  HB_LED_PIN,
+  BATT_LED_PIN,
+  RESERVED_PIN_6,
+  RESERVED_PIN_7,
+  RESERVED_PIN_8,
+  SCL_PIN,
+  SDA_PIN,
+  RESERVED_PIN_11,
+  SLEEP_PIN,
+  EXP_RST_PIN,
+  UNUSED_PIN_14,
+  RESERVED_PIN_15,
+  RST_PIN,
+  ALL_NATIVE_PINS
+};
 
 #define TEMP_SENSE_PIN  A0
+
+//Expander GPIO
+//All of the expander GPIO is used as input
+enum
+{
+  UP_BTN_PIN = 0,
+  DOWN_BTN_PIN,
+  CENTER_BTN_PIN,
+  BATT_STS_PIN,
+  CHARGE_STS_PIN,
+  CHARGER_STS_PIN,
+  SLEEP_STS_PIN,
+  WAKE_STS_PIN,
+  ALL_EXP_PINS
+};
 
 enum RUNNING_STATE : uint8_t
 {
