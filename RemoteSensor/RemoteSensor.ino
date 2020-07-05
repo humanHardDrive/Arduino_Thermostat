@@ -3,6 +3,7 @@
 #include <EEPROM.h>
 #include <map>
 #include <Wire.h>
+#include "Adafruit_MCP23008.h"
 
 #include "SensorDevice.h"
 
@@ -60,6 +61,10 @@ enum
   WAKE_STS_PIN,
   ALL_EXP_PINS
 };
+
+Adafruit_MCP23008 ioExp;
+uint8_t aPinDebounce[ALL_EXP_PINS];
+bool aPinStatus[ALL_EXP_PINS];
 
 enum RUNNING_STATE : uint8_t
 {
@@ -211,16 +216,44 @@ void setup()
 {
   Serial.begin(115200);
   Wire.begin(SDA_PIN, SCL_PIN);
-  
-  pinMode(HB_PIN, OUTPUT);
+  ioExp.begin();
+
+  //Setup native IO
+  pinMode(HB_LED_PIN, OUTPUT);
   pinMode(SLEEP_PIN, OUTPUT);
   pinMode(EXP_RST_PIN, OUTPUT);
-  
-  pinMode(BATT_PIN, INPUT);
+  pinMode(BATT_LED_PIN, OUTPUT);
+  //Setup initial pin states
+  pinMode(SLEEP_PIN, LOW);
+  pinMode(HB_LED_PIN, HIGH);
+  pinMode(EXP_RST_PIN, HIGH);
+  pinMode(BATT_LED_PIN, LOW);
 
+  //Setup expander IO
+  //Reset the expander first
+  pinMode(EXP_RST_PIN, LOW);
+  delay(5);
+  pinMode(EXP_RST_PIN, HIGH);
+  //These pins need pullups
+  ioExp.pinMode(UP_BTN_PIN, INPUT);
+  ioExp.pinMode(DOWN_BTN_PIN, INPUT);
+  ioExp.pinMode(CENTER_BTN_PIN, INPUT);
+  ioExp.pullUp(UP_BTN_PIN, HIGH);
+  ioExp.pullUp(DOWN_BTN_PIN, HIGH);
+  ioExp.pullUp(CENTER_BTN_PIN, HIGH);
+  //These pins already have pullups
+  ioExp.pinMode(BATT_STS_PIN, INPUT);
+  ioExp.pinMode(CHARGE_STS_PIN, INPUT);
+  ioExp.pinMode(CHARGER_STS_PIN, INPUT);
+  ioExp.pinMode(SLEEP_STS_PIN, INPUT);
+  ioExp.pinMode(WAKE_STS_PIN, INPUT);
+
+  //Setup non-volatile storage
   setupEEPROM();
   recoverSaveInfo();
 
+  memset(aPinDebounce, 0, sizeof(aPinDebounce));
+  memset(aPinStatus, 0, sizeof(aPinStatus));
   memset(sRemoteDeviceName, 0, MAX_DEVICE_NAME_LENGTH);
 
   ulWakeTimeStart = millis();
@@ -231,7 +264,7 @@ unsigned long ulLastBattUpdate = 0;
 void updateStatusLED()
 {
   //Charger is on
-  if (digitalRead(CHARGER_STATUS_PIN))
+  if (aPinStatus[CHARGER_STS_PIN])
   {
     //HB led is always active
     digitalWrite(HB_LED_PIN, HIGH);
@@ -239,7 +272,7 @@ void updateStatusLED()
 
     //Toggle the battery indication LED until charged
     //Battery is charging
-    if (!digitalRead(CHARGE_STATUS_PIN))
+    if (aPinStatus[CHARGE_STS_PIN])
     {
       //Toggle the battery status LED every 0.5 second while charging
       if ((millis() - ulLastBattUpdate) > 500)
@@ -272,12 +305,10 @@ void updateStatusLED()
     }
 
     //Update the battery indicator LED to show low voltage
-    digitalWrite(BATT_LED_PIN, !digitalRead(BATTERY_STATUS_PIN));
+    digitalWrite(BATT_LED_PIN, !aPinStatus[BATT_STS_PIN]);
   }
 }
 
-bool bUpBtnState = false, bDownBtnState = false, bCenterBtnState = false;
-unsigned long ulUpBtnTimer = 0, ulDownBtnTimer = 0, ulCenterBtnTimer = 0;
 void onUpBtnStateChanged()
 {
   ulWakeTimeStart = millis();
@@ -293,44 +324,45 @@ void onCenterBtnStateChanged()
   ulWakeTimeStart = millis();
 }
 
-void updateButtonStates()
+std::map<uint8_t, std::function<void(void)>> pinUpdateFn =
 {
-  bool bCurUpBtnState = !digitalRead(UP_BTN_PIN);
-  bool bCurDownBtnState = !digitalRead(DOWN_BTN_PIN);
-  bool bCurCenterBtnState = !digitalRead(CENTER_BTN_PIN);
+  {UP_BTN_PIN, onUpBtnStateChanged},
+  {DOWN_BTN_PIN, onDownBtnStateChanged},
+  {CENTER_BTN_PIN, onCenterBtnStateChanged}
+};
 
-  if (bCurUpBtnState != bUpBtnState)
+uint32_t ulLastIOUpdateTime = 0;
+void updateInputs()
+{
+  if((millis() - ulLastIOUpdateTime) < 1000)
+    return;
+  
+  for(size_t i = 0; i < ALL_EXP_PINS; i++)
   {
-    if ((millis() - ulUpBtnTimer) > DEBOUNCE_TIME)
+    //Debounce the input
+    if(ioExp.digitalRead(i) && aPinDebounce[i] < DEBOUNCE_TIME)
+      aPinDebounce[i]++;
+    else if(!ioExp.digitalRead(i) && aPinDebounce[i])
+      aPinDebounce[i]--;
+
+    //Update the state
+    if(!aPinDebounce[i] && aPinStatus[i])
     {
-      bUpBtnState = bCurUpBtnState;
-      onUpBtnStateChanged();
+      aPinStatus[i] = false;
+      //Call the handler if it exists
+      if(pinUpdateFn[i])
+        pinUpdateFn[i]();
+    }
+    else if(aPinDebounce[i] >= DEBOUNCE_TIME && !aPinStatus[i])
+    {
+      aPinStatus[i] = true;
+      //Call the handler if it exists
+      if(pinUpdateFn[i])
+        pinUpdateFn[i]();
     }
   }
-  else
-    ulUpBtnTimer = millis();
 
-  if (bCurDownBtnState != bDownBtnState)
-  {
-    if ((millis() - ulDownBtnTimer) > DEBOUNCE_TIME)
-    {
-      bDownBtnState = bCurDownBtnState;
-      onDownBtnStateChanged();
-    }
-  }
-  else
-    ulDownBtnTimer = millis();
-
-  if (bCurCenterBtnState != bCenterBtnState)
-  {
-    if ((millis() - ulCenterBtnTimer) > DEBOUNCE_TIME)
-    {
-      bCenterBtnState = bCurCenterBtnState;
-      onCenterBtnStateChanged();
-    }
-  }
-  else
-    ulCenterBtnTimer = millis();
+  ulLastIOUpdateTime = millis();
 }
 
 uint8_t SampleStateFn()
@@ -499,7 +531,7 @@ uint8_t WaitForWiFiOffStateFn()
 uint8_t SleepStateFn()
 {
   //Skip sleeping if the charger is active
-  if (digitalRead(CHARGER_STATUS_PIN))
+  if (aPinStatus[CHARGER_STS_PIN])
   {
     ulWakeTimeStart = millis();
     return RUNNING_STATE::SAMPLE;
@@ -553,5 +585,5 @@ void loop()
   mqttClient.loop();
 
   updateStatusLED();
-  updateButtonStates();
+  updateInputs();
 }
