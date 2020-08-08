@@ -620,6 +620,21 @@ X V_USB ~ 0 0 0 U 40 40 1 1 W N
 ENDDRAW
 ENDDEF
 #
+# SparkFun-PowerSymbols_3.3V
+#
+DEF SparkFun-PowerSymbols_3.3V #SUPPLY 0 40 N N 1 L P
+F0 "#SUPPLY" 50 0 45 H I L BNN
+F1 "SparkFun-PowerSymbols_3.3V" -50 150 45 H V L BNN
+F2 "XXX-00000" 0 300 60 H V C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+P 2 1 0 0 0 0 0 100 N
+P 2 1 0 0 0 100 -30 50 N
+P 2 1 0 0 30 50 0 100 N
+X 3.3V ~ 0 0 0 U 40 40 1 1 W N
+ENDDRAW
+ENDDEF
+#
 # SparkFun-PowerSymbols_GND
 #
 DEF SparkFun-PowerSymbols_GND #GND 0 40 N N 1 L P
@@ -648,6 +663,31 @@ P 2 0 1 0 0 50 0 120 N
 P 2 0 1 0 100 50 -100 50 N
 X 1 1 -200 0 100 R 50 50 0 1 P
 X 2 2 200 0 100 L 50 50 0 1 P
+ENDDRAW
+ENDDEF
+#
+# dk_PMIC-Voltage-Regulators-Linear_LD1117S33CTR
+#
+DEF dk_PMIC-Voltage-Regulators-Linear_LD1117S33CTR U 0 20 Y Y 1 F N
+F0 "U" 50 150 60 H V C CNN
+F1 "dk_PMIC-Voltage-Regulators-Linear_LD1117S33CTR" 50 250 60 H V C CNN
+F2 "digikey-footprints:SOT-223" 200 200 60 H I L CNN
+F3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/99/3b/7d/91/91/51/4b/be/CD00000544.pdf/files/CD00000544.pdf/jcr:content/translations/en.CD00000544.pdf" 200 300 60 H I L CNN
+F4 "497-1241-1-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "LD1117S33CTR" 200 500 60 H I L CNN "MPN"
+F6 "Integrated Circuits (ICs)" 200 600 60 H I L CNN "Category"
+F7 "PMIC - Voltage Regulators - Linear" 200 700 60 H I L CNN "Family"
+F8 "http://www.st.com/content/ccc/resource/technical/document/datasheet/99/3b/7d/91/91/51/4b/be/CD00000544.pdf/files/CD00000544.pdf/jcr:content/translations/en.CD00000544.pdf" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/stmicroelectronics/LD1117S33CTR/497-1241-1-ND/586241" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "IC REG LINEAR 3.3V 800MA SOT223" 200 1000 60 H I L CNN "Description"
+F11 "STMicroelectronics" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+S -200 100 300 -200 1 1 0 f
+X GND 1 0 -300 100 U 50 50 1 1 W
+X VOUT 2 400 0 100 L 50 50 1 1 w
+X VIN 3 -300 0 100 R 50 50 1 1 W
+X VOUT 4 400 -100 100 L 50 50 1 1 w
 ENDDRAW
 ENDDEF
 #

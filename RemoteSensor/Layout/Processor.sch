@@ -215,12 +215,6 @@ F 3 "" H 9500 5100 60  0001 C CNN
 $EndComp
 Wire Wire Line
 	9650 5000 9500 5000
-Wire Wire Line
-	9500 5000 9500 5200
-Text Label 8800 4900 0    50   ~ 0
-PRG_TX
-Text Label 8800 5100 0    50   ~ 0
-PRG_RX
 $Comp
 L Device:R_US R?
 U 1 1 5EF7CD26
@@ -288,10 +282,6 @@ Wire Wire Line
 	6200 2650 6550 2650
 Wire Wire Line
 	6200 2950 6550 2950
-Wire Wire Line
-	8800 4900 9650 4900
-Wire Wire Line
-	8800 5100 9650 5100
 Wire Wire Line
 	6300 5750 6300 5900
 Wire Wire Line
@@ -501,10 +491,10 @@ UP_BTN
 Text GLabel 9050 1300 0    50   Input ~ 0
 DOWN_BTN
 $Comp
-L Switch:SW_Push SW?
+L Switch:SW_Push SW2
 U 1 1 5EF8556A
 P 2100 1300
-F 0 "SW?" H 2100 1585 50  0000 C CNN
+F 0 "SW2" H 2100 1585 50  0000 C CNN
 F 1 "SW_Push" H 2100 1494 50  0000 C CNN
 F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 2100 1500 50  0001 C CNN
 F 3 "~" H 2100 1500 50  0001 C CNN
@@ -737,10 +727,10 @@ F 3 "~" H 2200 2650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND?
+L SparkFun-PowerSymbols:GND #GND0123
 U 1 1 5EF95E82
 P 2550 1300
-F 0 "#GND?" H 2600 1250 45  0001 L BNN
+F 0 "#GND0123" H 2600 1250 45  0001 L BNN
 F 1 "GND" H 2550 1130 45  0000 C CNN
 F 2 "" H 2550 1200 60  0001 C CNN
 F 3 "" H 2550 1200 60  0001 C CNN
@@ -753,4 +743,14 @@ Text GLabel 1650 1300 0    50   Input ~ 0
 FLASH
 Wire Wire Line
 	1650 1300 1900 1300
+Text GLabel 8900 4900 0    50   Input ~ 0
+PRG_TX
+Text GLabel 8900 5100 0    50   Input ~ 0
+PRG_RX
+Wire Wire Line
+	8900 5100 9650 5100
+Wire Wire Line
+	8900 4900 9650 4900
+Wire Wire Line
+	9500 5000 9500 5200
 $EndSCHEMATC

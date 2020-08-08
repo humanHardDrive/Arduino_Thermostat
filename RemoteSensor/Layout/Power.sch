@@ -346,58 +346,35 @@ Wire Wire Line
 Wire Wire Line
 	4900 4500 4900 4650
 $Comp
-L Regulator_Switching:LM3670MF U?
-U 1 1 5EEC2141
-P 4500 2100
-AR Path="/5EEC2141" Ref="U?"  Part="1" 
-AR Path="/5EE9FD3C/5EEC2141" Ref="U2"  Part="1" 
-F 0 "U2" H 4500 2425 50  0000 C CNN
-F 1 "LM3671MF" H 4500 2334 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TSOT-23-5" H 4550 1850 50  0001 L CNN
-F 3 "http://www.ti.com/lit/ds/symlink/lm3670.pdf" H 4250 1750 50  0001 C CNN
-	1    4500 2100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4200 2100 4200 2000
-$Comp
 L Device:L L?
 U 1 1 5EEC2148
-P 3000 6300
+P 2500 6300
 AR Path="/5EEC2148" Ref="L?"  Part="1" 
 AR Path="/5EE9FD3C/5EEC2148" Ref="L1"  Part="1" 
-F 0 "L1" V 3190 6300 50  0000 C CNN
-F 1 "2.2u" V 3099 6300 50  0000 C CNN
-F 2 "Inductor_SMD:L_Taiyo-Yuden_NR-24xx_HandSoldering" H 3000 6300 50  0001 C CNN
-F 3 "~" H 3000 6300 50  0001 C CNN
-	1    3000 6300
+F 0 "L1" V 2690 6300 50  0000 C CNN
+F 1 "2.2u" V 2599 6300 50  0000 C CNN
+F 2 "Inductor_SMD:L_Taiyo-Yuden_NR-24xx_HandSoldering" H 2500 6300 50  0001 C CNN
+F 3 "~" H 2500 6300 50  0001 C CNN
+	1    2500 6300
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	3150 6300 3150 6500
+	2650 6300 2650 6500
 Wire Wire Line
-	3150 6500 2700 6500
+	2650 6500 2200 6500
 $Comp
 L Device:C C?
 U 1 1 5EEC2151
-P 3900 2150
+P 3900 2250
 AR Path="/5EEC2151" Ref="C?"  Part="1" 
 AR Path="/5EE9FD3C/5EEC2151" Ref="C4"  Part="1" 
-F 0 "C4" H 4015 2196 50  0000 L CNN
-F 1 "4.7u" H 4015 2105 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 3938 2000 50  0001 C CNN
-F 3 "~" H 3900 2150 50  0001 C CNN
-	1    3900 2150
+F 0 "C4" H 4015 2296 50  0000 L CNN
+F 1 "4.7u" H 4015 2205 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 3938 2100 50  0001 C CNN
+F 3 "~" H 3900 2250 50  0001 C CNN
+	1    3900 2250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3900 2300 3900 2400
-Wire Wire Line
-	3900 2400 4500 2400
-Wire Wire Line
-	3900 2000 4200 2000
-Connection ~ 3900 2000
-Connection ~ 4200 2000
 $Comp
 L Device:C C?
 U 1 1 5EEC215C
@@ -424,15 +401,11 @@ F 3 "~" H 3900 6450 50  0001 C CNN
 	1    3900 6450
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3150 6300 3450 6300
-Connection ~ 3150 6300
+Connection ~ 2650 6300
 Wire Wire Line
 	3450 6300 3900 6300
-Connection ~ 3450 6300
 Wire Wire Line
 	3450 6700 3450 6600
-Connection ~ 4500 2400
 Wire Wire Line
 	3450 6700 3900 6700
 Wire Wire Line
@@ -450,8 +423,6 @@ F 3 "" H 4350 6150 60  0001 C CNN
 	1    4350 6150
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3900 1850 3900 2000
 Wire Wire Line
 	4350 6150 4350 6300
 Connection ~ 3900 6300
@@ -662,26 +633,18 @@ F 3 "" H 3900 6600 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4800 2000 5150 2000
-Wire Wire Line
-	4800 2200 5150 2200
-Wire Wire Line
 	9950 4150 10400 4150
 Wire Wire Line
 	9950 4350 10400 4350
-Text Label 5150 2000 2    50   ~ 0
-SW
-Text Label 5150 2200 2    50   ~ 0
-FB
 Text Label 10400 4150 2    50   ~ 0
 SW
 Text Label 10400 4350 2    50   ~ 0
 FB
 Wire Wire Line
-	2850 6300 2700 6300
-Text Label 2700 6300 0    50   ~ 0
+	2350 6300 2200 6300
+Text Label 2200 6300 0    50   ~ 0
 SW
-Text Label 2700 6500 0    50   ~ 0
+Text Label 2200 6500 0    50   ~ 0
 FB
 Text GLabel 3200 4400 2    50   Input ~ 0
 CHARGE_STS
@@ -766,4 +729,78 @@ Text GLabel 2050 2750 3    50   Input ~ 0
 USBDP
 Text GLabel 1950 2750 3    50   Input ~ 0
 USBDM
+$Comp
+L dk_PMIC-Voltage-Regulators-Linear:LD1117S33CTR U2
+U 1 1 5F145B16
+P 4500 2100
+F 0 "U2" H 4550 2387 60  0000 C CNN
+F 1 "LD1117S33CTR" H 4550 2281 60  0000 C CNN
+F 2 "digikey-footprints:SOT-223" H 4700 2300 60  0001 L CNN
+F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/99/3b/7d/91/91/51/4b/be/CD00000544.pdf/files/CD00000544.pdf/jcr:content/translations/en.CD00000544.pdf" H 4700 2400 60  0001 L CNN
+F 4 "497-1241-1-ND" H 4700 2500 60  0001 L CNN "Digi-Key_PN"
+F 5 "LD1117S33CTR" H 4700 2600 60  0001 L CNN "MPN"
+F 6 "Integrated Circuits (ICs)" H 4700 2700 60  0001 L CNN "Category"
+F 7 "PMIC - Voltage Regulators - Linear" H 4700 2800 60  0001 L CNN "Family"
+F 8 "http://www.st.com/content/ccc/resource/technical/document/datasheet/99/3b/7d/91/91/51/4b/be/CD00000544.pdf/files/CD00000544.pdf/jcr:content/translations/en.CD00000544.pdf" H 4700 2900 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/stmicroelectronics/LD1117S33CTR/497-1241-1-ND/586241" H 4700 3000 60  0001 L CNN "DK_Detail_Page"
+F 10 "IC REG LINEAR 3.3V 800MA SOT223" H 4700 3100 60  0001 L CNN "Description"
+F 11 "STMicroelectronics" H 4700 3200 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 4700 3300 60  0001 L CNN "Status"
+	1    4500 2100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 1850 3900 2100
+Wire Wire Line
+	3900 2100 4200 2100
+Connection ~ 3900 2100
+Wire Wire Line
+	3900 2400 3900 2550
+Wire Wire Line
+	3900 2550 4500 2550
+Connection ~ 4500 2550
+Wire Wire Line
+	4900 2100 5000 2100
+Wire Wire Line
+	5000 2100 5000 2200
+Wire Wire Line
+	5000 2200 4900 2200
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY0123
+U 1 1 5F2F9BC4
+P 5000 1850
+F 0 "#SUPPLY0123" H 5050 1850 45  0001 L BNN
+F 1 "3.3V" H 5000 2126 45  0000 C CNN
+F 2 "XXX-00000" H 5000 2031 60  0000 C CNN
+F 3 "" H 5000 1850 60  0001 C CNN
+	1    5000 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 1850 5000 2100
+Connection ~ 5000 2100
+$Comp
+L Device:C C?
+U 1 1 5F2FE4BE
+P 3050 6450
+AR Path="/5F2FE4BE" Ref="C?"  Part="1" 
+AR Path="/5EE9FD3C/5F2FE4BE" Ref="C11"  Part="1" 
+F 0 "C11" H 3165 6496 50  0000 L CNN
+F 1 "10u" H 3165 6405 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 3088 6300 50  0001 C CNN
+F 3 "~" H 3050 6450 50  0001 C CNN
+	1    3050 6450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2650 6300 3050 6300
+Wire Wire Line
+	3050 6300 3450 6300
+Connection ~ 3050 6300
+Connection ~ 3450 6300
+Wire Wire Line
+	3050 6600 3050 6700
+Wire Wire Line
+	3050 6700 3450 6700
+Connection ~ 3450 6700
 $EndSCHEMATC
