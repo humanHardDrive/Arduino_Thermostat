@@ -69,8 +69,6 @@ Wire Wire Line
 	5050 4000 5050 3800
 Connection ~ 5050 3800
 Wire Wire Line
-	4950 3600 5200 3600
-Wire Wire Line
 	4550 3500 5200 3500
 Wire Wire Line
 	5050 3200 5050 2650
@@ -116,69 +114,6 @@ F 3 "" H 5800 2200 60  0001 C CNN
 	1    5800 2200
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:LED D3
-U 1 1 5EF0F904
-P 6750 4800
-F 0 "D3" V 6697 4878 50  0000 L CNN
-F 1 "LED" V 6788 4878 50  0000 L CNN
-F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 6750 4800 50  0001 C CNN
-F 3 "~" H 6750 4800 50  0001 C CNN
-	1    6750 4800
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:LED D4
-U 1 1 5EF109F5
-P 7150 4800
-F 0 "D4" V 7097 4878 50  0000 L CNN
-F 1 "LED" V 7188 4878 50  0000 L CNN
-F 2 "LED_SMD:LED_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 7150 4800 50  0001 C CNN
-F 3 "~" H 7150 4800 50  0001 C CNN
-	1    7150 4800
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	6600 4300 6750 4300
-Wire Wire Line
-	6750 4300 6750 4650
-Wire Wire Line
-	6600 4200 7150 4200
-Wire Wire Line
-	7150 4200 7150 4650
-$Comp
-L Device:R_US R27
-U 1 1 5EF1163C
-P 6750 5100
-F 0 "R27" H 6818 5146 50  0000 L CNN
-F 1 "100" H 6818 5055 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 6790 5090 50  0001 C CNN
-F 3 "~" H 6750 5100 50  0001 C CNN
-	1    6750 5100
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_US R28
-U 1 1 5EF11D39
-P 7150 5100
-F 0 "R28" H 7218 5146 50  0000 L CNN
-F 1 "100" H 7218 5055 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 7190 5090 50  0001 C CNN
-F 3 "~" H 7150 5100 50  0001 C CNN
-	1    7150 5100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6750 5250 6750 5400
-Wire Wire Line
-	6750 5400 7150 5400
-Wire Wire Line
-	7150 5400 7150 5250
-Wire Wire Line
-	7150 5400 7900 5400
-Connection ~ 7150 5400
-Text Label 7900 5400 2    50   ~ 0
-VCCIO
 $Comp
 L Device:C C9
 U 1 1 5EF16A27
@@ -343,17 +278,6 @@ Wire Wire Line
 	8050 3400 8600 3400
 Text Label 8600 3400 2    50   ~ 0
 RTS
-$Comp
-L Interface_USB:FT231XS U10
-U 1 1 5EF43B07
-P 5900 3800
-F 0 "U10" H 5900 4881 50  0000 C CNN
-F 1 "FT231XS" H 5900 4790 50  0000 C CNN
-F 2 "Package_SO:SSOP-20_3.9x8.7mm_P0.635mm" H 6500 2850 50  0001 C CNN
-F 3 "http://www.ftdichip.com/Products/ICs/FT231X.html" H 5900 3800 50  0001 C CNN
-	1    5900 3800
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4650 4300 4650 4850
 Wire Wire Line
@@ -379,4 +303,17 @@ $EndComp
 Connection ~ 6000 4850
 Text Label 8600 3600 2    50   ~ 0
 DTR
+Wire Wire Line
+	4950 3600 5200 3600
+$Comp
+L Interface_USB:FT231XS U10
+U 1 1 5EF43B07
+P 5900 3800
+F 0 "U10" H 5900 4881 50  0000 C CNN
+F 1 "FT231XS" H 5900 4790 50  0000 C CNN
+F 2 "Package_SO:SSOP-20_3.9x8.7mm_P0.635mm" H 6500 2850 50  0001 C CNN
+F 3 "http://www.ftdichip.com/Products/ICs/FT231X.html" H 5900 3800 50  0001 C CNN
+	1    5900 3800
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

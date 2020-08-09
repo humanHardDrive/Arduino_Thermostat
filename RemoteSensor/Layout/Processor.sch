@@ -188,34 +188,6 @@ Wire Wire Line
 Wire Wire Line
 	8750 2750 8750 3150
 $Comp
-L Connector_Generic:Conn_01x03 J?
-U 1 1 5EF7CD16
-P 9850 5000
-AR Path="/5EF7CD16" Ref="J?"  Part="1" 
-AR Path="/5EF5F91F/5EF7CD16" Ref="J4"  Part="1" 
-F 0 "J4" H 9930 5042 50  0000 L CNN
-F 1 "PRG_HEADER" H 9930 4951 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 9850 5000 50  0001 C CNN
-F 3 "~" H 9850 5000 50  0001 C CNN
-	1    9850 5000
-	1    0    0    -1  
-$EndComp
-$Comp
-L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
-U 1 1 5EF7CD1C
-P 9500 5200
-AR Path="/5EF7CD1C" Ref="#GND?"  Part="1" 
-AR Path="/5EF5F91F/5EF7CD1C" Ref="#GND0120"  Part="1" 
-F 0 "#GND0120" H 9550 5150 45  0001 L BNN
-F 1 "GND" H 9500 5030 45  0000 C CNN
-F 2 "" H 9500 5100 60  0001 C CNN
-F 3 "" H 9500 5100 60  0001 C CNN
-	1    9500 5200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	9650 5000 9500 5000
-$Comp
 L Device:R_US R?
 U 1 1 5EF7CD26
 P 9450 3900
@@ -743,14 +715,4 @@ Text GLabel 1650 1300 0    50   Input ~ 0
 FLASH
 Wire Wire Line
 	1650 1300 1900 1300
-Text GLabel 8900 4900 0    50   Input ~ 0
-PRG_TX
-Text GLabel 8900 5100 0    50   Input ~ 0
-PRG_RX
-Wire Wire Line
-	8900 5100 9650 5100
-Wire Wire Line
-	8900 4900 9650 4900
-Wire Wire Line
-	9500 5000 9500 5200
 $EndSCHEMATC
