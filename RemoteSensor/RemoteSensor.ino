@@ -66,25 +66,31 @@ Adafruit_MCP23008 ioExp;
 uint8_t aPinDebounce[ALL_EXP_PINS];
 bool aPinStatus[ALL_EXP_PINS];
 
-enum RUNNING_STATE : uint8_t
-{
-  SAMPLE = 0,
-  TURN_WIFI_ON, //WIFI_OFF taken
-  WAIT_FOR_WIFI_ON,
-  CONNECT_TO_NETWORK,
-  WAIT_FOR_NETWORK,
-  MQTT_CONNECT,
-  WAIT_FOR_MQTT_CONNECT,
-  UPDATE_LOCAL_VARIABLES,
-  POST_VARIABLES,
-  SLEEP_START,
-  MQTT_DISCONNECT,
-  WAIT_FOR_MQTT_DISCONNECT,
-  TURN_WIFI_OFF,
-  WAIT_FOR_WIFI_OFF,
-  SLEEP,
-  ALL_STATES
-};
+#define RUNNING_STATE                           \
+  X(Sample, "Sample")                           \
+  X(TurnWiFiOn, "Turn on wifi")                 \
+  X(WaitForWiFiOn, "Wait for wifi")               \
+  X(ConnectToNetwork, "Connect to network")     \
+  X(WaitForNetwork, "Wait for network connect") \
+  X(MQTTConnect, "MQTT connect")                \
+  X(WaitForMQTTConnect, "Wait for MQTT connect")       \
+  X(UpdateLocal, "Update local")                \
+  X(PostLocal, "Post local")                    \
+  X(SleepStart, "Sleep start")                  \
+  X(MQTTDisconnect, "MQTT disconnect")          \
+  X(WaitForMQTTDisconnect, "Wait for MQTT disconnect")  \
+  X(TurnWiFiOff, "Turn WiFi off")               \
+  X(WaitForWiFiOff, "Wait for WiFi off")        \
+  X(DeepSleep, "Deep sleep")                    \
+  X(AllStates, "Catchall")
+
+#define X(a, b) a,
+enum RunningState {RUNNING_STATE};
+#undef X
+
+#define X(a, b) b,
+static char* StateString[] = {RUNNING_STATE};
+#undef X
 
 struct SaveInfo
 {
@@ -151,7 +157,7 @@ uint32_t ulSleepTime = DEFAULT_SLEEP_TIME_US;
 uint32_t ulWakeTimeStart = 0;
 uint32_t ulConnectionTimer = 0;
 
-uint8_t currentRunningState = RUNNING_STATE::SAMPLE;
+uint8_t currentRunningState = RunningState::Sample;
 
 //The remote device name can be overwritten by MQTT notification
 //This flag isn't
@@ -215,15 +221,22 @@ bool recoverSaveInfo()
 void setup()
 {
   Serial.begin(115200);
-  Wire.begin(SDA_PIN, SCL_PIN);
-  ioExp.begin();
+  delay(1000);
+  Serial.flush();
+  Serial.println();
+
+  Serial.println("Setup IO expander...");
+  //Wire.begin(SDA_PIN, SCL_PIN);
+  //ioExp.begin();
 
   //Setup native IO
+  Serial.println(("Setup outputs..."));
   pinMode(HB_LED_PIN, OUTPUT);
   pinMode(SLEEP_PIN, OUTPUT);
   pinMode(EXP_RST_PIN, OUTPUT);
   pinMode(BATT_LED_PIN, OUTPUT);
   //Setup initial pin states
+  Serial.println(("Setup inputs..."));
   pinMode(SLEEP_PIN, LOW);
   pinMode(HB_LED_PIN, HIGH);
   pinMode(EXP_RST_PIN, HIGH);
@@ -231,24 +244,27 @@ void setup()
 
   //Setup expander IO
   //Reset the expander first
+  Serial.println(("Reset IO expander..."));
   pinMode(EXP_RST_PIN, LOW);
   delay(5);
   pinMode(EXP_RST_PIN, HIGH);
   //These pins need pullups
-  ioExp.pinMode(UP_BTN_PIN, INPUT);
-  ioExp.pinMode(DOWN_BTN_PIN, INPUT);
-  ioExp.pinMode(CENTER_BTN_PIN, INPUT);
-  ioExp.pullUp(UP_BTN_PIN, HIGH);
-  ioExp.pullUp(DOWN_BTN_PIN, HIGH);
-  ioExp.pullUp(CENTER_BTN_PIN, HIGH);
-  //These pins already have pullups
-  ioExp.pinMode(BATT_STS_PIN, INPUT);
-  ioExp.pinMode(CHARGE_STS_PIN, INPUT);
-  ioExp.pinMode(CHARGER_STS_PIN, INPUT);
-  ioExp.pinMode(SLEEP_STS_PIN, INPUT);
-  ioExp.pinMode(WAKE_STS_PIN, INPUT);
+  Serial.println(("Setup expander pullups..."));
+  /*ioExp.pinMode(UP_BTN_PIN, INPUT);
+    ioExp.pinMode(DOWN_BTN_PIN, INPUT);
+    ioExp.pinMode(CENTER_BTN_PIN, INPUT);
+    ioExp.pullUp(UP_BTN_PIN, HIGH);
+    ioExp.pullUp(DOWN_BTN_PIN, HIGH);
+    ioExp.pullUp(CENTER_BTN_PIN, HIGH);
+    //These pins already have pullups
+    ioExp.pinMode(BATT_STS_PIN, INPUT);
+    ioExp.pinMode(CHARGE_STS_PIN, INPUT);
+    ioExp.pinMode(CHARGER_STS_PIN, INPUT);
+    ioExp.pinMode(SLEEP_STS_PIN, INPUT);
+    ioExp.pinMode(WAKE_STS_PIN, INPUT);*/
 
   //Setup non-volatile storage
+  Serial.println(("Recover info..."));
   setupEEPROM();
   recoverSaveInfo();
 
@@ -334,30 +350,30 @@ std::map<uint8_t, std::function<void(void)>> pinUpdateFn =
 uint32_t ulLastIOUpdateTime = 0;
 void updateInputs()
 {
-  if((millis() - ulLastIOUpdateTime) < 1000)
+  if ((millis() - ulLastIOUpdateTime) < 1000)
     return;
-  
-  for(size_t i = 0; i < ALL_EXP_PINS; i++)
+
+  for (size_t i = 0; i < ALL_EXP_PINS; i++)
   {
     //Debounce the input
-    if(ioExp.digitalRead(i) && aPinDebounce[i] < DEBOUNCE_TIME)
+    if (ioExp.digitalRead(i) && aPinDebounce[i] < DEBOUNCE_TIME)
       aPinDebounce[i]++;
-    else if(!ioExp.digitalRead(i) && aPinDebounce[i])
+    else if (!ioExp.digitalRead(i) && aPinDebounce[i])
       aPinDebounce[i]--;
 
     //Update the state
-    if(!aPinDebounce[i] && aPinStatus[i])
+    if (!aPinDebounce[i] && aPinStatus[i])
     {
       aPinStatus[i] = false;
       //Call the handler if it exists
-      if(pinUpdateFn[i])
+      if (pinUpdateFn[i])
         pinUpdateFn[i]();
     }
-    else if(aPinDebounce[i] >= DEBOUNCE_TIME && !aPinStatus[i])
+    else if (aPinDebounce[i] >= DEBOUNCE_TIME && !aPinStatus[i])
     {
       aPinStatus[i] = true;
       //Call the handler if it exists
-      if(pinUpdateFn[i])
+      if (pinUpdateFn[i])
         pinUpdateFn[i]();
     }
   }
@@ -370,9 +386,9 @@ uint8_t SampleStateFn()
   sensor.update();
 
   if ((millis() - ulWakeTimeStart) > WAKE_TIME_MS)
-    return RUNNING_STATE::TURN_WIFI_ON;
+    return RunningState::TurnWiFiOn;
 
-  return RUNNING_STATE::SAMPLE;
+  return RunningState::Sample;
 }
 
 uint8_t WifiOnStateFn()
@@ -383,23 +399,23 @@ uint8_t WifiOnStateFn()
     WiFi.mode(WIFI_STA);
     ulConnectionTimer = millis();
 
-    return RUNNING_STATE::WAIT_FOR_WIFI_ON;
+    return RunningState::WaitForWiFiOn;
   }
 
   //Just skip to sleep
-  return RUNNING_STATE::SLEEP_START;
+  return RunningState::SleepStart;
 }
 
 uint8_t WaitForWifiOnStateFn()
 {
   if (WiFi.getMode() == WIFI_STA)
-    return RUNNING_STATE::CONNECT_TO_NETWORK;
+    return RunningState::ConnectToNetwork;
 
   //If the mode doesn't change, just go to sleep
   if ((millis() - ulConnectionTimer) > 250)
-    return RUNNING_STATE::SLEEP_START;
+    return RunningState::SleepStart;
 
-  return RUNNING_STATE::WAIT_FOR_WIFI_ON;
+  return RunningState::WaitForWiFiOn;
 }
 
 uint8_t ConnectToNetworkStateFn()
@@ -407,15 +423,15 @@ uint8_t ConnectToNetworkStateFn()
   WiFi.begin(workingInfo.sNetworkName, workingInfo.sNetworkPass);
   ulConnectionTimer = millis();
 
-  return RUNNING_STATE::WAIT_FOR_NETWORK;
+  return RunningState::WaitForNetwork;
 }
 
 uint8_t WaitForNetworkStateFn()
 {
   if (WiFi.status() == WL_CONNECTED)
-    return RUNNING_STATE::MQTT_CONNECT;
+    return RunningState::MQTTConnect;
 
-  return RUNNING_STATE::WAIT_FOR_NETWORK;
+  return RunningState::WaitForNetwork;
 }
 
 void MQTTCallback(char* sTopic, byte* pPayload, unsigned int length)
@@ -440,10 +456,10 @@ uint8_t MQTTConnectStateFn()
 
     ulConnectionTimer = millis();
 
-    return RUNNING_STATE::WAIT_FOR_MQTT_CONNECT;
+    return RunningState::WaitForMQTTConnect;
   }
 
-  return RUNNING_STATE::SLEEP_START;
+  return RunningState::SleepStart;
 }
 
 uint8_t WaitForMQTTConnectStateFn()
@@ -457,22 +473,22 @@ uint8_t WaitForMQTTConnectStateFn()
 
     ulConnectionTimer = millis();
 
-    return RUNNING_STATE::UPDATE_LOCAL_VARIABLES;
+    return RunningState::UpdateLocal;
   }
 
   if ((millis() - ulConnectionTimer) > 1000)
-    return RUNNING_STATE::SLEEP_START;
+    return RunningState::SleepStart;
 
-  return RUNNING_STATE::WAIT_FOR_MQTT_CONNECT;
+  return RunningState::WaitForMQTTConnect;
 }
 
 uint8_t UpdateLocalVariablesStateFn()
 {
   //Wait time for the callback to be called
   if ((millis() - ulConnectionTimer) > 500)
-    return RUNNING_STATE::POST_VARIABLES;
+    return RunningState::PostLocal;
 
-  return RUNNING_STATE::UPDATE_LOCAL_VARIABLES;
+  return RunningState::UpdateLocal;
 }
 
 uint8_t PostVariablesStateFn()
@@ -491,24 +507,24 @@ uint8_t PostVariablesStateFn()
     bBecomeRemoteDevice = false;
   }
 
-  return RUNNING_STATE::SLEEP_START;
+  return RunningState::SleepStart;
 }
 
 uint8_t StartSleepStateFn()
 {
-  return RUNNING_STATE::MQTT_DISCONNECT;
+  return RunningState::MQTTDisconnect;
 }
 
 uint8_t MQTTDisconnectStateFn()
 {
   mqttClient.disconnect();
-  return RUNNING_STATE::WAIT_FOR_MQTT_DISCONNECT;
+  return RunningState::WaitForMQTTDisconnect;
 }
 
 uint8_t WaitForMQTTDisconnectStateFn()
 {
   //Disconnects automatically
-  return RUNNING_STATE::TURN_WIFI_OFF;
+  return RunningState::TurnWiFiOff;
 }
 
 uint8_t TurnWiFiOffStateFn()
@@ -516,16 +532,16 @@ uint8_t TurnWiFiOffStateFn()
   WiFi.mode(WIFI_OFF);
   ulConnectionTimer = millis();
 
-  return RUNNING_STATE::WAIT_FOR_WIFI_OFF;
+  return RunningState::WaitForWiFiOff;
 }
 
 uint8_t WaitForWiFiOffStateFn()
 {
   if (WiFi.getMode() == WIFI_OFF ||
       (millis() - ulConnectionTimer) > 250)
-    return RUNNING_STATE::SLEEP;
+    return RunningState::DeepSleep;
 
-  return RUNNING_STATE::WAIT_FOR_WIFI_OFF;
+  return RunningState::WaitForWiFiOff;
 }
 
 uint8_t SleepStateFn()
@@ -534,13 +550,16 @@ uint8_t SleepStateFn()
   if (aPinStatus[CHARGER_STS_PIN])
   {
     ulWakeTimeStart = millis();
-    return RUNNING_STATE::SAMPLE;
+    return RunningState::Sample;
   }
 
   //Sleep
   //Setup the reset latch
+  Serial.println("HEY LISTEN");
   digitalWrite(HB_LED_PIN, LOW); //Off
+  delay(10000);
   digitalWrite(SLEEP_PIN, HIGH); //Before on
+  delay(10000);
   //Turn off the battery status LED
   digitalWrite(BATT_LED_PIN, LOW);
   //Deep sleep
@@ -553,37 +572,47 @@ uint8_t SleepStateFn()
 
   ulWakeTimeStart = millis();
 
-  return RUNNING_STATE::SAMPLE;
+  return RunningState::Sample;
 }
 
 std::map<uint8_t, std::function<uint8_t(void)>> runningStateFnMap =
 {
-  {RUNNING_STATE::SAMPLE, SampleStateFn},
-  {RUNNING_STATE::TURN_WIFI_ON, WifiOnStateFn},
-  {RUNNING_STATE::WAIT_FOR_WIFI_ON, WaitForWifiOnStateFn},
-  {RUNNING_STATE::CONNECT_TO_NETWORK, ConnectToNetworkStateFn},
-  {RUNNING_STATE::WAIT_FOR_NETWORK, WaitForNetworkStateFn},
-  {RUNNING_STATE::MQTT_CONNECT, MQTTConnectStateFn},
-  {RUNNING_STATE::WAIT_FOR_MQTT_CONNECT, WaitForMQTTConnectStateFn},
-  {RUNNING_STATE::UPDATE_LOCAL_VARIABLES, UpdateLocalVariablesStateFn},
-  {RUNNING_STATE::POST_VARIABLES, PostVariablesStateFn},
-  {RUNNING_STATE::SLEEP_START, StartSleepStateFn},
-  {RUNNING_STATE::MQTT_DISCONNECT, MQTTDisconnectStateFn},
-  {RUNNING_STATE::WAIT_FOR_MQTT_DISCONNECT, WaitForMQTTDisconnectStateFn},
-  {RUNNING_STATE::TURN_WIFI_OFF, TurnWiFiOffStateFn},
-  {RUNNING_STATE::WAIT_FOR_WIFI_OFF, WaitForWiFiOffStateFn},
-  {RUNNING_STATE::SLEEP, SleepStateFn}
+  {RunningState::Sample, SampleStateFn},
+  {RunningState::TurnWiFiOn, WifiOnStateFn},
+  {RunningState::WaitForWiFiOn, WaitForWifiOnStateFn},
+  {RunningState::ConnectToNetwork, ConnectToNetworkStateFn},
+  {RunningState::WaitForNetwork, WaitForNetworkStateFn},
+  {RunningState::MQTTConnect, MQTTConnectStateFn},
+  {RunningState::WaitForMQTTConnect, WaitForMQTTConnectStateFn},
+  {RunningState::UpdateLocal, UpdateLocalVariablesStateFn},
+  {RunningState::PostLocal, PostVariablesStateFn},
+  {RunningState::SleepStart, StartSleepStateFn},
+  {RunningState::MQTTDisconnect, MQTTDisconnectStateFn},
+  {RunningState::WaitForMQTTDisconnect, WaitForMQTTDisconnectStateFn},
+  {RunningState::TurnWiFiOff, TurnWiFiOffStateFn},
+  {RunningState::WaitForWiFiOff, WaitForWiFiOffStateFn},
+  {RunningState::DeepSleep, SleepStateFn}
 };
 
 void loop()
 {
+  uint8_t nextState = currentRunningState;
+  
   if (runningStateFnMap.find(currentRunningState) != runningStateFnMap.end())
-    currentRunningState = runningStateFnMap[currentRunningState]();
+    nextState = runningStateFnMap[currentRunningState]();
   else
-    currentRunningState = RUNNING_STATE::SLEEP_START;
+    nextState = RunningState::SleepStart;
 
-  mqttClient.loop();
+  if(nextState != currentRunningState)
+  {
+    Serial.print("State change to ");
+    Serial.println(StateString[nextState]);
+    
+    currentRunningState = nextState;
+  }
+
+  //mqttClient.loop();
 
   updateStatusLED();
-  updateInputs();
+  //updateInputs();
 }
