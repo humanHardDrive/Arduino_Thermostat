@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Device:Ferrite_Bead FB1
+L RemoteSensor-rescue:Ferrite_Bead-Device FB1
 U 1 1 5EF07BAD
 P 5800 2350
 F 0 "FB1" H 5663 2304 50  0000 R CNN
@@ -25,7 +25,7 @@ F 3 "~" H 5800 2350 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:R_US R25
+L RemoteSensor-rescue:R_US-Device R25
 U 1 1 5EF0826F
 P 4400 3500
 F 0 "R25" V 4195 3500 50  0000 C CNN
@@ -36,7 +36,7 @@ F 3 "~" H 4400 3500 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_US R26
+L RemoteSensor-rescue:R_US-Device R26
 U 1 1 5EF088E2
 P 4800 3600
 F 0 "R26" V 4595 3600 50  0000 C CNN
@@ -55,7 +55,7 @@ Wire Wire Line
 Wire Wire Line
 	5050 3800 5200 3800
 $Comp
-L Device:C C10
+L RemoteSensor-rescue:C-Device C10
 U 1 1 5EF0B19A
 P 5050 4150
 F 0 "C10" H 5165 4196 50  0000 L CNN
@@ -78,7 +78,7 @@ Wire Wire Line
 	6000 2650 6000 2900
 Connection ~ 5050 3200
 $Comp
-L Jumper:Jumper_2_Open JP1
+L RemoteSensor-rescue:Jumper_2_Open-Jumper JP1
 U 1 1 5EF0D6FF
 P 7200 3600
 F 0 "JP1" H 7200 3835 50  0000 C CNN
@@ -89,7 +89,7 @@ F 3 "~" H 7200 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Jumper:Jumper_2_Open JP2
+L RemoteSensor-rescue:Jumper_2_Open-Jumper JP2
 U 1 1 5EF0E1DD
 P 7850 3400
 F 0 "JP2" H 7850 3635 50  0000 C CNN
@@ -115,7 +115,7 @@ F 3 "" H 5800 2200 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C9
+L RemoteSensor-rescue:C-Device C9
 U 1 1 5EF16A27
 P 4650 4150
 F 0 "C9" H 4765 4196 50  0000 L CNN
@@ -126,7 +126,7 @@ F 3 "~" H 4650 4150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C8
+L RemoteSensor-rescue:C-Device C8
 U 1 1 5EF171E4
 P 4250 4150
 F 0 "C8" H 4365 4196 50  0000 L CNN
@@ -213,7 +213,7 @@ F 12 "Active" H 2800 7550 60  0001 L CNN "Status"
 	1    0    0    1   
 $EndComp
 $Comp
-L Device:R_US R23
+L RemoteSensor-rescue:R_US-Device R23
 U 1 1 5EF30FEC
 P 2150 5500
 F 0 "R23" V 1945 5500 50  0000 C CNN
@@ -224,7 +224,7 @@ F 3 "~" H 2150 5500 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_US R24
+L RemoteSensor-rescue:R_US-Device R24
 U 1 1 5EF32BAD
 P 2150 6350
 F 0 "R24" V 2250 6350 50  0000 C CNN
@@ -306,7 +306,7 @@ DTR
 Wire Wire Line
 	4950 3600 5200 3600
 $Comp
-L Interface_USB:FT231XS U10
+L RemoteSensor-rescue:FT231XS-Interface_USB U10
 U 1 1 5EF43B07
 P 5900 3800
 F 0 "U10" H 5900 4881 50  0000 C CNN

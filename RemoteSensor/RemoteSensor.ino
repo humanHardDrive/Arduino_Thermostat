@@ -8,7 +8,7 @@
 #include "SensorDevice.h"
 
 /*Default sleep time is 5 minutes*/
-#define DEFAULT_SLEEP_TIME_S  (5*60)
+#define DEFAULT_SLEEP_TIME_S  (1*60)
 #define DEFAULT_SLEEP_TIME_MS (DEFAULT_SLEEP_TIME_S*1000)
 #define DEFAULT_SLEEP_TIME_US (DEFAULT_SLEEP_TIME_MS*1000)
 #define WAKE_TIME_S           (10)
@@ -221,7 +221,6 @@ bool recoverSaveInfo()
 void setup()
 {
   Serial.begin(115200);
-  delay(1000);
   Serial.flush();
   Serial.println();
 
@@ -232,12 +231,12 @@ void setup()
   //Setup native IO
   Serial.println(("Setup outputs..."));
   pinMode(HB_LED_PIN, OUTPUT);
-  pinMode(SLEEP_PIN, OUTPUT);
+  pinMode(12, OUTPUT);
   pinMode(EXP_RST_PIN, OUTPUT);
   pinMode(BATT_LED_PIN, OUTPUT);
   //Setup initial pin states
   Serial.println(("Setup inputs..."));
-  pinMode(SLEEP_PIN, LOW);
+  pinMode(12, LOW);
   pinMode(HB_LED_PIN, HIGH);
   pinMode(EXP_RST_PIN, HIGH);
   pinMode(BATT_LED_PIN, LOW);
@@ -555,10 +554,11 @@ uint8_t SleepStateFn()
 
   //Sleep
   //Setup the reset latch
-  Serial.println("HEY LISTEN");
+  Serial.println("HB OFF");
   digitalWrite(HB_LED_PIN, LOW); //Off
   delay(10000);
-  digitalWrite(SLEEP_PIN, HIGH); //Before on
+  Serial.println("SLEEP ON");
+  digitalWrite(12, HIGH); //Before on
   delay(10000);
   //Turn off the battery status LED
   digitalWrite(BATT_LED_PIN, LOW);
@@ -567,7 +567,7 @@ uint8_t SleepStateFn()
 
   //Wakeup
   //Clear the reset latch
-  digitalWrite(SLEEP_PIN, LOW); //Off
+  digitalWrite(12, LOW); //Off
   digitalWrite(HB_LED_PIN, HIGH); //Before on
 
   ulWakeTimeStart = millis();

@@ -25,7 +25,7 @@ F 3 "" H 8000 4000 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C7
+L RemoteSensor-rescue:C-Device C7
 U 1 1 5EEB1255
 P 8000 4300
 F 0 "C7" H 8115 4346 50  0000 L CNN
@@ -49,7 +49,7 @@ F 3 "" H 9650 5100 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R6
+L RemoteSensor-rescue:R_US-Device R6
 U 1 1 5EEB1282
 P 8950 4300
 F 0 "R6" H 9018 4346 50  0000 L CNN
@@ -66,7 +66,7 @@ Wire Wire Line
 Wire Wire Line
 	8950 4150 9350 4150
 $Comp
-L Device:R_US R5
+L RemoteSensor-rescue:R_US-Device R5
 U 1 1 5EEB12A2
 P 8650 5000
 F 0 "R5" H 8718 5046 50  0000 L CNN
@@ -92,7 +92,7 @@ F 3 "" H 8650 4000 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:USB_B_Micro J?
+L RemoteSensor-rescue:USB_B_Micro-Connector J?
 U 1 1 5EEC20C4
 P 1550 2000
 AR Path="/5EEC20C4" Ref="J?"  Part="1" 
@@ -131,7 +131,7 @@ F 3 "" H 1550 2550 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C?
+L RemoteSensor-rescue:C-Device C?
 U 1 1 5EEC20D6
 P 2200 2000
 AR Path="/5EEC20D6" Ref="C?"  Part="1" 
@@ -144,7 +144,7 @@ F 3 "~" H 2200 2000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C?
+L RemoteSensor-rescue:C-Device C?
 U 1 1 5EEC20DC
 P 2650 2000
 AR Path="/5EEC20DC" Ref="C?"  Part="1" 
@@ -183,7 +183,7 @@ Wire Wire Line
 	2650 1600 2650 1800
 Connection ~ 2650 1800
 $Comp
-L Battery_Management:MCP73831-2-OT U?
+L RemoteSensor-rescue:MCP73831-2-OT-Battery_Management U?
 U 1 1 5EEC20F1
 P 2050 4300
 AR Path="/5EEC20F1" Ref="U?"  Part="1" 
@@ -228,7 +228,7 @@ Wire Wire Line
 Wire Wire Line
 	2050 3700 2050 4000
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EEC2106
 P 1450 4750
 AR Path="/5EEC2106" Ref="R?"  Part="1" 
@@ -265,7 +265,7 @@ F 3 "" H 2050 5000 60  0001 C CNN
 $EndComp
 Connection ~ 2050 5100
 $Comp
-L Connector:Conn_01x02_Male J?
+L RemoteSensor-rescue:Conn_01x02_Male-Connector J?
 U 1 1 5EEC2118
 P 4450 4400
 AR Path="/5EEC2118" Ref="J?"  Part="1" 
@@ -291,7 +291,7 @@ F 3 "" H 4900 4550 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EEC2124
 P 2950 4150
 AR Path="/5EEC2124" Ref="R?"  Part="1" 
@@ -346,7 +346,7 @@ Wire Wire Line
 Wire Wire Line
 	4900 4500 4900 4650
 $Comp
-L Device:L L?
+L RemoteSensor-rescue:L-Device L?
 U 1 1 5EEC2148
 P 2500 6300
 AR Path="/5EEC2148" Ref="L?"  Part="1" 
@@ -363,7 +363,7 @@ Wire Wire Line
 Wire Wire Line
 	2650 6500 2200 6500
 $Comp
-L Device:C C?
+L RemoteSensor-rescue:C-Device C?
 U 1 1 5EEC2151
 P 3900 2250
 AR Path="/5EEC2151" Ref="C?"  Part="1" 
@@ -376,7 +376,7 @@ F 3 "~" H 3900 2250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C?
+L RemoteSensor-rescue:C-Device C?
 U 1 1 5EEC215C
 P 3450 6450
 AR Path="/5EEC215C" Ref="C?"  Part="1" 
@@ -389,7 +389,7 @@ F 3 "~" H 3450 6450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C?
+L RemoteSensor-rescue:C-Device C?
 U 1 1 5EEC2162
 P 3900 6450
 AR Path="/5EEC2162" Ref="C?"  Part="1" 
@@ -442,7 +442,7 @@ $EndComp
 Wire Wire Line
 	4500 2550 4500 2400
 $Comp
-L Device:C C?
+L RemoteSensor-rescue:C-Device C?
 U 1 1 5EEC2182
 P 4350 6450
 AR Path="/5EEC2182" Ref="C?"  Part="1" 
@@ -476,7 +476,7 @@ F 3 "" H 3900 1850 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Power_Management:BD48ExxG U?
+L RemoteSensor-rescue:BD48ExxG-Power_Management U?
 U 1 1 5EF05E46
 P 6050 4400
 AR Path="/5EF05E46" Ref="U?"  Part="1" 
@@ -504,7 +504,7 @@ $EndComp
 Wire Wire Line
 	6050 4850 6050 4700
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF05E53
 P 6700 4250
 AR Path="/5EF05E53" Ref="R?"  Part="1" 
@@ -521,7 +521,7 @@ Wire Wire Line
 Wire Wire Line
 	6700 4400 6450 4400
 $Comp
-L Power_Management:BD48ExxG U?
+L RemoteSensor-rescue:BD48ExxG-Power_Management U?
 U 1 1 5EF05E5E
 P 6500 2100
 AR Path="/5EF05E5E" Ref="U?"  Part="1" 
@@ -549,7 +549,7 @@ $EndComp
 Wire Wire Line
 	6500 2550 6500 2400
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF05E6B
 P 7150 1950
 AR Path="/5EF05E6B" Ref="R?"  Part="1" 
@@ -707,7 +707,7 @@ Wire Wire Line
 	8650 4000 8650 4800
 Connection ~ 8650 4800
 $Comp
-L Regulator_Switching:LM3670MF U5
+L RemoteSensor-rescue:LM3670MF-Regulator_Switching U5
 U 1 1 5EEB129A
 P 9650 4250
 F 0 "U5" H 9650 4575 50  0000 C CNN
@@ -730,7 +730,7 @@ USBDP
 Text GLabel 1950 2750 3    50   Input ~ 0
 USBDM
 $Comp
-L dk_PMIC-Voltage-Regulators-Linear:LD1117S33CTR U2
+L RemoteSensor-rescue:LD1117S33CTR-dk_PMIC-Voltage-Regulators-Linear U2
 U 1 1 5F145B16
 P 4500 2100
 F 0 "U2" H 4550 2387 60  0000 C CNN
@@ -766,7 +766,7 @@ Wire Wire Line
 Wire Wire Line
 	5000 2200 4900 2200
 $Comp
-L SparkFun-PowerSymbols:3.3V #SUPPLY0123
+L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY0123
 U 1 1 5F2F9BC4
 P 5000 1850
 F 0 "#SUPPLY0123" H 5050 1850 45  0001 L BNN
@@ -780,7 +780,7 @@ Wire Wire Line
 	5000 1850 5000 2100
 Connection ~ 5000 2100
 $Comp
-L Device:C C?
+L RemoteSensor-rescue:C-Device C?
 U 1 1 5F2FE4BE
 P 3050 6450
 AR Path="/5F2FE4BE" Ref="C?"  Part="1" 

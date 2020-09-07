@@ -13,14 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Label 4250 2850 0    50   ~ 0
-SDA
-Text Label 4250 2750 0    50   ~ 0
-SCL
-Wire Wire Line
-	5000 2850 4250 2850
-Wire Wire Line
-	5000 2750 4250 2750
 Text Label 4450 2350 0    50   ~ 0
 TEMP_PIN
 Wire Wire Line
@@ -50,7 +42,7 @@ Wire Wire Line
 Wire Wire Line
 	4650 1800 4650 1950
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF69133
 P 4150 1650
 AR Path="/5EF69133" Ref="R?"  Part="1" 
@@ -63,7 +55,7 @@ F 3 "~" H 4150 1650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L RF_Module:ESP-12F U?
+L RemoteSensor-rescue:ESP-12F-RF_Module U?
 U 1 1 5EF6913A
 P 5600 2550
 AR Path="/5EF6913A" Ref="U?"  Part="1" 
@@ -94,7 +86,7 @@ Wire Wire Line
 	4150 1500 4650 1500
 Connection ~ 4650 1500
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF69149
 P 4650 1650
 AR Path="/5EF69149" Ref="R?"  Part="1" 
@@ -188,7 +180,7 @@ Wire Wire Line
 Wire Wire Line
 	8750 2750 8750 3150
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF7CD26
 P 9450 3900
 AR Path="/5EF7CD26" Ref="R?"  Part="1" 
@@ -201,7 +193,7 @@ F 3 "~" H 9450 3900 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF7CD2C
 P 9450 4250
 AR Path="/5EF7CD2C" Ref="R?"  Part="1" 
@@ -244,10 +236,6 @@ Wire Wire Line
 	6200 2050 6550 2050
 Wire Wire Line
 	6200 2250 6550 2250
-Wire Wire Line
-	6200 2350 6550 2350
-Wire Wire Line
-	6200 2450 6550 2450
 Wire Wire Line
 	6200 2550 6550 2550
 Wire Wire Line
@@ -328,7 +316,7 @@ Wire Wire Line
 Wire Wire Line
 	5400 5050 5800 5050
 $Comp
-L Device:R_US R19
+L RemoteSensor-rescue:R_US-Device R19
 U 1 1 5EF1D3A2
 P 5000 5400
 F 0 "R19" H 5068 5446 50  0000 L CNN
@@ -352,7 +340,7 @@ F 3 "" H 5000 5250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R20
+L RemoteSensor-rescue:R_US-Device R20
 U 1 1 5EF20C41
 P 7000 1650
 F 0 "R20" H 7068 1696 50  0000 L CNN
@@ -367,7 +355,7 @@ Wire Wire Line
 Wire Wire Line
 	6200 2150 7000 2150
 $Comp
-L Device:R_US R21
+L RemoteSensor-rescue:R_US-Device R21
 U 1 1 5EF266EA
 P 7000 3000
 F 0 "R21" H 7068 3046 50  0000 L CNN
@@ -402,16 +390,12 @@ Wire Wire Line
 	5300 4650 5800 4650
 Wire Wire Line
 	5300 4750 5800 4750
-Text GLabel 6550 2350 2    50   Input ~ 0
-HB_PIN
-Text GLabel 6550 2450 2    50   Input ~ 0
-BATT_PIN
 Text GLabel 6550 2550 2    50   Input ~ 0
 SLEEP_PIN
 Text GLabel 5300 4850 0    50   Input ~ 0
-SLEEP_STS
+HB_PIN
 Text GLabel 5300 4950 0    50   Input ~ 0
-WAKE_STS
+BATT_PIN
 Wire Wire Line
 	5300 4850 5800 4850
 Wire Wire Line
@@ -426,7 +410,7 @@ Connection ~ 5000 5550
 Wire Wire Line
 	5600 1500 6450 1500
 $Comp
-L Device:R_US R22
+L RemoteSensor-rescue:R_US-Device R22
 U 1 1 5EF17614
 P 6450 1650
 F 0 "R22" H 6518 1696 50  0000 L CNN
@@ -463,9 +447,11 @@ UP_BTN
 Text GLabel 9050 1300 0    50   Input ~ 0
 DOWN_BTN
 $Comp
-L Switch:SW_Push SW2
+L RemoteSensor-rescue:SW_Push-Switch SW2
 U 1 1 5EF8556A
 P 2100 1300
+AR Path="/5EF8556A" Ref="SW2"  Part="1" 
+AR Path="/5EF5F91F/5EF8556A" Ref="SW2"  Part="1" 
 F 0 "SW2" H 2100 1585 50  0000 C CNN
 F 1 "FLASH" H 2100 1494 50  0000 C CNN
 F 2 "Button_Switch_SMD:SW_SPST_TL3342" H 2100 1500 50  0001 C CNN
@@ -492,7 +478,7 @@ Wire Wire Line
 Wire Wire Line
 	2500 6350 2650 6350
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF7FA3A
 P 2350 6350
 AR Path="/5EF7FA3A" Ref="R?"  Part="1" 
@@ -505,7 +491,7 @@ F 3 "~" H 2350 6350 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF7FA34
 P 2350 5950
 AR Path="/5EF7FA34" Ref="R?"  Part="1" 
@@ -540,7 +526,7 @@ Wire Wire Line
 Wire Wire Line
 	2950 5950 3150 5950
 $Comp
-L Device:LED D?
+L RemoteSensor-rescue:LED-Device D?
 U 1 1 5EF7FA23
 P 2800 6350
 AR Path="/5EF7FA23" Ref="D?"  Part="1" 
@@ -553,7 +539,7 @@ F 3 "~" H 2800 6350 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:LED D?
+L RemoteSensor-rescue:LED-Device D?
 U 1 1 5EF7FA1D
 P 2800 5950
 AR Path="/5EF7FA1D" Ref="D?"  Part="1" 
@@ -628,7 +614,7 @@ F 3 "" H 2400 3900 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x04 J?
+L RemoteSensor-rescue:Conn_01x04-Connector_Generic J?
 U 1 1 5EF6FC1C
 P 2750 4000
 AR Path="/5EF6FC1C" Ref="J?"  Part="1" 
@@ -673,7 +659,7 @@ F 3 "" H 2200 2300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF6D21F
 P 2800 2650
 AR Path="/5EF6D21F" Ref="R?"  Part="1" 
@@ -686,7 +672,7 @@ F 3 "~" H 2800 2650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF6D219
 P 2200 2650
 AR Path="/5EF6D219" Ref="R?"  Part="1" 
@@ -699,9 +685,11 @@ F 3 "~" H 2200 2650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SparkFun-PowerSymbols:GND #GND0123
+L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND0123
 U 1 1 5EF95E82
 P 2550 1300
+AR Path="/5EF95E82" Ref="#GND0123"  Part="1" 
+AR Path="/5EF5F91F/5EF95E82" Ref="#GND0123"  Part="1" 
 F 0 "#GND0123" H 2600 1250 45  0001 L BNN
 F 1 "GND" H 2550 1130 45  0000 C CNN
 F 2 "" H 2550 1200 60  0001 C CNN
@@ -715,4 +703,12 @@ Text GLabel 1650 1300 0    50   Input ~ 0
 FLASH
 Wire Wire Line
 	1650 1300 1900 1300
+Wire Wire Line
+	6200 2350 6500 2350
+Wire Wire Line
+	6200 2450 6500 2450
+Text Label 6500 2350 2    50   ~ 0
+SCL
+Text Label 6500 2450 2    50   ~ 0
+SDA
 $EndSCHEMATC

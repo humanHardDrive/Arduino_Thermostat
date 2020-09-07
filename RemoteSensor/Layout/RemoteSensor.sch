@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Mechanical:MountingHole_Pad H2
+L RemoteSensor-rescue:MountingHole_Pad-Mechanical H2
 U 1 1 5ED8175C
 P 7150 4100
 F 0 "H2" H 7250 4149 50  0000 L CNN
@@ -25,7 +25,7 @@ F 3 "~" H 7150 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole_Pad H1
+L RemoteSensor-rescue:MountingHole_Pad-Mechanical H1
 U 1 1 5ED820A4
 P 7150 3750
 F 0 "H1" H 7250 3799 50  0000 L CNN
@@ -36,7 +36,7 @@ F 3 "~" H 7150 3750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole_Pad H3
+L RemoteSensor-rescue:MountingHole_Pad-Mechanical H3
 U 1 1 5ED83464
 P 8200 3750
 F 0 "H3" H 8300 3799 50  0000 L CNN
@@ -47,7 +47,7 @@ F 3 "~" H 8200 3750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole_Pad H4
+L RemoteSensor-rescue:MountingHole_Pad-Mechanical H4
 U 1 1 5ED84C2B
 P 8200 4100
 F 0 "H4" H 8300 4149 50  0000 L CNN

@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF5A915
 P 5350 4750
 AR Path="/5EF5A915" Ref="R?"  Part="1" 
@@ -27,7 +27,7 @@ F 3 "~" H 5350 4750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF5A91B
 P 4350 4750
 AR Path="/5EF5A91B" Ref="R?"  Part="1" 
@@ -53,7 +53,7 @@ F 3 "" H 5650 4050 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74xGxx:74LVC2G02 U?
+L RemoteSensor-rescue:74LVC2G02-74xGxx U?
 U 2 1 5EF5A927
 P 5650 4050
 AR Path="/5EF5A927" Ref="U?"  Part="2" 
@@ -70,7 +70,7 @@ Wire Wire Line
 Wire Wire Line
 	4800 3900 4800 3650
 $Comp
-L 74xGxx:74LVC2G02 U?
+L RemoteSensor-rescue:74LVC2G02-74xGxx U?
 U 1 1 5EF5A92F
 P 4800 4000
 AR Path="/5EF5A92F" Ref="U?"  Part="1" 
@@ -136,7 +136,7 @@ F 12 "Active" H 6700 5150 60  0001 L CNN "Status"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF5A953
 P 6200 4750
 AR Path="/5EF5A953" Ref="R?"  Part="1" 
@@ -197,7 +197,7 @@ Wire Wire Line
 Wire Wire Line
 	6200 4050 6200 3100
 $Comp
-L Device:R_US R?
+L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF5A980
 P 4950 4750
 AR Path="/5EF5A980" Ref="R?"  Part="1" 
@@ -235,7 +235,7 @@ Wire Wire Line
 	4950 4000 5050 4000
 Connection ~ 5050 4000
 $Comp
-L Switch:SW_Push SW?
+L RemoteSensor-rescue:SW_Push-Switch SW?
 U 1 1 5EF5D1D1
 P 5550 2050
 AR Path="/5EF5D1D1" Ref="SW?"  Part="1" 
