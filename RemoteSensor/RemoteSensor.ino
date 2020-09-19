@@ -97,8 +97,8 @@ struct SaveInfo
   public:
     char sDeviceName[MAX_DEVICE_NAME_LENGTH];
 
-    char sNetworkName[16];
-    char sNetworkPass[16];
+    char sNetworkName[32];
+    char sNetworkPass[32];
 
     char sServerURL[16];
     uint16_t nServerPort;
@@ -267,6 +267,9 @@ void setup()
   setupEEPROM();
   recoverSaveInfo();
 
+  //strcpy(workingInfo.sNetworkName, "ItsOnlyGayIfYouWifi");
+  strcpy(workingInfo.sNetworkPass, "jose5598dan6056ate");
+
   memset(aPinDebounce, 0, sizeof(aPinDebounce));
   memset(aPinStatus, 0, sizeof(aPinStatus));
   memset(sRemoteDeviceName, 0, MAX_DEVICE_NAME_LENGTH);
@@ -408,7 +411,11 @@ uint8_t WifiOnStateFn()
 uint8_t WaitForWifiOnStateFn()
 {
   if (WiFi.getMode() == WIFI_STA)
+  {
+    Serial.print("Current mode ");
+    Serial.println(WiFi.getMode());
     return RunningState::ConnectToNetwork;
+  }
 
   //If the mode doesn't change, just go to sleep
   if ((millis() - ulConnectionTimer) > 250)
@@ -430,6 +437,13 @@ uint8_t WaitForNetworkStateFn()
   if (WiFi.status() == WL_CONNECTED)
     return RunningState::MQTTConnect;
 
+  if((millis() - ulConnectionTimer) > 10000)
+  {
+    Serial.print("Connection status " );
+    Serial.println(WiFi.status());
+    return RunningState::SleepStart;
+  }
+    
   return RunningState::WaitForNetwork;
 }
 
@@ -554,12 +568,8 @@ uint8_t SleepStateFn()
 
   //Sleep
   //Setup the reset latch
-  Serial.println("HB OFF");
   digitalWrite(HB_LED_PIN, LOW); //Off
-  delay(10000);
-  Serial.println("SLEEP ON");
   digitalWrite(12, HIGH); //Before on
-  delay(10000);
   //Turn off the battery status LED
   digitalWrite(BATT_LED_PIN, LOW);
   //Deep sleep

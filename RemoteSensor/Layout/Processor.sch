@@ -13,10 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Label 4450 2350 0    50   ~ 0
-TEMP_PIN
-Wire Wire Line
-	5000 2350 4450 2350
 $Comp
 L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EF6911C
@@ -128,81 +124,29 @@ $EndComp
 Wire Wire Line
 	9800 1200 9900 1200
 $Comp
-L RemoteSensor-rescue:LM50CIM3-LM50CIM3 U?
-U 1 1 5EF73CDC
-P 9450 2550
-AR Path="/5EF73CDC" Ref="U?"  Part="1" 
-AR Path="/5EF5F91F/5EF73CDC" Ref="U8"  Part="1" 
-F 0 "U8" H 9450 2915 50  0000 C CNN
-F 1 "LM50CIM3" H 9450 2824 50  0000 C CNN
-F 2 "SOT95P260X110-3N" H 9450 2550 50  0001 L BNN
-F 3 "" H 9450 2550 50  0001 L BNN
-F 4 "LM50CIM3/NOPBCT-ND" H 9450 2550 50  0001 L BNN "Field4"
-F 5 "Texas Instruments" H 9450 2550 50  0001 L BNN "Field5"
-F 6 "https://www.digikey.com/product-detail/en/texas-instruments/LM50CIM3-NOPB/LM50CIM3-NOPBCT-ND/120169?utm_source=snapeda&utm_medium=aggregator&utm_campaign=symbol" H 9450 2550 50  0001 L BNN "Field6"
-F 7 "LM50CIM3/NOPB" H 9450 2550 50  0001 L BNN "Field7"
-F 8 "SOT-23 Texas Instruments" H 9450 2550 50  0001 L BNN "Field8"
-	1    9450 2550
-	1    0    0    -1  
-$EndComp
-$Comp
-L RemoteSensor-rescue:3.3V-SparkFun-PowerSymbols #SUPPLY?
-U 1 1 5EF73CE2
-P 8750 2350
-AR Path="/5EF73CE2" Ref="#SUPPLY?"  Part="1" 
-AR Path="/5EF5F91F/5EF73CE2" Ref="#SUPPLY0119"  Part="1" 
-F 0 "#SUPPLY0119" H 8800 2350 45  0001 L BNN
-F 1 "3.3V" H 8750 2626 45  0000 C CNN
-F 2 "XXX-00000" H 8750 2531 60  0000 C CNN
-F 3 "" H 8750 2350 60  0001 C CNN
-	1    8750 2350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8750 2550 8750 2350
-$Comp
-L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
-U 1 1 5EF73CE9
-P 8750 3150
-AR Path="/5EF73CE9" Ref="#GND?"  Part="1" 
-AR Path="/5EF5F91F/5EF73CE9" Ref="#GND0117"  Part="1" 
-F 0 "#GND0117" H 8800 3100 45  0001 L BNN
-F 1 "GND" H 8750 2980 45  0000 C CNN
-F 2 "" H 8750 3050 60  0001 C CNN
-F 3 "" H 8750 3050 60  0001 C CNN
-	1    8750 3150
-	1    0    0    -1  
-$EndComp
-Text Label 10550 2550 2    50   ~ 0
-TEMP_PIN
-Wire Wire Line
-	10150 2550 10550 2550
-Wire Wire Line
-	8750 2750 8750 3150
-$Comp
 L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF7CD26
-P 9450 3900
+P 8750 5150
 AR Path="/5EF7CD26" Ref="R?"  Part="1" 
 AR Path="/5EF5F91F/5EF7CD26" Ref="R17"  Part="1" 
-F 0 "R17" V 9245 3900 50  0000 C CNN
-F 1 "1k" V 9336 3900 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 9490 3890 50  0001 C CNN
-F 3 "~" H 9450 3900 50  0001 C CNN
-	1    9450 3900
+F 0 "R17" V 8545 5150 50  0000 C CNN
+F 1 "1k" V 8636 5150 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 8790 5140 50  0001 C CNN
+F 3 "~" H 8750 5150 50  0001 C CNN
+	1    8750 5150
 	0    1    1    0   
 $EndComp
 $Comp
 L RemoteSensor-rescue:R_US-Device R?
 U 1 1 5EF7CD2C
-P 9450 4250
+P 8750 5500
 AR Path="/5EF7CD2C" Ref="R?"  Part="1" 
 AR Path="/5EF5F91F/5EF7CD2C" Ref="R18"  Part="1" 
-F 0 "R18" V 9245 4250 50  0000 C CNN
-F 1 "1k" V 9336 4250 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 9490 4240 50  0001 C CNN
-F 3 "~" H 9450 4250 50  0001 C CNN
-	1    9450 4250
+F 0 "R18" V 8545 5500 50  0000 C CNN
+F 1 "1k" V 8636 5500 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 8790 5490 50  0001 C CNN
+F 3 "~" H 8750 5500 50  0001 C CNN
+	1    8750 5500
 	0    1    1    0   
 $EndComp
 Text GLabel 9050 1200 0    50   Input ~ 0
@@ -224,14 +168,14 @@ Wire Wire Line
 	9050 1100 9200 1100
 Wire Wire Line
 	9050 1300 9200 1300
-Text GLabel 8900 3900 0    50   Input ~ 0
+Text GLabel 8200 5150 0    50   Input ~ 0
 RADIO_TX
-Text GLabel 8900 4250 0    50   Input ~ 0
+Text GLabel 8200 5500 0    50   Input ~ 0
 RADIO_RX
 Wire Wire Line
-	8900 4250 9300 4250
+	8200 5500 8600 5500
 Wire Wire Line
-	8900 3900 9300 3900
+	8200 5150 8600 5150
 Wire Wire Line
 	6200 2050 6550 2050
 Wire Wire Line
@@ -432,14 +376,14 @@ Wire Wire Line
 Connection ~ 6450 1950
 Text GLabel 6550 1950 2    50   Input ~ 0
 FLASH
-Text GLabel 10000 3900 2    50   Input ~ 0
+Text GLabel 9300 5150 2    50   Input ~ 0
 PRG_RX
-Text GLabel 10000 4250 2    50   Input ~ 0
+Text GLabel 9300 5500 2    50   Input ~ 0
 PRG_TX
 Wire Wire Line
-	9600 3900 10000 3900
+	8900 5150 9300 5150
 Wire Wire Line
-	9600 4250 10000 4250
+	8900 5500 9300 5500
 Text GLabel 5300 4350 0    50   Input ~ 0
 DOWN_BTN
 Text GLabel 5300 4250 0    50   Input ~ 0
@@ -711,4 +655,68 @@ Text Label 6500 2350 2    50   ~ 0
 SCL
 Text Label 6500 2450 2    50   ~ 0
 SDA
+$Comp
+L ds7505s:ds7505s+ U8
+U 1 1 5F5D9C9D
+P 8100 2950
+F 0 "U8" H 9200 3337 60  0000 C CNN
+F 1 "ds7505s+" H 9200 3231 60  0000 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 9200 3190 60  0001 C CNN
+F 3 "" H 8100 2950 60  0000 C CNN
+	1    8100 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:3.3V #SUPPLY0119
+U 1 1 5F5DA98D
+P 10300 2750
+F 0 "#SUPPLY0119" H 10350 2750 45  0001 L BNN
+F 1 "3.3V" H 10300 3026 45  0000 C CNN
+F 2 "XXX-00000" H 10300 2931 60  0000 C CNN
+F 3 "" H 10300 2750 60  0001 C CNN
+	1    10300 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:GND #GND0117
+U 1 1 5F5DB10E
+P 8100 3450
+F 0 "#GND0117" H 8150 3400 45  0001 L BNN
+F 1 "GND" H 8100 3280 45  0000 C CNN
+F 2 "" H 8100 3350 60  0001 C CNN
+F 3 "" H 8100 3350 60  0001 C CNN
+	1    8100 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8100 3450 8100 3250
+Wire Wire Line
+	10300 2750 10300 2950
+Wire Wire Line
+	10300 3050 10300 3150
+Wire Wire Line
+	10300 3150 10300 3250
+Connection ~ 10300 3150
+$Comp
+L SparkFun-PowerSymbols:GND #GND0120
+U 1 1 5F5E5DFF
+P 10300 3450
+F 0 "#GND0120" H 10350 3400 45  0001 L BNN
+F 1 "GND" H 10300 3280 45  0000 C CNN
+F 2 "" H 10300 3350 60  0001 C CNN
+F 3 "" H 10300 3350 60  0001 C CNN
+	1    10300 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10300 3450 10300 3250
+Connection ~ 10300 3250
+Wire Wire Line
+	8100 2950 7650 2950
+Wire Wire Line
+	8100 3050 7650 3050
+Text Label 7650 2950 0    50   ~ 0
+SDA
+Text Label 7650 3050 0    50   ~ 0
+SCL
 $EndSCHEMATC

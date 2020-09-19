@@ -172,106 +172,6 @@ Text GLabel 6900 2500 1    50   Input ~ 0
 PRG_RX
 Text GLabel 6750 2500 1    50   Input ~ 0
 PRG_TX
-$Comp
-L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q4
-U 1 1 5EF2CE7F
-P 2600 5500
-F 0 "Q4" H 2788 5553 60  0000 L CNN
-F 1 "MMBT2222A-TP" H 2788 5447 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 2800 5700 60  0001 L CNN
-F 3 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 5800 60  0001 L CNN
-F 4 "MMBT2222ATPMSCT-ND" H 2800 5900 60  0001 L CNN "Digi-Key_PN"
-F 5 "MMBT2222A-TP" H 2800 6000 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 2800 6100 60  0001 L CNN "Category"
-F 7 "Transistors - Bipolar (BJT) - Single" H 2800 6200 60  0001 L CNN "Family"
-F 8 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 6300 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/micro-commercial-co/MMBT2222A-TP/MMBT2222ATPMSCT-ND/717394" H 2800 6400 60  0001 L CNN "DK_Detail_Page"
-F 10 "TRANS NPN 40V 0.6A SOT23" H 2800 6500 60  0001 L CNN "Description"
-F 11 "Micro Commercial Co" H 2800 6600 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2800 6700 60  0001 L CNN "Status"
-	1    2600 5500
-	1    0    0    -1  
-$EndComp
-$Comp
-L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q5
-U 1 1 5EF2EBF2
-P 2600 6350
-F 0 "Q5" H 2788 6297 60  0000 L CNN
-F 1 "MMBT2222A-TP" H 2788 6403 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 2800 6550 60  0001 L CNN
-F 3 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 6650 60  0001 L CNN
-F 4 "MMBT2222ATPMSCT-ND" H 2800 6750 60  0001 L CNN "Digi-Key_PN"
-F 5 "MMBT2222A-TP" H 2800 6850 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 2800 6950 60  0001 L CNN "Category"
-F 7 "Transistors - Bipolar (BJT) - Single" H 2800 7050 60  0001 L CNN "Family"
-F 8 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 7150 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/micro-commercial-co/MMBT2222A-TP/MMBT2222ATPMSCT-ND/717394" H 2800 7250 60  0001 L CNN "DK_Detail_Page"
-F 10 "TRANS NPN 40V 0.6A SOT23" H 2800 7350 60  0001 L CNN "Description"
-F 11 "Micro Commercial Co" H 2800 7450 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2800 7550 60  0001 L CNN "Status"
-	1    2600 6350
-	1    0    0    1   
-$EndComp
-$Comp
-L RemoteSensor-rescue:R_US-Device R23
-U 1 1 5EF30FEC
-P 2150 5500
-F 0 "R23" V 1945 5500 50  0000 C CNN
-F 1 "10k" V 2036 5500 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2190 5490 50  0001 C CNN
-F 3 "~" H 2150 5500 50  0001 C CNN
-	1    2150 5500
-	0    1    1    0   
-$EndComp
-$Comp
-L RemoteSensor-rescue:R_US-Device R24
-U 1 1 5EF32BAD
-P 2150 6350
-F 0 "R24" V 2250 6350 50  0000 C CNN
-F 1 "10k" V 2350 6350 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2190 6340 50  0001 C CNN
-F 3 "~" H 2150 6350 50  0001 C CNN
-	1    2150 6350
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	2300 6350 2400 6350
-Wire Wire Line
-	2300 5500 2400 5500
-Wire Wire Line
-	2700 6150 2700 6050
-Wire Wire Line
-	2700 6050 2000 5650
-Wire Wire Line
-	2000 5650 2000 5500
-Wire Wire Line
-	2700 5700 2700 5850
-Wire Wire Line
-	2700 5850 2000 6200
-Wire Wire Line
-	2000 6200 2000 6350
-Wire Wire Line
-	2000 6350 1550 6350
-Connection ~ 2000 6350
-Wire Wire Line
-	2000 5500 1550 5500
-Connection ~ 2000 5500
-Wire Wire Line
-	2700 5300 2700 5100
-Wire Wire Line
-	2700 5100 3550 5100
-Wire Wire Line
-	2700 6550 2700 6750
-Wire Wire Line
-	2700 6750 3550 6750
-Text Label 1550 5500 0    50   ~ 0
-RTS
-Text Label 1550 6350 0    50   ~ 0
-DTR
-Text GLabel 3550 5100 2    50   Input ~ 0
-FLASH
-Text GLabel 3550 6750 2    50   Input ~ 0
-RST
 Wire Wire Line
 	7400 3600 8600 3600
 Wire Wire Line
@@ -314,6 +214,106 @@ F 1 "FT231XS" H 5900 4790 50  0000 C CNN
 F 2 "Package_SO:SSOP-20_3.9x8.7mm_P0.635mm" H 6500 2850 50  0001 C CNN
 F 3 "http://www.ftdichip.com/Products/ICs/FT231X.html" H 5900 3800 50  0001 C CNN
 	1    5900 3800
+	1    0    0    -1  
+$EndComp
+Text GLabel 3550 6750 2    50   Input ~ 0
+RST
+Text GLabel 3550 5100 2    50   Input ~ 0
+FLASH
+Text Label 1550 6350 0    50   ~ 0
+DTR
+Text Label 1550 5500 0    50   ~ 0
+RTS
+Wire Wire Line
+	2700 6750 3550 6750
+Wire Wire Line
+	2700 6550 2700 6750
+Wire Wire Line
+	2700 5100 3550 5100
+Wire Wire Line
+	2700 5300 2700 5100
+Wire Wire Line
+	2000 5500 1550 5500
+Wire Wire Line
+	2000 6350 1550 6350
+Wire Wire Line
+	2000 6200 2000 6350
+Wire Wire Line
+	2700 5850 2000 6200
+Wire Wire Line
+	2700 5700 2700 5850
+Wire Wire Line
+	2000 5650 2000 5500
+Wire Wire Line
+	2700 6050 2000 5650
+Wire Wire Line
+	2700 6150 2700 6050
+Wire Wire Line
+	2300 5500 2400 5500
+Wire Wire Line
+	2300 6350 2400 6350
+Connection ~ 2000 6350
+$Comp
+L RemoteSensor-rescue:R_US-Device R24
+U 1 1 5EF32BAD
+P 2150 6350
+F 0 "R24" V 2250 6350 50  0000 C CNN
+F 1 "10k" V 2350 6350 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2190 6340 50  0001 C CNN
+F 3 "~" H 2150 6350 50  0001 C CNN
+	1    2150 6350
+	0    1    1    0   
+$EndComp
+Connection ~ 2000 5500
+$Comp
+L RemoteSensor-rescue:R_US-Device R23
+U 1 1 5EF30FEC
+P 2150 5500
+F 0 "R23" V 1945 5500 50  0000 C CNN
+F 1 "10k" V 2036 5500 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 2190 5490 50  0001 C CNN
+F 3 "~" H 2150 5500 50  0001 C CNN
+	1    2150 5500
+	0    1    1    0   
+$EndComp
+$Comp
+L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q5
+U 1 1 5EF2EBF2
+P 2600 6350
+F 0 "Q5" H 2788 6297 60  0000 L CNN
+F 1 "MMBT2222A-TP" H 2788 6403 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 2800 6550 60  0001 L CNN
+F 3 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 6650 60  0001 L CNN
+F 4 "MMBT2222ATPMSCT-ND" H 2800 6750 60  0001 L CNN "Digi-Key_PN"
+F 5 "MMBT2222A-TP" H 2800 6850 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 2800 6950 60  0001 L CNN "Category"
+F 7 "Transistors - Bipolar (BJT) - Single" H 2800 7050 60  0001 L CNN "Family"
+F 8 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 7150 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/micro-commercial-co/MMBT2222A-TP/MMBT2222ATPMSCT-ND/717394" H 2800 7250 60  0001 L CNN "DK_Detail_Page"
+F 10 "TRANS NPN 40V 0.6A SOT23" H 2800 7350 60  0001 L CNN "Description"
+F 11 "Micro Commercial Co" H 2800 7450 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 2800 7550 60  0001 L CNN "Status"
+	1    2600 6350
+	1    0    0    1   
+$EndComp
+$Comp
+L RemoteSensor-rescue:MMBT2222A-TP-dk_Transistors-Bipolar-BJT-Single Q4
+U 1 1 5EF2CE7F
+P 2600 5500
+F 0 "Q4" H 2788 5553 60  0000 L CNN
+F 1 "MMBT2222A-TP" H 2788 5447 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 2800 5700 60  0001 L CNN
+F 3 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 5800 60  0001 L CNN
+F 4 "MMBT2222ATPMSCT-ND" H 2800 5900 60  0001 L CNN "Digi-Key_PN"
+F 5 "MMBT2222A-TP" H 2800 6000 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 2800 6100 60  0001 L CNN "Category"
+F 7 "Transistors - Bipolar (BJT) - Single" H 2800 6200 60  0001 L CNN "Family"
+F 8 "https://www.mccsemi.com/pdf/Products/MMBT2222A(SOT-23).pdf" H 2800 6300 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/micro-commercial-co/MMBT2222A-TP/MMBT2222ATPMSCT-ND/717394" H 2800 6400 60  0001 L CNN "DK_Detail_Page"
+F 10 "TRANS NPN 40V 0.6A SOT23" H 2800 6500 60  0001 L CNN "Description"
+F 11 "Micro Commercial Co" H 2800 6600 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 2800 6700 60  0001 L CNN "Status"
+	1    2600 5500
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
