@@ -227,7 +227,7 @@ F 3 "" H 6300 5800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 6300 5900
-Text GLabel 5300 4450 0    50   Input ~ 0
+Text GLabel 5300 4350 0    50   Input ~ 0
 CENTER_BTN
 Text Label 5400 5050 0    50   ~ 0
 SDA
@@ -294,12 +294,6 @@ Wire Wire Line
 Wire Wire Line
 	7000 3250 5600 3250
 Connection ~ 5600 3250
-Wire Wire Line
-	5300 4250 5800 4250
-Wire Wire Line
-	5300 4350 5800 4350
-Wire Wire Line
-	5300 4450 5800 4450
 Text GLabel 5300 4550 0    50   Input ~ 0
 BATT_STS
 Text GLabel 5300 4650 0    50   Input ~ 0
@@ -362,9 +356,9 @@ Wire Wire Line
 	5600 6500 6000 6500
 Wire Wire Line
 	5600 6850 6000 6850
-Text GLabel 5300 4350 0    50   Input ~ 0
-DOWN_BTN
 Text GLabel 5300 4250 0    50   Input ~ 0
+DOWN_BTN
+Text GLabel 5300 4450 0    50   Input ~ 0
 UP_BTN
 Text GLabel 9000 2950 0    50   Input ~ 0
 DOWN_BTN
@@ -543,7 +537,7 @@ AR Path="/5EF6FC1C" Ref="J?"  Part="1"
 AR Path="/5EF5F91F/5EF6FC1C" Ref="J3"  Part="1" 
 F 0 "J3" H 2830 3992 50  0000 L CNN
 F 1 "LCD_HEADER" H 2830 3901 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 2750 4000 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 2750 4000 50  0001 C CNN
 F 3 "~" H 2750 4000 50  0001 C CNN
 	1    2750 4000
 	1    0    0    -1  
@@ -698,34 +692,34 @@ SDA
 Text Label 7500 4900 0    50   ~ 0
 SCL
 $Comp
-L Switch:SW_Push SW?
+L Switch:SW_Push SW3
 U 1 1 5F6BF1F9
 P 9350 2250
-F 0 "SW?" H 9350 2535 50  0000 C CNN
+F 0 "SW3" H 9350 2535 50  0000 C CNN
 F 1 "SW_Push" H 9350 2444 50  0000 C CNN
-F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx58-2LFS" H 9350 2450 50  0001 C CNN
+F 2 "Button_Switch_SMD:KSS331GLFS" H 9350 2450 50  0001 C CNN
 F 3 "~" H 9350 2450 50  0001 C CNN
 	1    9350 2250
 	1    0    0    -1  
 $EndComp
 $Comp
-L Switch:SW_Push SW?
+L Switch:SW_Push SW4
 U 1 1 5F6C0B9B
 P 9350 2600
-F 0 "SW?" H 9350 2885 50  0000 C CNN
+F 0 "SW4" H 9350 2885 50  0000 C CNN
 F 1 "SW_Push" H 9350 2794 50  0000 C CNN
-F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx58-2LFS" H 9350 2800 50  0001 C CNN
+F 2 "Button_Switch_SMD:KSS331GLFS" H 9350 2800 50  0001 C CNN
 F 3 "~" H 9350 2800 50  0001 C CNN
 	1    9350 2600
 	1    0    0    -1  
 $EndComp
 $Comp
-L Switch:SW_Push SW?
+L Switch:SW_Push SW5
 U 1 1 5F6C0F28
 P 9350 2950
-F 0 "SW?" H 9350 3235 50  0000 C CNN
+F 0 "SW5" H 9350 3235 50  0000 C CNN
 F 1 "SW_Push" H 9350 3144 50  0000 C CNN
-F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx58-2LFS" H 9350 3150 50  0001 C CNN
+F 2 "Button_Switch_SMD:KSS331GLFS" H 9350 3150 50  0001 C CNN
 F 3 "~" H 9350 3150 50  0001 C CNN
 	1    9350 2950
 	1    0    0    -1  
@@ -742,4 +736,14 @@ Wire Wire Line
 	9000 2600 9150 2600
 Wire Wire Line
 	9000 2250 9150 2250
+Wire Wire Line
+	6600 4450 6900 4450
+Text GLabel 6900 4450 2    50   Input ~ 0
+EXP_INT
+Wire Wire Line
+	5300 4350 5800 4350
+Wire Wire Line
+	5300 4250 5800 4250
+Wire Wire Line
+	5800 4450 5300 4450
 $EndSCHEMATC

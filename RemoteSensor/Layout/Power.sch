@@ -224,14 +224,14 @@ $EndComp
 $Comp
 L RemoteSensor-rescue:GND-SparkFun-PowerSymbols #GND?
 U 1 1 5EEC211E
-P 7400 2300
+P 8200 2350
 AR Path="/5EEC211E" Ref="#GND?"  Part="1" 
 AR Path="/5EE9FD3C/5EEC211E" Ref="#GND0104"  Part="1" 
-F 0 "#GND0104" H 7450 2250 45  0001 L BNN
-F 1 "GND" H 7400 2130 45  0000 C CNN
-F 2 "" H 7400 2200 60  0001 C CNN
-F 3 "" H 7400 2200 60  0001 C CNN
-	1    7400 2300
+F 0 "#GND0104" H 8250 2300 45  0001 L BNN
+F 1 "GND" H 8200 2180 45  0000 C CNN
+F 2 "" H 8200 2250 60  0001 C CNN
+F 3 "" H 8200 2250 60  0001 C CNN
+	1    8200 2350
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -271,24 +271,18 @@ Wire Wire Line
 $Comp
 L RemoteSensor-rescue:V_BATT-SparkFun-PowerSymbols #SUPPLY?
 U 1 1 5EEC2137
-P 7400 1850
+P 8200 1850
 AR Path="/5EEC2137" Ref="#SUPPLY?"  Part="1" 
 AR Path="/5EE9FD3C/5EEC2137" Ref="#SUPPLY0107"  Part="1" 
-F 0 "#SUPPLY0107" H 7450 1850 45  0001 L BNN
-F 1 "V_BATT" H 7400 2126 45  0000 C CNN
-F 2 "XXX-00000" H 7400 2031 60  0000 C CNN
-F 3 "" H 7400 1850 60  0001 C CNN
-	1    7400 1850
+F 0 "#SUPPLY0107" H 8250 1850 45  0001 L BNN
+F 1 "V_BATT" H 8200 2126 45  0000 C CNN
+F 2 "XXX-00000" H 8200 2031 60  0000 C CNN
+F 3 "" H 8200 1850 60  0001 C CNN
+	1    8200 1850
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7150 2050 7400 2050
-Wire Wire Line
-	7400 2050 7400 1850
-Wire Wire Line
 	7150 2150 7400 2150
-Wire Wire Line
-	7400 2150 7400 2300
 $Comp
 L RemoteSensor-rescue:L-Device L?
 U 1 1 5EEC2148
@@ -761,4 +755,46 @@ F 3 "~" H 7700 4250 50  0001 C CNN
 	1    7700 4250
 	1    0    0    -1  
 $EndComp
+$Comp
+L RemoteSensor-rescue:C-Device C?
+U 1 1 5F6DE74C
+P 7800 2200
+AR Path="/5F6DE74C" Ref="C?"  Part="1" 
+AR Path="/5EE9FD3C/5F6DE74C" Ref="C16"  Part="1" 
+F 0 "C16" H 7915 2246 50  0000 L CNN
+F 1 "1u" H 7915 2155 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 7838 2050 50  0001 C CNN
+F 3 "~" H 7800 2200 50  0001 C CNN
+	1    7800 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L RemoteSensor-rescue:C-Device C?
+U 1 1 5F6DF173
+P 8200 2200
+AR Path="/5F6DF173" Ref="C?"  Part="1" 
+AR Path="/5EE9FD3C/5F6DF173" Ref="C17"  Part="1" 
+F 0 "C17" H 8315 2246 50  0000 L CNN
+F 1 "0.1u" H 8315 2155 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 8238 2050 50  0001 C CNN
+F 3 "~" H 8200 2200 50  0001 C CNN
+	1    8200 2200
+	1    0    0    -1  
+$EndComp
+Connection ~ 7800 2050
+Wire Wire Line
+	7800 2050 8200 2050
+Wire Wire Line
+	7150 2050 7800 2050
+Wire Wire Line
+	8200 1850 8200 2050
+Connection ~ 8200 2050
+Wire Wire Line
+	8200 2350 7800 2350
+Wire Wire Line
+	7400 2150 7400 2350
+Connection ~ 7800 2350
+Wire Wire Line
+	7800 2350 7400 2350
+Connection ~ 8200 2350
 $EndSCHEMATC
