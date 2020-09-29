@@ -291,7 +291,7 @@ AR Path="/5EEC2148" Ref="L?"  Part="1"
 AR Path="/5EE9FD3C/5EEC2148" Ref="L1"  Part="1" 
 F 0 "L1" V 4190 4100 50  0000 C CNN
 F 1 "2.2u" V 4099 4100 50  0000 C CNN
-F 2 "Inductor_SMD:L_Taiyo-Yuden_NR-24xx_HandSoldering" H 4000 4100 50  0001 C CNN
+F 2 "Inductor_SMD:L_Taiyo-Yuden_NR-30xx_HandSoldering" H 4000 4100 50  0001 C CNN
 F 3 "~" H 4000 4100 50  0001 C CNN
 	1    4000 4100
 	0    -1   -1   0   
